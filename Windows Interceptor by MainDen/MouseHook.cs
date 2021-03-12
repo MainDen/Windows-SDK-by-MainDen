@@ -100,7 +100,6 @@ namespace MainDen.Windows.Interceptor
                         break;
                 }
                 MouseState.MouseModifiers modifiers = MouseState.MouseModifiers.None;
-                /* TODO: hs.flags */
                 int wheel;
                 int hWheel;
                 switch (wm)

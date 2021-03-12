@@ -166,6 +166,11 @@ namespace MainDen.Windows.Interceptor
             UpdateModifier(MouseModifiers.RControlKey, Keyboard.VirtualKeyStates.RControlKey);
             UpdateModifier(MouseModifiers.LMenu, Keyboard.VirtualKeyStates.LMenu);
             UpdateModifier(MouseModifiers.RMenu, Keyboard.VirtualKeyStates.RMenu);
+            UpdateModifier(MouseModifiers.LButton, Keyboard.VirtualKeyStates.LButton);
+            UpdateModifier(MouseModifiers.RButton, Keyboard.VirtualKeyStates.RButton);
+            UpdateModifier(MouseModifiers.MButton, Keyboard.VirtualKeyStates.MButton);
+            UpdateModifier(MouseModifiers.XButton1, Keyboard.VirtualKeyStates.XButton1);
+            UpdateModifier(MouseModifiers.XButton2, Keyboard.VirtualKeyStates.XButton2);
         }
         public void Update()
         {

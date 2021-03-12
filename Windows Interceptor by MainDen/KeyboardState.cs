@@ -173,7 +173,7 @@ namespace MainDen.Windows.Interceptor
         public string ToString(string format, IFormatProvider formatProvider)
         {
             if (format is null)
-                throw new ArgumentNullException(nameof(format));
+                format = "m + k + [s]";
             string res = "";
             string modifiers = "";
             switch (mode)
@@ -226,7 +226,7 @@ namespace MainDen.Windows.Interceptor
         }
         public override string ToString()
         {
-            return ToString("m + k + [s]", null);
+            return ToString(null, null);
         }
         private static volatile KeyMode mode = KeyMode.Default;
         public static KeyMode Mode { get => mode; set => mode = value; }

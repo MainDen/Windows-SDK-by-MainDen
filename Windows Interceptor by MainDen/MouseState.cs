@@ -1,59 +1,59 @@
 ﻿using MainDen.Windows.API;
 using System;
+using System.Text.RegularExpressions;
 
 namespace MainDen.Windows.Interceptor
 {
     public class MouseState : ICloneable
     {
-        public MouseState()
+        public enum MouseStatus
         {
-            _Key = Keyboard.VirtualKeyStates.None;
-            _X = 0;
-            _Y = 0;
-            _W = 0;
-            _Pressed = false;
-            _Hold = false;
-            _LWin = false;
-            _RWin = false;
-            _LShiftKey = false;
-            _RShiftKey = false;
-            _LControlKey = false;
-            _RControlKey = false;
-            _LMenu = false;
-            _RMenu = false;
-            _Time = new TimeSpan();
+            None = 0,
+            Down = 1,
+            Up = 2,
+            Wheel = 3,
+            Move = 4,
+        }
+        public enum KeyMode
+        {
+            Default = 0,
+            Simple = 1,
+        }
+        [Flags]
+        public enum MouseModifiers
+        {
+            None = 0x0000,
+            LWin = 0x0001,
+            RWin = 0x0002,
+            LShiftKey = 0x0004,
+            RShiftKey = 0x0008,
+            LControlKey = 0x0010,
+            RControlKey = 0x0020,
+            LMenu = 0x0040,
+            RMenu = 0x0080,
+            LButton = 0x0100,
+            RButton = 0x0200,
+            MButton = 0x0400,
+            XButton1 = 0x0800,
+            XButton2 = 0x1000,
         }
         public MouseState(
             Keyboard.VirtualKeyStates key = Keyboard.VirtualKeyStates.None,
+            MouseStatus status = MouseStatus.None,
+            MouseModifiers modifiers = MouseModifiers.None,
             int x = 0,
             int y = 0,
-            int w = 0,
-            bool pressed = false,
-            bool hold = false,
-            bool lWin = false,
-            bool rWin = false,
-            bool lShiftKey = false,
-            bool rShiftKey = false,
-            bool lControlKey = false,
-            bool rControlKey = false,
-            bool lMenu = false,
-            bool rMenu = false,
+            int wheel = 0,
+            int hWheel = 0,
             TimeSpan time = new TimeSpan())
         {
             _Key = key;
+            _Status = status;
+            _Modifiers = modifiers;
             _X = x;
             _Y = y;
-            _W = w;
-            _Pressed = pressed;
-            _Hold = hold;
-            _LWin = lWin;
-            _RWin = rWin;
-            _LShiftKey = lShiftKey;
-            _RShiftKey = rShiftKey;
-            _LControlKey = lControlKey;
-            _RControlKey = rControlKey;
-            _LMenu = lMenu;
-            _RMenu = rMenu;
+            _Wheel = wheel;
+            _HWheel = hWheel;
             _Time = time;
         }
         public MouseState(MouseState state)
@@ -61,102 +61,114 @@ namespace MainDen.Windows.Interceptor
             if (state is null)
                 throw new ArgumentNullException(nameof(state));
             _Key = state._Key;
+            _Status = state._Status;
+            _Modifiers = state._Modifiers;
             _X = state._X;
             _Y = state._Y;
-            _W = state._W;
-            _Pressed = state._Pressed;
-            _Hold = state._Hold;
-            _LWin = state._LWin;
-            _RWin = state._RWin;
-            _LShiftKey = state._LShiftKey;
-            _RShiftKey = state._RShiftKey;
-            _LControlKey = state._LControlKey;
-            _RControlKey = state._RControlKey;
-            _LMenu = state._LMenu;
-            _RMenu = state._RMenu;
+            _Wheel = state._Wheel;
+            _HWheel = state._HWheel;
             _Time = state._Time;
         }
         private Keyboard.VirtualKeyStates _Key;
+        private MouseStatus _Status;
+        private MouseModifiers _Modifiers;
         private int _X;
         private int _Y;
-        private int _W;
-        private bool _Pressed;
-        private bool _Hold;
-        private bool _LWin;
-        private bool _RWin;
-        private bool _LShiftKey;
-        private bool _RShiftKey;
-        private bool _LControlKey;
-        private bool _RControlKey;
-        private bool _LMenu;
-        private bool _RMenu;
+        private int _Wheel;
+        private int _HWheel;
         private TimeSpan _Time;
         public Keyboard.VirtualKeyStates Key { get => _Key; }
+        public MouseStatus Status { get => _Status; }
+        public MouseModifiers Modifiers { get => _Modifiers; }
         public int X { get => _X; }
         public int Y { get => _Y; }
-        public int W { get => _W; }
-        public bool Pressed { get => _Pressed; }
-        public bool Hold { get => _Hold; }
-        public bool LWin { get => _LWin; }
-        public bool RWin { get => _RWin; }
-        public bool Win { get => _LWin || _RWin; }
-        public bool LShiftKey { get => _LShiftKey; }
-        public bool RShiftKey { get => _RShiftKey; }
-        public bool ShiftKey { get => _LShiftKey || _RShiftKey; }
-        public bool LControlKey { get => _LControlKey; }
-        public bool RControlKey { get => _RControlKey; }
-        public bool ControlKey { get => _LControlKey || _RControlKey; }
-        public bool LMenu { get => _LMenu; }
-        public bool RMenu { get => _RMenu; }
-        public bool Menu { get => _LMenu || _RMenu; }
+        public int Wheel { get => _Wheel; }
+        public int HWheel { get => _HWheel; }
         public TimeSpan Time { get => _Time; }
+        public bool LWin { get => _Modifiers.HasFlag(MouseModifiers.LWin); }
+        public bool RWin { get => _Modifiers.HasFlag(MouseModifiers.RWin); }
+        public bool Win
+        {
+            get
+            {
+                return _Modifiers.HasFlag(MouseModifiers.LWin) && _Key != Keyboard.VirtualKeyStates.LWin ||
+                    _Modifiers.HasFlag(MouseModifiers.RWin) && _Key != Keyboard.VirtualKeyStates.RWin;
+            }
+        }
+        public bool LShiftKey { get => _Modifiers.HasFlag(MouseModifiers.LShiftKey); }
+        public bool RShiftKey { get => _Modifiers.HasFlag(MouseModifiers.RShiftKey); }
+        public bool ShiftKey
+        {
+            get
+            {
+                return _Modifiers.HasFlag(MouseModifiers.LShiftKey) && _Key != Keyboard.VirtualKeyStates.LShiftKey ||
+                    _Modifiers.HasFlag(MouseModifiers.RShiftKey) && _Key != Keyboard.VirtualKeyStates.RShiftKey;
+            }
+        }
+        public bool LControlKey { get => _Modifiers.HasFlag(MouseModifiers.LControlKey); }
+        public bool RControlKey { get => _Modifiers.HasFlag(MouseModifiers.RControlKey); }
+        public bool ControlKey
+        {
+            get
+            {
+                return _Modifiers.HasFlag(MouseModifiers.LControlKey) && _Key != Keyboard.VirtualKeyStates.LControlKey ||
+                    _Modifiers.HasFlag(MouseModifiers.RControlKey) && _Key != Keyboard.VirtualKeyStates.RControlKey;
+            }
+        }
+        public bool LMenu { get => _Modifiers.HasFlag(MouseModifiers.LMenu); }
+        public bool RMenu { get => _Modifiers.HasFlag(MouseModifiers.RMenu); }
+        public bool Menu
+        {
+            get
+            {
+                return _Modifiers.HasFlag(MouseModifiers.LMenu) && _Key != Keyboard.VirtualKeyStates.LMenu ||
+                    _Modifiers.HasFlag(MouseModifiers.RMenu) && _Key != Keyboard.VirtualKeyStates.RMenu;
+            }
+        }
+        public bool LButton { get => _Modifiers.HasFlag(MouseModifiers.LButton); }
+        public bool RButton { get => _Modifiers.HasFlag(MouseModifiers.RButton); }
+        public bool MButton { get => _Modifiers.HasFlag(MouseModifiers.MButton); }
+        public bool XButton1 { get => _Modifiers.HasFlag(MouseModifiers.XButton1); }
+        public bool XButton2 { get => _Modifiers.HasFlag(MouseModifiers.XButton2); }
         public void Set(MouseState state)
         {
             if (state is null)
                 throw new ArgumentNullException(nameof(state));
             _Key = state._Key;
+            _Status = state._Status;
+            _Modifiers = state._Modifiers;
             _X = state._X;
             _Y = state._Y;
-            _W = state._W;
-            _Pressed = state._Pressed;
-            _Hold = state._Hold;
-            _LWin = state._LWin;
-            _RWin = state._RWin;
-            _LShiftKey = state._LShiftKey;
-            _RShiftKey = state._RShiftKey;
-            _LControlKey = state._LControlKey;
-            _RControlKey = state._RControlKey;
-            _LMenu = state._LMenu;
-            _RMenu = state._RMenu;
+            _Wheel = state._Wheel;
+            _HWheel = state._HWheel;
             _Time = state._Time;
         }
-        private void UpdateHold()
+        private void UpdateModifier(MouseModifiers m, Keyboard.VirtualKeyStates vk)
         {
-            if (_Pressed)
-                _Hold = (Keyboard.GetAsyncKeyState(_Key) & 0x8000) != 0;
+            if (_Key != vk)
+            {
+                if ((Keyboard.GetAsyncKeyState(vk) & 0x8000) != 0)
+                    _Modifiers |= m;
+                else
+                    _Modifiers &= ~m;
+                return;
+            }
+            else
+                _Modifiers &= ~m;
         }
         private void UpdateModifiers()
         {
-            if (_Key != Keyboard.VirtualKeyStates.LWin)
-                _LWin = (Keyboard.GetAsyncKeyState(Keyboard.VirtualKeyStates.LWin) & 0x8000) != 0;
-            if (_Key != Keyboard.VirtualKeyStates.RWin)
-                _RWin = (Keyboard.GetAsyncKeyState(Keyboard.VirtualKeyStates.RWin) & 0x8000) != 0;
-            if (_Key != Keyboard.VirtualKeyStates.LShiftKey)
-                _LShiftKey = (Keyboard.GetAsyncKeyState(Keyboard.VirtualKeyStates.LShiftKey) & 0x8000) != 0;
-            if (_Key != Keyboard.VirtualKeyStates.RShiftKey)
-                _RShiftKey = (Keyboard.GetAsyncKeyState(Keyboard.VirtualKeyStates.RShiftKey) & 0x8000) != 0;
-            if (_Key != Keyboard.VirtualKeyStates.LControlKey)
-                _LControlKey = (Keyboard.GetAsyncKeyState(Keyboard.VirtualKeyStates.LControlKey) & 0x8000) != 0;
-            if (_Key != Keyboard.VirtualKeyStates.RControlKey)
-                _RControlKey = (Keyboard.GetAsyncKeyState(Keyboard.VirtualKeyStates.RControlKey) & 0x8000) != 0;
-            if (_Key != Keyboard.VirtualKeyStates.LMenu)
-                _LMenu = (Keyboard.GetAsyncKeyState(Keyboard.VirtualKeyStates.LMenu) & 0x8000) != 0;
-            if (_Key != Keyboard.VirtualKeyStates.RMenu)
-                _RMenu = (Keyboard.GetAsyncKeyState(Keyboard.VirtualKeyStates.RMenu) & 0x8000) != 0;
+            UpdateModifier(MouseModifiers.LWin, Keyboard.VirtualKeyStates.LWin);
+            UpdateModifier(MouseModifiers.RWin, Keyboard.VirtualKeyStates.RWin);
+            UpdateModifier(MouseModifiers.LShiftKey, Keyboard.VirtualKeyStates.LShiftKey);
+            UpdateModifier(MouseModifiers.RShiftKey, Keyboard.VirtualKeyStates.RShiftKey);
+            UpdateModifier(MouseModifiers.LControlKey, Keyboard.VirtualKeyStates.LControlKey);
+            UpdateModifier(MouseModifiers.RControlKey, Keyboard.VirtualKeyStates.RControlKey);
+            UpdateModifier(MouseModifiers.LMenu, Keyboard.VirtualKeyStates.LMenu);
+            UpdateModifier(MouseModifiers.RMenu, Keyboard.VirtualKeyStates.RMenu);
         }
         public void Update()
         {
-            UpdateHold();
             UpdateModifiers();
         }
         public object Clone()
@@ -167,12 +179,23 @@ namespace MainDen.Windows.Interceptor
         {
             if (this == state)
                 return true;
-            if (state is null || _Key != state._Key || _Pressed != state._Pressed || _Hold != state._Hold)
+            if (state is null || _Key != state._Key || _Status != state._Status)
                 return false;
-            if (_Simple && (Win != state.Win || ShiftKey != state.ShiftKey || ControlKey != state.ControlKey || Menu != state.Menu))
+            if (_X != state._X || _Y != state._Y || _Wheel != state._Wheel || _HWheel != state._HWheel)
                 return false;
-            else if (!_Simple && (_LWin != state._LWin || _RWin != state._RWin || _LShiftKey != state._LShiftKey || _RShiftKey != state._RShiftKey ||
-                _LControlKey != state._LControlKey || _RControlKey != state._RControlKey || _LMenu != state._LMenu || _RMenu != state._RMenu))
+            switch (mode)
+            {
+                case KeyMode.Simple:
+                    if (Win != state.Win || ShiftKey != state.ShiftKey || ControlKey != state.ControlKey || Menu != state.Menu)
+                        return false;
+                    break;
+                case KeyMode.Default:
+                default:
+                    if (_Modifiers != state._Modifiers)
+                        return false;
+                    break;
+            }
+            if (LButton != state.LButton || RButton != state.RButton || MButton != state.MButton || XButton1 != state.XButton1 || XButton2 != state.XButton2)
                 return false;
             return true;
         }
@@ -180,57 +203,55 @@ namespace MainDen.Windows.Interceptor
         {
             if (format is null)
                 throw new ArgumentNullException(nameof(format));
-            string FORMAT = format.ToUpper();
-            switch (FORMAT)
+            string res = "";
+            string modifiers = "";
+            switch (mode)
             {
-                case "KEY":
-                case "KEY []":
-                case "MOD + KEY":
-                case "MOD + KEY []":
+                case KeyMode.Simple:
+                    if (Win)
+                        modifiers += "Win + ";
+                    if (ShiftKey)
+                        modifiers += "ShiftKey + ";
+                    if (ControlKey)
+                        modifiers += "ControlKey + ";
+                    if (Menu)
+                        modifiers += "Menu + ";
                     break;
                 default:
-                    return ToString();
+                    if (LWin)
+                        modifiers += "LWin + ";
+                    if (RWin)
+                        modifiers += "RWin + ";
+                    if (LShiftKey)
+                        modifiers += "LShiftKey + ";
+                    if (RShiftKey)
+                        modifiers += "RShiftKey + ";
+                    if (LControlKey)
+                        modifiers += "LControlKey + ";
+                    if (RControlKey)
+                        modifiers += "RControlKey + ";
+                    if (LMenu)
+                        modifiers += "LMenu + ";
+                    if (RMenu)
+                        modifiers += "RMenu + ";
+                    break;
             }
-            string res = "";
-            if (FORMAT == "MOD + KEY" || FORMAT == "MOD + KEY []")
-                if (_Simple)
-                {
-                    if (_Key != Keyboard.VirtualKeyStates.LWin && _Key != Keyboard.VirtualKeyStates.RWin && Win)
-                        res += "Win + ";
-                    if (_Key != Keyboard.VirtualKeyStates.LShiftKey && _Key != Keyboard.VirtualKeyStates.RShiftKey && ShiftKey)
-                        res += "ShiftKey + ";
-                    if (_Key != Keyboard.VirtualKeyStates.LControlKey && _Key != Keyboard.VirtualKeyStates.RControlKey && ControlKey)
-                        res += "ControlKey + ";
-                    if (_Key != Keyboard.VirtualKeyStates.LMenu && _Key != Keyboard.VirtualKeyStates.RMenu && Menu)
-                        res += "Menu + ";
-                }
-                else
-                {
-                    if (_Key != Keyboard.VirtualKeyStates.LWin && _LWin)
-                        res += "LWin + ";
-                    if (_Key != Keyboard.VirtualKeyStates.RWin && _RWin)
-                        res += "RWin + ";
-                    if (_Key != Keyboard.VirtualKeyStates.LShiftKey && _LShiftKey)
-                        res += "LShiftKey + ";
-                    if (_Key != Keyboard.VirtualKeyStates.RShiftKey && _RShiftKey)
-                        res += "RShiftKey + ";
-                    if (_Key != Keyboard.VirtualKeyStates.LControlKey && _LControlKey)
-                        res += "LControlKey + ";
-                    if (_Key != Keyboard.VirtualKeyStates.RControlKey && _RControlKey)
-                        res += "RControlKey + ";
-                    if (_Key != Keyboard.VirtualKeyStates.LMenu && _LMenu)
-                        res += "LMenu + ";
-                    if (_Key != Keyboard.VirtualKeyStates.RMenu && _RMenu)
-                        res += "RMenu + ";
-                }
+            if (LButton)
+                modifiers += "LButton + ";
+            if (RButton)
+                modifiers += "RButton + ";
+            if (MButton)
+                modifiers += "MButton + ";
+            if (XButton1)
+                modifiers += "XButton1 + ";
+            if (XButton2)
+                modifiers += "XButton2 + ";
+            string stauts = _Status.ToString();
+            if (format.StartsWith("m + "))
+                res += modifiers;
             res += _Key.ToString();
-            if (FORMAT == "MOD + KEY []" || FORMAT == "KEY []")
-                if (_Hold)
-                    res += " [Hold]";
-                else if (_Pressed)
-                    res += " [Down]";
-                else
-                    res += " [Up]";
+            if (format.EndsWith(" [s]"))
+                res += $" [{stauts}]";
             return res;
         }
         public override int GetHashCode()
@@ -239,55 +260,15 @@ namespace MainDen.Windows.Interceptor
         }
         public override bool Equals(object o)
         {
-            if (this == o)
-                return true;
-            MouseState state = o as MouseState;
+            KeyboardState state = o as KeyboardState;
             return Equals(state);
         }
         public override string ToString()
         {
-            string res = "";
-            if (_Simple)
-            {
-                if (_Key != Keyboard.VirtualKeyStates.LWin && _Key != Keyboard.VirtualKeyStates.RWin && Win)
-                    res += "Win + ";
-                if (_Key != Keyboard.VirtualKeyStates.LShiftKey && _Key != Keyboard.VirtualKeyStates.RShiftKey && ShiftKey)
-                    res += "ShiftKey + ";
-                if (_Key != Keyboard.VirtualKeyStates.LControlKey && _Key != Keyboard.VirtualKeyStates.RControlKey && ControlKey)
-                    res += "ControlKey + ";
-                if (_Key != Keyboard.VirtualKeyStates.LMenu && _Key != Keyboard.VirtualKeyStates.RMenu && Menu)
-                    res += "Menu + ";
-            }
-            else
-            {
-                if (_Key != Keyboard.VirtualKeyStates.LWin && _LWin)
-                    res += "LWin + ";
-                if (_Key != Keyboard.VirtualKeyStates.RWin && _RWin)
-                    res += "RWin + ";
-                if (_Key != Keyboard.VirtualKeyStates.LShiftKey && _LShiftKey)
-                    res += "LShiftKey + ";
-                if (_Key != Keyboard.VirtualKeyStates.RShiftKey && _RShiftKey)
-                    res += "RShiftKey + ";
-                if (_Key != Keyboard.VirtualKeyStates.LControlKey && _LControlKey)
-                    res += "LControlKey + ";
-                if (_Key != Keyboard.VirtualKeyStates.RControlKey && _RControlKey)
-                    res += "RControlKey + ";
-                if (_Key != Keyboard.VirtualKeyStates.LMenu && _LMenu)
-                    res += "LMenu + ";
-                if (_Key != Keyboard.VirtualKeyStates.RMenu && _RMenu)
-                    res += "RMenu + ";
-            }
-            res += _Key.ToString();
-            if (_Hold)
-                res += " [Hold]";
-            else if (_Pressed)
-                res += " [Down]";
-            else
-                res += " [Up]";
-            return res;
+            return ToString("m + k + [s]");
         }
-        private static volatile bool _Simple = false;
-        public static bool Simple { get => _Simple; set => _Simple = value; }
+        private static volatile KeyMode mode = KeyMode.Default;
+        public static KeyMode Mode { get => mode; set => mode = value; }
         public static MouseState Empty
         {
             get
@@ -299,125 +280,45 @@ namespace MainDen.Windows.Interceptor
         {
             if (s is null)
                 throw new ArgumentNullException(nameof(s));
-            string[] strs = s.Split(new[] { ' ', '+' }, StringSplitOptions.RemoveEmptyEntries);
-            if (strs.Length == 0)
+            MatchCollection matches = Regex.Matches(s, @"(\w)+");
+            int count = matches.Count;
+            if (count == 0)
                 throw new FormatException();
-            MouseState k = Empty;
-            int last = strs.Length - 1;
-            if (!Enum.TryParse(strs[last--], out k._Key))
-                if (last > 0 && !Enum.TryParse(strs[last--], out k._Key))
-                    k._Key = Keyboard.VirtualKeyStates.None;
+            string[] words = new string[matches.Count];
+            for (int i = 0; i < count; ++i)
+                words[i] = matches[i].Value;
+            int last = count - 1;
+            MouseStatus staus;
+            if (last >= 0 && Enum.TryParse(words[last], out staus))
+                --last;
+            else
+                throw new FormatException();
+            Keyboard.VirtualKeyStates key;
+            if (last >= 0 && Enum.TryParse(words[last], out key))
+                --last;
+            else
+                throw new FormatException();
+            MouseModifiers modifiers = MouseModifiers.None;
+            MouseModifiers modifier;
+            for (int i = 0; i <= last; i++)
+                if (Enum.TryParse(words[i], out modifier))
+                    modifiers |= modifier;
                 else
                     throw new FormatException();
-            for (int i = 0; i <= last; i++)
-            {
-                switch (strs[i])
-                {
-                    case "LWin":
-                        k._LWin = true;
-                        break;
-                    case "RWin":
-                        k._RWin = true;
-                        break;
-                    case "LShiftKey":
-                        k._LShiftKey = true;
-                        break;
-                    case "RShiftKey":
-                        k._RShiftKey = true;
-                        break;
-                    case "LControlKey":
-                        k._LControlKey = true;
-                        break;
-                    case "RControlKey":
-                        k._RControlKey = true;
-                        break;
-                    case "LMenu":
-                        k._LMenu = true;
-                        break;
-                    case "RMenu":
-                        k._RMenu = true;
-                        break;
-                }
-            }
-            switch (strs[strs.Length - 1])
-            {
-                case "[Hold]":
-                    k._Hold = true;
-                    k._Pressed = true;
-                    break;
-                case "[Up]":
-                    k._Hold = false;
-                    k._Pressed = false;
-                    break;
-                default:
-                    k._Hold = false;
-                    k._Pressed = true;
-                    break;
-            }
-            return k;
+            return new MouseState(key, staus, modifiers);
         }
         public static bool TryParse(string s, out MouseState result)
         {
-            result = null;
-            if (s is null)
-                return false;
-            string[] strs = s.Split(new[] { ' ', '+' }, StringSplitOptions.RemoveEmptyEntries);
-            if (strs.Length == 0)
-                return false;
-            MouseState k = Empty;
-            int last = strs.Length - 1;
-            if (!Enum.TryParse(strs[last--], out k._Key))
-                if (last > 0 && !Enum.TryParse(strs[last--], out k._Key))
-                    k._Key = Keyboard.VirtualKeyStates.None;
-                else
-                    return false;
-            for (int i = 0; i <= last; i++)
+            try
             {
-                switch (strs[i])
-                {
-                    case "LWin":
-                        k._LWin = true;
-                        break;
-                    case "RWin":
-                        k._RWin = true;
-                        break;
-                    case "LShiftKey":
-                        k._LShiftKey = true;
-                        break;
-                    case "RShiftKey":
-                        k._RShiftKey = true;
-                        break;
-                    case "LControlKey":
-                        k._LControlKey = true;
-                        break;
-                    case "RControlKey":
-                        k._RControlKey = true;
-                        break;
-                    case "LMenu":
-                        k._LMenu = true;
-                        break;
-                    case "RMenu":
-                        k._RMenu = true;
-                        break;
-                }
+                result = Parse(s);
+                return true;
             }
-            switch (strs[strs.Length - 1])
+            catch
             {
-                case "[Hold]":
-                    k._Hold = true;
-                    k._Pressed = true;
-                    break;
-                case "[Up]":
-                    k._Hold = false;
-                    k._Pressed = false;
-                    break;
-                default:
-                    k._Hold = false;
-                    k._Pressed = true;
-                    break;
+                result = null;
+                return false;
             }
-            result = k;
-            return true;
         }
     }
 }

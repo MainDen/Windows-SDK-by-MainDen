@@ -53,32 +53,52 @@ namespace MainDen.Windows.Interceptor
         }
         private Keyboard.VirtualKeyStates _Key;
         private KeyStatus _Status;
-        private TimeSpan _Time;
         private KeyModifiers _Modifiers;
+        private TimeSpan _Time;
         public Keyboard.VirtualKeyStates Key { get => _Key; }
         public KeyStatus Status { get => _Status; }
-        public TimeSpan Time { get => _Time; }
         public KeyModifiers Modifiers { get => _Modifiers; }
+        public TimeSpan Time { get => _Time; }
         public bool LWin { get => _Modifiers.HasFlag(KeyModifiers.LWin); }
         public bool RWin { get => _Modifiers.HasFlag(KeyModifiers.RWin); }
-        public bool Win { get =>
-                _Modifiers.HasFlag(KeyModifiers.LWin) && _Key != Keyboard.VirtualKeyStates.LWin ||
-                _Modifiers.HasFlag(KeyModifiers.RWin) && _Key != Keyboard.VirtualKeyStates.RWin; }
+        public bool Win
+        {
+            get
+            {
+                return _Modifiers.HasFlag(KeyModifiers.LWin) && _Key != Keyboard.VirtualKeyStates.LWin ||
+                    _Modifiers.HasFlag(KeyModifiers.RWin) && _Key != Keyboard.VirtualKeyStates.RWin;
+            }
+        }
         public bool LShiftKey { get => _Modifiers.HasFlag(KeyModifiers.LShiftKey); }
         public bool RShiftKey { get => _Modifiers.HasFlag(KeyModifiers.RShiftKey); }
-        public bool ShiftKey { get =>
-                _Modifiers.HasFlag(KeyModifiers.LShiftKey) && _Key != Keyboard.VirtualKeyStates.LShiftKey ||
-                _Modifiers.HasFlag(KeyModifiers.RShiftKey) && _Key != Keyboard.VirtualKeyStates.RShiftKey; }
+        public bool ShiftKey
+        {
+            get
+            {
+                return _Modifiers.HasFlag(KeyModifiers.LShiftKey) && _Key != Keyboard.VirtualKeyStates.LShiftKey ||
+                    _Modifiers.HasFlag(KeyModifiers.RShiftKey) && _Key != Keyboard.VirtualKeyStates.RShiftKey;
+            }
+        }
         public bool LControlKey { get => _Modifiers.HasFlag(KeyModifiers.LControlKey); }
         public bool RControlKey { get => _Modifiers.HasFlag(KeyModifiers.RControlKey); }
-        public bool ControlKey { get =>
-                _Modifiers.HasFlag(KeyModifiers.LControlKey) && _Key != Keyboard.VirtualKeyStates.LControlKey ||
-                _Modifiers.HasFlag(KeyModifiers.RControlKey) && _Key != Keyboard.VirtualKeyStates.RControlKey; }
+        public bool ControlKey
+        {
+            get
+            {
+                return _Modifiers.HasFlag(KeyModifiers.LControlKey) && _Key != Keyboard.VirtualKeyStates.LControlKey ||
+                    _Modifiers.HasFlag(KeyModifiers.RControlKey) && _Key != Keyboard.VirtualKeyStates.RControlKey;
+            }
+        }
         public bool LMenu { get => _Modifiers.HasFlag(KeyModifiers.LMenu); }
         public bool RMenu { get => _Modifiers.HasFlag(KeyModifiers.RMenu); }
-        public bool Menu { get =>
-                _Modifiers.HasFlag(KeyModifiers.LMenu) && _Key != Keyboard.VirtualKeyStates.LMenu ||
-                _Modifiers.HasFlag(KeyModifiers.RMenu) && _Key != Keyboard.VirtualKeyStates.RMenu; }
+        public bool Menu
+        {
+            get
+            {
+                return _Modifiers.HasFlag(KeyModifiers.LMenu) && _Key != Keyboard.VirtualKeyStates.LMenu ||
+                    _Modifiers.HasFlag(KeyModifiers.RMenu) && _Key != Keyboard.VirtualKeyStates.RMenu;
+            }
+        }
         public void Set(KeyboardState state)
         {
             if (state is null)

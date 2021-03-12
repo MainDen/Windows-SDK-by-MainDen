@@ -11,10 +11,10 @@ namespace MainDen.Windows.Interceptor
         {
             _mProc = MouseHookProc;
         }
+        public event EventHandler MouseAny;
         public event EventHandler MouseDown;
         public event EventHandler MouseUp;
         public event EventHandler MouseWheel;
-        public event EventHandler MouseHWheel;
         public event EventHandler MouseMove;
         private readonly object lSettings = new object();
         private Hook.HookProc _mProc;
@@ -46,7 +46,6 @@ namespace MainDen.Windows.Interceptor
         }
         private IntPtr MouseHookProc(int nCode, IntPtr wParam, IntPtr lParam)
         {
-            /* TODO: param.flags */
             Hook.MSLLHOOKSTRUCT hs = (Hook.MSLLHOOKSTRUCT)Marshal.PtrToStructure(lParam, typeof(Hook.MSLLHOOKSTRUCT));
             Message.WindowsMessage wm = (Message.WindowsMessage)wParam;
             if (nCode >= 0)
@@ -74,51 +73,76 @@ namespace MainDen.Windows.Interceptor
                         key = Keyboard.VirtualKeyStates.None;
                         break;
                 }
-                bool press;
+                MouseState.MouseStatus status;
                 switch (wm)
                 {
                     case Message.WindowsMessage.LBUTTONDOWN:
                     case Message.WindowsMessage.RBUTTONDOWN:
                     case Message.WindowsMessage.MBUTTONDOWN:
                     case Message.WindowsMessage.XBUTTONDOWN:
-                        press = true;
+                        status = MouseState.MouseStatus.Down;
                         break;
                     case Message.WindowsMessage.LBUTTONUP:
                     case Message.WindowsMessage.RBUTTONUP:
                     case Message.WindowsMessage.MBUTTONUP:
                     case Message.WindowsMessage.XBUTTONUP:
+                        status = MouseState.MouseStatus.Up;
+                        break;
+                    case Message.WindowsMessage.MOUSEWHEEL:
+                    case Message.WindowsMessage.MOUSEHWHEEL:
+                        status = MouseState.MouseStatus.Wheel;
+                        break;
+                    case Message.WindowsMessage.MOUSEMOVE:
+                        status = MouseState.MouseStatus.Move;
+                        break;
                     default:
-                        press = false;
+                        status = MouseState.MouseStatus.Up;
                         break;
                 }
-
+                MouseState.MouseModifiers modifiers = MouseState.MouseModifiers.None;
+                /* TODO: hs.flags */
+                int wheel;
+                int hWheel;
+                switch (wm)
+                {
+                    case Message.WindowsMessage.MOUSEWHEEL:
+                        wheel = (short)(hs.mouseData >> 16);
+                        hWheel = 0;
+                        break;
+                    case Message.WindowsMessage.MOUSEHWHEEL:
+                        wheel = 0;
+                        hWheel = (short)(hs.mouseData >> 16);
+                        break;
+                    default:
+                        wheel = 0;
+                        hWheel = 0;
+                        break;
+                }
+                MouseState ms = new MouseState(key, status, modifiers, hs.x, hs.y, wheel, hWheel, TimeSpan.FromMilliseconds(hs.time));
+                ms.Update();
+                switch (ms.Status)
+                {
+                    case MouseState.MouseStatus.Down:
+                        MouseAny?.Invoke(this, ms);
+                        MouseDown?.Invoke(this, ms);
+                        break;
+                    case MouseState.MouseStatus.Up:
+                        MouseAny?.Invoke(this, ms);
+                        MouseUp?.Invoke(this, ms);
+                        break;
+                    case MouseState.MouseStatus.Wheel:
+                        MouseAny?.Invoke(this, ms);
+                        MouseWheel?.Invoke(this, ms);
+                        break;
+                    case MouseState.MouseStatus.Move:
+                        MouseAny?.Invoke(this, ms);
+                        MouseMove?.Invoke(this, ms);
+                        break;
+                    default:
+                        MouseAny?.Invoke(this, ms);
+                        break;
+                }
             }
-            if (nCode >= 0 && wParam == (IntPtr)Message.WindowsMessage.LBUTTONDOWN)
-            {
-                MouseState state = new MouseState(Keyboard.VirtualKeyStates.LButton, hs.x, hs.y, 0, true, false, time: TimeSpan.FromMilliseconds(hs.time));
-                state.Update();
-                MouseDown?.Invoke(this, state);
-            }
-            if (nCode >= 0 && wParam == (IntPtr)Message.WindowsMessage.RBUTTONDOWN)
-                MouseDown?.Invoke(this, new MouseState(Keyboard.VirtualKeyStates.RButton, hs.x, hs.y, 0, true, false, time: TimeSpan.FromMilliseconds(hs.time)));
-            if (nCode >= 0 && wParam == (IntPtr)Message.WindowsMessage.MBUTTONDOWN)
-                MouseDown?.Invoke(this, new MouseState(Keyboard.VirtualKeyStates.MButton, hs.x, hs.y, 0, true, false, time: TimeSpan.FromMilliseconds(hs.time)));
-            if (nCode >= 0 && wParam == (IntPtr)Message.WindowsMessage.XBUTTONDOWN)
-                MouseDown?.Invoke(this, new MouseState((hs.mouseData & 0x10000) != 0 ? Keyboard.VirtualKeyStates.XButton1 : Keyboard.VirtualKeyStates.XButton2, hs.x, hs.y, 0, true, false, time: TimeSpan.FromMilliseconds(hs.time)));
-            if (nCode >= 0 && wParam == (IntPtr)Message.WindowsMessage.LBUTTONUP)
-                MouseUp?.Invoke(this, new MouseState(Keyboard.VirtualKeyStates.LButton, hs.x, hs.y, 0, false, false, time: TimeSpan.FromMilliseconds(hs.time)));
-            if (nCode >= 0 && wParam == (IntPtr)Message.WindowsMessage.RBUTTONUP)
-                MouseUp?.Invoke(this, new MouseState(Keyboard.VirtualKeyStates.RButton, hs.x, hs.y, 0, false, false, time: TimeSpan.FromMilliseconds(hs.time)));
-            if (nCode >= 0 && wParam == (IntPtr)Message.WindowsMessage.MBUTTONUP)
-                MouseUp?.Invoke(this, new MouseState(Keyboard.VirtualKeyStates.MButton, hs.x, hs.y, 0, false, false, time: TimeSpan.FromMilliseconds(hs.time)));
-            if (nCode >= 0 && wParam == (IntPtr)Message.WindowsMessage.XBUTTONUP)
-                MouseUp?.Invoke(this, new MouseState(hs.mouseData == 1 ? Keyboard.VirtualKeyStates.XButton1 : Keyboard.VirtualKeyStates.XButton2, hs.x, hs.y, 0, false, false, time: TimeSpan.FromMilliseconds(hs.time)));
-            if (nCode >= 0 && wParam == (IntPtr)Message.WindowsMessage.MOUSEWHEEL)
-                MouseWheel?.Invoke(this, new MouseState(Keyboard.VirtualKeyStates.None, hs.x, hs.y, (int)hs.mouseData, true, false, time: TimeSpan.FromMilliseconds(hs.time)));
-            if (nCode >= 0 && wParam == (IntPtr)Message.WindowsMessage.MOUSEHWHEEL)
-                MouseHWheel?.Invoke(this, new MouseState(Keyboard.VirtualKeyStates.None, hs.x, hs.y, (int)hs.mouseData, true, false, time: TimeSpan.FromMilliseconds(hs.time)));
-            if (nCode >= 0 && wParam == (IntPtr)Message.WindowsMessage.MOUSEMOVE)
-                MouseMove?.Invoke(this, new MouseState(Keyboard.VirtualKeyStates.None, hs.x, hs.y, 0, false, false, time: TimeSpan.FromMilliseconds(hs.time)));
             return Hook.CallNextHookEx(_mHHook, nCode, wParam, lParam);
         }
     }

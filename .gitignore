@@ -3,6 +3,10 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+# Testing
+[Tt]esting [Cc]onsole/
+[Tt]esting [Ff]orm/
+
 # User-specific files
 *.rsuser
 *.suo

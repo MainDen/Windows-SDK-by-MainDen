@@ -21,7 +21,7 @@ namespace MainDen.Windows.Interceptor
             _RControlKey = false;
             _LMenu = false;
             _RMenu = false;
-            _DateTime = new DateTime();
+            _Time = new TimeSpan();
         }
         public MouseState(
             Keyboard.VirtualKeyStates key = Keyboard.VirtualKeyStates.None,
@@ -38,7 +38,7 @@ namespace MainDen.Windows.Interceptor
             bool rControlKey = false,
             bool lMenu = false,
             bool rMenu = false,
-            DateTime dateTime = new DateTime())
+            TimeSpan time = new TimeSpan())
         {
             _Key = key;
             _X = x;
@@ -54,7 +54,7 @@ namespace MainDen.Windows.Interceptor
             _RControlKey = rControlKey;
             _LMenu = lMenu;
             _RMenu = rMenu;
-            _DateTime = dateTime;
+            _Time = time;
         }
         public MouseState(MouseState state)
         {
@@ -74,7 +74,7 @@ namespace MainDen.Windows.Interceptor
             _RControlKey = state._RControlKey;
             _LMenu = state._LMenu;
             _RMenu = state._RMenu;
-            _DateTime = state._DateTime;
+            _Time = state._Time;
         }
         private Keyboard.VirtualKeyStates _Key;
         private int _X;
@@ -90,7 +90,7 @@ namespace MainDen.Windows.Interceptor
         private bool _RControlKey;
         private bool _LMenu;
         private bool _RMenu;
-        private DateTime _DateTime;
+        private TimeSpan _Time;
         public Keyboard.VirtualKeyStates Key { get => _Key; }
         public int X { get => _X; }
         public int Y { get => _Y; }
@@ -109,7 +109,7 @@ namespace MainDen.Windows.Interceptor
         public bool LMenu { get => _LMenu; }
         public bool RMenu { get => _RMenu; }
         public bool Menu { get => _LMenu || _RMenu; }
-        public DateTime DateTime { get => _DateTime; }
+        public TimeSpan Time { get => _Time; }
         public void Set(MouseState state)
         {
             if (state is null)
@@ -128,7 +128,7 @@ namespace MainDen.Windows.Interceptor
             _RControlKey = state._RControlKey;
             _LMenu = state._LMenu;
             _RMenu = state._RMenu;
-            _DateTime = state._DateTime;
+            _Time = state._Time;
         }
         private void UpdateHold()
         {

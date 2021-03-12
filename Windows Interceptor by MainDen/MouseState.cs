@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace MainDen.Windows.Interceptor
 {
-    public class MouseState : ICloneable
+    public class MouseState : ICloneable, IFormattable
     {
         public enum MouseStatus
         {
@@ -85,6 +85,10 @@ namespace MainDen.Windows.Interceptor
         public int Wheel { get => _Wheel; }
         public int HWheel { get => _HWheel; }
         public TimeSpan Time { get => _Time; }
+        public bool IsUp { get => _Status == MouseStatus.Up; }
+        public bool IsDown { get => _Status == MouseStatus.Down; }
+        public bool IsWheel { get => _Status == MouseStatus.Wheel; }
+        public bool IsMove { get => _Status == MouseStatus.Move; }
         public bool LWin { get => _Modifiers.HasFlag(MouseModifiers.LWin); }
         public bool RWin { get => _Modifiers.HasFlag(MouseModifiers.RWin); }
         public bool Win
@@ -204,7 +208,7 @@ namespace MainDen.Windows.Interceptor
                 return false;
             return true;
         }
-        public string ToString(string format)
+        public string ToString(string format, IFormatProvider formatProvider)
         {
             if (format is null)
                 throw new ArgumentNullException(nameof(format));
@@ -270,7 +274,7 @@ namespace MainDen.Windows.Interceptor
         }
         public override string ToString()
         {
-            return ToString("m + k + [s]");
+            return ToString("m + k + [s]", null);
         }
         private static volatile KeyMode mode = KeyMode.Default;
         public static KeyMode Mode { get => mode; set => mode = value; }

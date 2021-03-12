@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace MainDen.Windows.Interceptor
 {
-    public class KeyboardState : ICloneable
+    public class KeyboardState : ICloneable, IFormattable
     {
         public enum KeyStatus
         {
@@ -59,6 +59,10 @@ namespace MainDen.Windows.Interceptor
         public KeyStatus Status { get => _Status; }
         public KeyModifiers Modifiers { get => _Modifiers; }
         public TimeSpan Time { get => _Time; }
+        public bool IsUp { get => _Status == KeyStatus.Up; }
+        public bool IsDown { get => _Status == KeyStatus.Down; }
+        public bool IsHold { get => _Status == KeyStatus.Hold; }
+        public bool IsPressed { get => IsDown || IsHold; }
         public bool LWin { get => _Modifiers.HasFlag(KeyModifiers.LWin); }
         public bool RWin { get => _Modifiers.HasFlag(KeyModifiers.RWin); }
         public bool Win
@@ -166,7 +170,7 @@ namespace MainDen.Windows.Interceptor
             }
             return true;
         }
-        public string ToString(string format)
+        public string ToString(string format, IFormatProvider formatProvider)
         {
             if (format is null)
                 throw new ArgumentNullException(nameof(format));
@@ -222,7 +226,7 @@ namespace MainDen.Windows.Interceptor
         }
         public override string ToString()
         {
-            return ToString("m + k + [s]");
+            return ToString("m + k + [s]", null);
         }
         private static volatile KeyMode mode = KeyMode.Default;
         public static KeyMode Mode { get => mode; set => mode = value; }

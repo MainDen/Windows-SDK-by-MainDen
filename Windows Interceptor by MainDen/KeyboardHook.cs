@@ -53,11 +53,24 @@ namespace MainDen.Windows.Interceptor
             if (nCode >= 0 && (_key == 0 || _key == hs.vkCode))
             {
                 Keyboard.VirtualKeyStates key = (Keyboard.VirtualKeyStates)hs.vkCode;
-                bool down = wm == Message.WindowsMessage.KEYDOWN || wm == Message.WindowsMessage.SYSKEYDOWN;
-                bool up = wm == Message.WindowsMessage.KEYUP || wm == Message.WindowsMessage.SYSKEYUP;
-                KeyboardState.KeyStatus status = down ? KeyboardState.KeyStatus.Down : up ? KeyboardState.KeyStatus.Up : KeyboardState.KeyStatus.None;
+                KeyboardState.KeyStatus status;
+                switch (wm)
+                {
+                    case Message.WindowsMessage.KEYDOWN:
+                    case Message.WindowsMessage.SYSKEYDOWN:
+                        status = KeyboardState.KeyStatus.Down;
+                        break;
+                    case Message.WindowsMessage.KEYUP:
+                    case Message.WindowsMessage.SYSKEYUP:
+                        status = KeyboardState.KeyStatus.Up;
+                        break;
+                    default:
+                        status = KeyboardState.KeyStatus.None;
+                        break;
+                }
+                KeyboardState.KeyModifiers modifiers = KeyboardState.KeyModifiers.None;
                 TimeSpan time = TimeSpan.FromMilliseconds(hs.time);
-                KeyboardState ks = new KeyboardState((Keyboard.VirtualKeyStates)hs.vkCode, status, time: time);
+                KeyboardState ks = new KeyboardState(key, status, modifiers, time);
                 ks.Update();
                 switch (ks.Status)
                 {

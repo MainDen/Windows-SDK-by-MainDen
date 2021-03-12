@@ -96,7 +96,7 @@ namespace MainDen.Windows.Interceptor
                         status = MouseState.MouseStatus.Move;
                         break;
                     default:
-                        status = MouseState.MouseStatus.Up;
+                        status = MouseState.MouseStatus.None;
                         break;
                 }
                 MouseState.MouseModifiers modifiers = MouseState.MouseModifiers.None;

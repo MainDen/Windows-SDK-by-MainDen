@@ -6,7 +6,7 @@ namespace MainDen.Windows.API
     // Types | Constants
     public static partial class Hook
     {
-        public delegate IntPtr HookProc(int code, IntPtr wParam, IntPtr lParam);
+        public delegate IntPtr HookProc(int nCode, IntPtr wParam, IntPtr lParam);
         public enum HookType : int
         {
             WH_JOURNALRECORD = 0,
@@ -26,11 +26,21 @@ namespace MainDen.Windows.API
             WH_MOUSE_LL = 14
         }
         [StructLayout(LayoutKind.Sequential)]
-        public class KBDLLHOOKSTRUCT
+        public struct KBDLLHOOKSTRUCT
         {
             public uint vkCode;
             public uint scanCode;
             public KBDLLHOOKSTRUCTFlags flags;
+            public uint time;
+            public UIntPtr dwExtraInfo;
+        }
+        [StructLayout(LayoutKind.Sequential)]
+        public struct MSLLHOOKSTRUCT
+        {
+            public int x;
+            public int y;
+            public uint mouseData;
+            public uint flags;
             public uint time;
             public UIntPtr dwExtraInfo;
         }
@@ -43,6 +53,7 @@ namespace MainDen.Windows.API
             LLKHF_UP = 0x80,
         }
         public delegate IntPtr LowLevelKeyboardProc(int nCode, Message.WindowsMessage wParam, [In] KBDLLHOOKSTRUCT lParam);
+        public delegate IntPtr LowLevelMouseProc(int nCode, Message.WindowsMessage wParam, [In] MSLLHOOKSTRUCT lParam);
     }
     // Methods
     public static partial class Hook

@@ -354,6 +354,10 @@ namespace MainDen.Windows.Interceptor
                 return match.Value;
             });
         }
+        public string ToString(string format)
+        {
+            return ToString(format, null);
+        }
         public override int GetHashCode()
         {
             return base.GetHashCode();

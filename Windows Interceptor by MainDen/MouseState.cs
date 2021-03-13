@@ -224,6 +224,7 @@ namespace MainDen.Windows.Interceptor
             string hWheelPattern = @"(?'hW'hW(:(?'hWFormat'[^:]*):)?)";
             string timePattern = @"(?'t't(:(?'tFormat'[^:]*):)?)";
             string dynamicPattern = @"(?'d'd(:(?'dFormat'[^:]*):)?)";
+            string textPattern = @"(?'text'text(:(?'textFormat'[^:]*):)?)";
             List<string> simpleModifierList = new List<string>(4);
             List<MouseModifiers> modifierList = new List<MouseModifiers>(8);
             List<MouseModifiers> modifierButtonsList = new List<MouseModifiers>(5);
@@ -269,7 +270,7 @@ namespace MainDen.Windows.Interceptor
             if (XButton2)
                 modifierButtonsList.Add(MouseModifiers.XButton2);
             string pattern = $"({keyPattern}|{statusPattern}|{modifierPattern}|{modifiersPattern}|" +
-                $"{xPattern}|{yPattern}|{wheelPattern}|{hWheelPattern}|{timePattern}|{dynamicPattern})";
+                $"{xPattern}|{yPattern}|{wheelPattern}|{hWheelPattern}|{timePattern}|{dynamicPattern}|{textPattern})";
             return Regex.Replace(format, pattern, match =>
             {
                 if (match.Groups["k"].Value != "")
@@ -358,6 +359,10 @@ namespace MainDen.Windows.Interceptor
                     if (_Modifiers != MouseModifiers.None)
                         return match.Groups["dFormat"].Value;
                     return "";
+                }
+                if (match.Groups["text"].Value != "")
+                {
+                    return match.Groups["textFormat"].Value;
                 }
                 return match.Value;
             });

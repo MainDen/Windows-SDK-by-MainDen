@@ -217,6 +217,7 @@ namespace MainDen.Windows.Interceptor
             string keyPattern = @"(?'k'k(:(?'kFormat'[^:]*):)?)";
             string statusPattern = @"(?'s's(:(?'sFormat'[^:]*):)?)";
             string modifierPattern = @"(?'m'm(?'mSeparator'[^m]*)m(:(?'mFormat'[^:]*):)?)";
+            string modifiersPattern = @"(?'M'M(:(?'MFormat'[^:]*):)?)";
             string xPattern = @"(?'x'x(:(?'xFormat'[^:]*):)?)";
             string yPattern = @"(?'y'y(:(?'yFormat'[^:]*):)?)";
             string wheelPattern = @"(?'w'w(:(?'wFormat'[^:]*):)?)";
@@ -267,7 +268,7 @@ namespace MainDen.Windows.Interceptor
                 modifierButtonsList.Add(MouseModifiers.XButton1);
             if (XButton2)
                 modifierButtonsList.Add(MouseModifiers.XButton2);
-            string pattern = $"({keyPattern}|{statusPattern}|{modifierPattern}|" +
+            string pattern = $"({keyPattern}|{statusPattern}|{modifierPattern}|{modifiersPattern}|" +
                 $"{xPattern}|{yPattern}|{wheelPattern}|{hWheelPattern}|{timePattern}|{dynamicPattern})";
             return Regex.Replace(format, pattern, match =>
             {
@@ -309,6 +310,13 @@ namespace MainDen.Windows.Interceptor
                     if (b == "")
                         return m;
                     return string.Join(modifierSeparator, m, b);
+                }
+                if (match.Groups["M"].Value != "")
+                {
+                    string MFormat = match.Groups["MFormat"].Value;
+                    if (MFormat == "")
+                        MFormat = null;
+                    return _Modifiers.ToString(MFormat);
                 }
                 if (match.Groups["x"].Value != "")
                 {

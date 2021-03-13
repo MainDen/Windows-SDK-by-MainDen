@@ -179,6 +179,7 @@ namespace MainDen.Windows.Interceptor
             string keyPattern = @"(?'k'k(:(?'kFormat'[^:]*):)?)";
             string statusPattern = @"(?'s's(:(?'sFormat'[^:]*):)?)";
             string modifierPattern = @"(?'m'm(?'mSeparator'[^m]*)m(:(?'mFormat'[^:]*):)?)";
+            string modifiersPattern = @"(?'M'M(:(?'MFormat'[^:]*):)?)";
             string timePattern = @"(?'t't(:(?'tFormat'[^:]*):)?)";
             string dynamicPattern = @"(?'d'd(:(?'dFormat'[^:]*):)?)";
             List<string> simpleModifierList = new List<string>(4);
@@ -214,7 +215,7 @@ namespace MainDen.Windows.Interceptor
                         modifierList.Add(KeyModifiers.RMenu);
                     break;
             }
-            string pattern = $"({keyPattern}|{statusPattern}|{modifierPattern}|{timePattern}|{dynamicPattern})";
+            string pattern = $"({keyPattern}|{statusPattern}|{modifierPattern}|{modifiersPattern}|{timePattern}|{dynamicPattern})";
             return Regex.Replace(format, pattern, match =>
             {
                 if (match.Groups["k"].Value != "")
@@ -244,6 +245,13 @@ namespace MainDen.Windows.Interceptor
                         default:
                             return string.Join(modifierSeparator, modifierList.Select(modifier => modifier.ToString(modifierFormat)));
                     }
+                }
+                if (match.Groups["M"].Value != "")
+                {
+                    string MFormat = match.Groups["MFormat"].Value;
+                    if (MFormat == "")
+                        MFormat = null;
+                    return _Modifiers.ToString(MFormat);
                 }
                 if (match.Groups["t"].Value != "")
                 {

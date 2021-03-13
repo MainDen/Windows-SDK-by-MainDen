@@ -269,8 +269,8 @@ namespace MainDen.Windows.Interceptor
                 modifierButtonsList.Add(MouseModifiers.XButton1);
             if (XButton2)
                 modifierButtonsList.Add(MouseModifiers.XButton2);
-            string pattern = $"({keyPattern}|{statusPattern}|{modifierPattern}|{modifiersPattern}|" +
-                $"{xPattern}|{yPattern}|{wheelPattern}|{hWheelPattern}|{timePattern}|{dynamicPattern}|{textPattern})";
+            string pattern = $"({textPattern}|{keyPattern}|{statusPattern}|{modifierPattern}|{modifiersPattern}|" +
+                $"{xPattern}|{yPattern}|{wheelPattern}|{hWheelPattern}|{timePattern}|{dynamicPattern})";
             return Regex.Replace(format, pattern, match =>
             {
                 if (match.Groups["k"].Value != "")

@@ -216,7 +216,7 @@ namespace MainDen.Windows.Interceptor
                         modifierList.Add(KeyModifiers.RMenu);
                     break;
             }
-            string pattern = $"({keyPattern}|{statusPattern}|{modifierPattern}|{modifiersPattern}|{timePattern}|{dynamicPattern}{textPattern})";
+            string pattern = $"({textPattern}|{keyPattern}|{statusPattern}|{modifierPattern}|{modifiersPattern}|{timePattern}|{dynamicPattern})";
             return Regex.Replace(format, pattern, match =>
             {
                 if (match.Groups["k"].Value != "")

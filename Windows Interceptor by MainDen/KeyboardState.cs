@@ -1,5 +1,7 @@
 ﻿using MainDen.Windows.API;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace MainDen.Windows.Interceptor
@@ -173,47 +175,91 @@ namespace MainDen.Windows.Interceptor
         public string ToString(string format, IFormatProvider formatProvider)
         {
             if (format is null)
-                format = "m + k + [s]";
-            string res = "";
-            string modifiers = "";
+                format = "m + md: + :k [s]";
+            string keyPattern = @"(?'k'k(:(?'kFormat'[^:]*):)?)";
+            string statusPattern = @"(?'s's(:(?'sFormat'[^:]*):)?)";
+            string modifierPattern = @"(?'m'm(?'mSeparator'[^m]*)m(:(?'mFormat'[^:]*):)?)";
+            string timePattern = @"(?'t't(:(?'tFormat'[^:]*):)?)";
+            string dynamicPattern = @"(?'d'd(:(?'dFormat'[^:]*):)?)";
+            List<string> simpleModifierList = new List<string>(4);
+            List<KeyModifiers> modifierList = new List<KeyModifiers>(8);
             switch (mode)
             {
                 case KeyMode.Simple:
                     if (Win)
-                        modifiers += "Win + ";
+                        simpleModifierList.Add("Win");
                     if (ShiftKey)
-                        modifiers += "ShiftKey + ";
+                        simpleModifierList.Add("ShiftKey");
                     if (ControlKey)
-                        modifiers += "ControlKey + ";
+                        simpleModifierList.Add("ControlKey");
                     if (Menu)
-                        modifiers += "Menu + ";
+                        simpleModifierList.Add("Menu");
                     break;
                 default:
                     if (LWin)
-                        modifiers += "LWin + ";
+                        modifierList.Add(KeyModifiers.LWin);
                     if (RWin)
-                        modifiers += "RWin + ";
+                        modifierList.Add(KeyModifiers.RWin);
                     if (LShiftKey)
-                        modifiers += "LShiftKey + ";
+                        modifierList.Add(KeyModifiers.LShiftKey);
                     if (RShiftKey)
-                        modifiers += "RShiftKey + ";
+                        modifierList.Add(KeyModifiers.RShiftKey);
                     if (LControlKey)
-                        modifiers += "LControlKey + ";
+                        modifierList.Add(KeyModifiers.LControlKey);
                     if (RControlKey)
-                        modifiers += "RControlKey + ";
+                        modifierList.Add(KeyModifiers.RControlKey);
                     if (LMenu)
-                        modifiers += "LMenu + ";
+                        modifierList.Add(KeyModifiers.LMenu);
                     if (RMenu)
-                        modifiers += "RMenu + ";
+                        modifierList.Add(KeyModifiers.RMenu);
                     break;
             }
-            string stauts = _Status.ToString();
-            if (format.StartsWith("m + "))
-                res += modifiers;
-            res += _Key.ToString();
-            if (format.EndsWith(" [s]"))
-                res += $" [{stauts}]";
-            return res;
+            string pattern = $"({keyPattern}|{statusPattern}|{modifierPattern}|{timePattern}|{dynamicPattern})";
+            return Regex.Replace(format, pattern, match =>
+            {
+                if (match.Groups["k"].Value != "")
+                {
+                    string keyFormat = match.Groups["kFormat"].Value;
+                    if (keyFormat == "")
+                        keyFormat = null;
+                    return _Key.ToString(keyFormat);
+                }
+                if (match.Groups["s"].Value != "")
+                {
+                    string statusFormat = match.Groups["sFormat"].Value;
+                    if (statusFormat == "")
+                        statusFormat = null;
+                    return _Status.ToString(statusFormat);
+                }
+                if (match.Groups["m"].Value != "")
+                {
+                    string modifierSeparator = match.Groups["mSeparator"].Value;
+                    string modifierFormat = match.Groups["mFormat"].Value;
+                    if (modifierFormat == "")
+                        modifierFormat = null;
+                    switch (mode)
+                    {
+                        case KeyMode.Simple:
+                            return string.Join(modifierSeparator, simpleModifierList);
+                        default:
+                            return string.Join(modifierSeparator, modifierList.Select(modifier => modifier.ToString(modifierFormat)));
+                    }
+                }
+                if (match.Groups["t"].Value != "")
+                {
+                    string tFormat = match.Groups["tFormat"].Value;
+                    if (tFormat == "")
+                        tFormat = null;
+                    return _Time.ToString(tFormat);
+                }
+                if (match.Groups["d"].Value != "")
+                {
+                    if (_Modifiers != KeyModifiers.None)
+                        return match.Groups["dFormat"].Value;
+                    return "";
+                }
+                return match.Value;
+            });
         }
         public override int GetHashCode()
         {

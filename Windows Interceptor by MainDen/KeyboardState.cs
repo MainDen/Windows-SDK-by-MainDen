@@ -174,7 +174,7 @@ namespace MainDen.Windows.Interceptor
         }
         public string ToString(string format, IFormatProvider formatProvider)
         {
-            if (format is null)
+            if (string.IsNullOrEmpty(format))
                 format = "m + md: + :k [s]";
             string keyPattern = @"(?'k'k(:(?'kFormat'[^:]*):)?)";
             string statusPattern = @"(?'s's(:(?'sFormat'[^:]*):)?)";

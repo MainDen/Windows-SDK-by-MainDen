@@ -162,22 +162,6 @@ namespace MainDen.Windows.Interceptor
         {
             if (string.IsNullOrEmpty(format))
                 format = "m + md: + :K [S]";
-            /*
-            string propertyPatternFormat = @"(?'property'{0})";
-            string separatorPatternFormat = @"(?'separator'[^{0}]*)";
-            string formatPattern = @":(?'format'[^:]*):";
-            string propertiesPatternFormat = string.Format(@"{0}{1}{0}", propertyPatternFormat, separatorPatternFormat);
-            string anyFormatPatternFormatFormat = @"{0}({1})?";
-            string propertyFormatPatternFormat = string.Format(anyFormatPatternFormatFormat,
-                propertyPatternFormat, formatPattern);
-            string propertiesFormatPatternFormat = string.Format(anyFormatPatternFormatFormat,
-                propertiesPatternFormat, formatPattern);
-            string property = @"K|S|M|T|t|d";
-            string propertyPattern = string.Format(propertyFormatPatternFormat, property);
-            string modifier = @"m";
-            string modifierPattern = string.Format(propertiesPatternFormat, modifier);
-            string pattern = string.Format(@"{0}|{1}", propertyPattern, modifierPattern);
-            */
             string pattern = "((?'p'K|S|M|T|t|d)|(?'p'm)(?'s'[^m]*)m)(:(?'f'[^:]*):)?";
             List<string> simpleModifierList = new List<string>(4);
             List<KeyModifiers> modifierList = new List<KeyModifiers>(8);

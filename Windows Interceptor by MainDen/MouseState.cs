@@ -197,6 +197,7 @@ namespace MainDen.Windows.Interceptor
         {
             if (string.IsNullOrEmpty(format))
                 format = "m + md: + :K [S]";
+            /*
             string propertyPatternFormat = @"(?'property'{0})";
             string separatorPatternFormat = @"(?'separator'[^{0}]*)";
             string formatPattern = @":(?'format'[^:]*):";
@@ -211,6 +212,8 @@ namespace MainDen.Windows.Interceptor
             string modifier = @"m";
             string modifierPattern = string.Format(propertiesPatternFormat, modifier);
             string pattern = string.Format(@"{0}|{1}", propertyPattern, modifierPattern);
+            */
+            string pattern = "((?'p'K|S|M|T|t|d)|(?'p'm)(?'s'[^m]*)m)(:(?'f'[^:]*):)?";
             List<string> simpleModifierList = new List<string>(9);
             List<MouseModifiers> modifierList = new List<MouseModifiers>(13);
             KeyMode mode = Mode;
@@ -267,8 +270,8 @@ namespace MainDen.Windows.Interceptor
             }
             return Regex.Replace(format, pattern, match =>
             {
-                string property = match.Groups["property"].Value;
-                string format = match.Groups["format"].Value;
+                string property = match.Groups["p"].Value;
+                string format = match.Groups["f"].Value;
                 if (format == "")
                     format = null;
                 switch (property)
@@ -296,7 +299,7 @@ namespace MainDen.Windows.Interceptor
                             return format ?? "";
                         return "";
                     case "m":
-                        string separator = match.Groups["separator"].Value;
+                        string separator = match.Groups["s"].Value;
                         switch (mode)
                         {
                             case KeyMode.Simple:
@@ -307,7 +310,7 @@ namespace MainDen.Windows.Interceptor
                     default:
                         throw new FormatException();
                 }
-            });
+            }, RegexOptions.Compiled);
         }
         public string ToString(string format)
         {

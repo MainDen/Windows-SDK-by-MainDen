@@ -136,19 +136,6 @@ namespace MainDen.Windows.Interceptor
         public bool MButton { get => _Modifiers.HasFlag(MouseModifiers.MButton); }
         public bool XButton1 { get => _Modifiers.HasFlag(MouseModifiers.XButton1); }
         public bool XButton2 { get => _Modifiers.HasFlag(MouseModifiers.XButton2); }
-        public void Set(MouseState state)
-        {
-            if (state is null)
-                throw new ArgumentNullException(nameof(state));
-            _Key = state._Key;
-            _Status = state._Status;
-            _Modifiers = state._Modifiers;
-            _X = state._X;
-            _Y = state._Y;
-            _Wheel = state._Wheel;
-            _HWheel = state._HWheel;
-            _Time = state._Time;
-        }
         private void UpdateModifier(MouseModifiers m, Keyboard.VirtualKeyStates vk)
         {
             if (_Key != vk)
@@ -177,10 +164,6 @@ namespace MainDen.Windows.Interceptor
             UpdateModifier(MouseModifiers.MButton, Keyboard.VirtualKeyStates.MButton);
             UpdateModifier(MouseModifiers.XButton1, Keyboard.VirtualKeyStates.XButton1);
             UpdateModifier(MouseModifiers.XButton2, Keyboard.VirtualKeyStates.XButton2);
-        }
-        public void Update()
-        {
-            UpdateModifiers();
         }
         public object Clone()
         {
@@ -436,6 +419,19 @@ namespace MainDen.Windows.Interceptor
                 result = null;
                 return false;
             }
+        }
+        public static MouseState CreateCurrent(
+            Keyboard.VirtualKeyStates key = Keyboard.VirtualKeyStates.None,
+            MouseStatus status = MouseStatus.None,
+            int x = 0,
+            int y = 0,
+            int wheel = 0,
+            int hWheel = 0,
+            TimeSpan time = new TimeSpan())
+        {
+            MouseState state = new MouseState(key, status, MouseModifiers.None, x, y, wheel, hWheel, time);
+            state.UpdateModifiers();
+            return state;
         }
     }
 }

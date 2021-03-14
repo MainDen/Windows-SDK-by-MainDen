@@ -68,10 +68,8 @@ namespace MainDen.Windows.Interceptor
                         status = KeyboardState.KeyStatus.None;
                         break;
                 }
-                KeyboardState.KeyModifiers modifiers = KeyboardState.KeyModifiers.None;
                 TimeSpan time = TimeSpan.FromMilliseconds(hs.time);
-                KeyboardState ks = new KeyboardState(key, status, modifiers, time);
-                ks.Update();
+                KeyboardState ks = KeyboardState.CreateCurrent(key, status, time);
                 switch (ks.Status)
                 {
                     case KeyboardState.KeyStatus.Down:

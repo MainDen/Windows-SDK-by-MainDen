@@ -105,15 +105,6 @@ namespace MainDen.Windows.Interceptor
                     _Modifiers.HasFlag(KeyModifiers.RMenu) && _Key != Keyboard.VirtualKeyStates.RMenu;
             }
         }
-        public void Set(KeyboardState state)
-        {
-            if (state is null)
-                throw new ArgumentNullException(nameof(state));
-            _Key = state._Key;
-            _Status = state._Status;
-            _Modifiers = state._Modifiers;
-            _Time = state._Time;
-        }
         private void UpdateStatus()
         {
             if (_Status == KeyStatus.Down || _Status == KeyStatus.Hold)
@@ -142,11 +133,6 @@ namespace MainDen.Windows.Interceptor
             UpdateModifier(KeyModifiers.RControlKey, Keyboard.VirtualKeyStates.RControlKey);
             UpdateModifier(KeyModifiers.LMenu, Keyboard.VirtualKeyStates.LMenu);
             UpdateModifier(KeyModifiers.RMenu, Keyboard.VirtualKeyStates.RMenu);
-        }
-        public void Update()
-        {
-            UpdateStatus();
-            UpdateModifiers();
         }
         public object Clone()
         {
@@ -343,6 +329,16 @@ namespace MainDen.Windows.Interceptor
                 result = null;
                 return false;
             }
+        }
+        public static KeyboardState CreateCurrent(
+            Keyboard.VirtualKeyStates key = Keyboard.VirtualKeyStates.None,
+            KeyStatus status = KeyStatus.None,
+            TimeSpan time = new TimeSpan())
+        {
+            KeyboardState state = new KeyboardState(key, status, KeyModifiers.None, time);
+            state.UpdateStatus();
+            state.UpdateModifiers();
+            return state;
         }
     }
 }

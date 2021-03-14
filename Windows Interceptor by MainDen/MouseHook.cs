@@ -99,7 +99,6 @@ namespace MainDen.Windows.Interceptor
                         status = MouseState.MouseStatus.None;
                         break;
                 }
-                MouseState.MouseModifiers modifiers = MouseState.MouseModifiers.None;
                 int wheel;
                 int hWheel;
                 switch (wm)
@@ -117,8 +116,7 @@ namespace MainDen.Windows.Interceptor
                         hWheel = 0;
                         break;
                 }
-                MouseState ms = new MouseState(key, status, modifiers, hs.x, hs.y, wheel, hWheel, TimeSpan.FromMilliseconds(hs.time));
-                ms.Update();
+                MouseState ms = MouseState.CreateCurrent(key, status, hs.x, hs.y, wheel, hWheel, TimeSpan.FromMilliseconds(hs.time));
                 switch (ms.Status)
                 {
                     case MouseState.MouseStatus.Down:

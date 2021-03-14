@@ -196,21 +196,24 @@ namespace MainDen.Windows.Interceptor
         public string ToString(string format, IFormatProvider formatProvider)
         {
             if (string.IsNullOrEmpty(format))
-                format = "m + md: + :k [s]";
-            string keyPattern = @"(?'k'k(:(?'kFormat'[^:]*):)?)";
-            string statusPattern = @"(?'s's(:(?'sFormat'[^:]*):)?)";
-            string modifierPattern = @"(?'m'm(?'mSeparator'[^m]*)m(:(?'mFormat'[^:]*):)?)";
-            string modifiersPattern = @"(?'M'M(:(?'MFormat'[^:]*):)?)";
-            string xPattern = @"(?'x'x(:(?'xFormat'[^:]*):)?)";
-            string yPattern = @"(?'y'y(:(?'yFormat'[^:]*):)?)";
-            string wheelPattern = @"(?'w'w(:(?'wFormat'[^:]*):)?)";
-            string hWheelPattern = @"(?'hW'hW(:(?'hWFormat'[^:]*):)?)";
-            string timePattern = @"(?'t't(:(?'tFormat'[^:]*):)?)";
-            string dynamicPattern = @"(?'d'd(:(?'dFormat'[^:]*):)?)";
-            string textPattern = @"(?'text'text(:(?'textFormat'[^:]*):)?)";
-            List<string> simpleModifierList = new List<string>(4);
-            List<MouseModifiers> modifierList = new List<MouseModifiers>(8);
-            List<MouseModifiers> modifierButtonsList = new List<MouseModifiers>(5);
+                format = "m + md: + :K [S]";
+            string propertyPatternFormat = @"(?'property'{0})";
+            string separatorPatternFormat = @"(?'separator'[^{0}]*)";
+            string formatPattern = @":(?'format'[^:]*):";
+            string propertiesPatternFormat = string.Format(@"{0}{1}{0}", propertyPatternFormat, separatorPatternFormat);
+            string anyFormatPatternFormatFormat = @"{0}({1})?";
+            string propertyFormatPatternFormat = string.Format(anyFormatPatternFormatFormat,
+                propertyPatternFormat, formatPattern);
+            string propertiesFormatPatternFormat = string.Format(anyFormatPatternFormatFormat,
+                propertiesPatternFormat, formatPattern);
+            string property = @"K|S|M|X|Y|W|HW|T|t|d";
+            string propertyPattern = string.Format(propertyFormatPatternFormat, property);
+            string modifier = @"m";
+            string modifierPattern = string.Format(propertiesPatternFormat, modifier);
+            string pattern = string.Format(@"{0}|{1}", propertyPattern, modifierPattern);
+            List<string> simpleModifierList = new List<string>(9);
+            List<MouseModifiers> modifierList = new List<MouseModifiers>(13);
+            KeyMode mode = Mode;
             switch (mode)
             {
                 case KeyMode.Simple:
@@ -222,6 +225,16 @@ namespace MainDen.Windows.Interceptor
                         simpleModifierList.Add("ControlKey");
                     if (Menu)
                         simpleModifierList.Add("Menu");
+                    if (LButton)
+                        simpleModifierList.Add("LButton");
+                    if (RButton)
+                        simpleModifierList.Add("RButton");
+                    if (MButton)
+                        simpleModifierList.Add("MButton");
+                    if (XButton1)
+                        simpleModifierList.Add("XButton1");
+                    if (XButton2)
+                        simpleModifierList.Add("XButton2");
                     break;
                 default:
                     if (LWin)
@@ -240,114 +253,60 @@ namespace MainDen.Windows.Interceptor
                         modifierList.Add(MouseModifiers.LMenu);
                     if (RMenu)
                         modifierList.Add(MouseModifiers.RMenu);
+                    if (LButton)
+                        modifierList.Add(MouseModifiers.LButton);
+                    if (RButton)
+                        modifierList.Add(MouseModifiers.RButton);
+                    if (MButton)
+                        modifierList.Add(MouseModifiers.MButton);
+                    if (XButton1)
+                        modifierList.Add(MouseModifiers.XButton1);
+                    if (XButton2)
+                        modifierList.Add(MouseModifiers.XButton2);
                     break;
             }
-            if (LButton)
-                modifierButtonsList.Add(MouseModifiers.LButton);
-            if (RButton)
-                modifierButtonsList.Add(MouseModifiers.RButton);
-            if (MButton)
-                modifierButtonsList.Add(MouseModifiers.MButton);
-            if (XButton1)
-                modifierButtonsList.Add(MouseModifiers.XButton1);
-            if (XButton2)
-                modifierButtonsList.Add(MouseModifiers.XButton2);
-            string pattern = $"({textPattern}|{keyPattern}|{statusPattern}|{modifierPattern}|{modifiersPattern}|" +
-                $"{xPattern}|{yPattern}|{wheelPattern}|{hWheelPattern}|{timePattern}|{dynamicPattern})";
             return Regex.Replace(format, pattern, match =>
             {
-                if (match.Groups["k"].Value != "")
+                string property = match.Groups["property"].Value;
+                string format = match.Groups["format"].Value;
+                if (format == "")
+                    format = null;
+                switch (property)
                 {
-                    string keyFormat = match.Groups["kFormat"].Value;
-                    if (keyFormat == "")
-                        keyFormat = null;
-                    return _Key.ToString(keyFormat);
-                }
-                if (match.Groups["s"].Value != "")
-                {
-                    string statusFormat = match.Groups["sFormat"].Value;
-                    if (statusFormat == "")
-                        statusFormat = null;
-                    return _Status.ToString(statusFormat);
-                }
-                if (match.Groups["m"].Value != "")
-                {
-                    string modifierSeparator = match.Groups["mSeparator"].Value;
-                    string modifierFormat = match.Groups["mFormat"].Value;
-                    if (modifierFormat == "")
-                        modifierFormat = null;
-                    string m;
-                    switch (mode)
-                    {
-                        case KeyMode.Simple:
-                            m = string.Join(modifierSeparator, simpleModifierList);
-                            break;
-                        default:
-                            m = string.Join(modifierSeparator, modifierList.Select(modifier => modifier.ToString(modifierFormat)));
-                            break;
-                    }
-                    string b = string.Join(modifierSeparator, modifierButtonsList.Select(modifier => modifier.ToString(modifierFormat)));
-                    if (m == "" && b == "")
+                    case "K":
+                        return _Key.ToString(format);
+                    case "S":
+                        return _Status.ToString(format);
+                    case "M":
+                        return _Modifiers.ToString(format);
+                    case "X":
+                        return _X.ToString(format);
+                    case "Y":
+                        return _Y.ToString(format);
+                    case "W":
+                        return _Wheel.ToString(format);
+                    case "HW":
+                        return _HWheel.ToString(format);
+                    case "T":
+                        return _Time.ToString(format);
+                    case "t":
+                        return format ?? "";
+                    case "d":
+                        if (_Modifiers != MouseModifiers.None)
+                            return format ?? "";
                         return "";
-                    if (m == "")
-                        return b;
-                    if (b == "")
-                        return m;
-                    return string.Join(modifierSeparator, m, b);
+                    case "m":
+                        string separator = match.Groups["separator"].Value;
+                        switch (mode)
+                        {
+                            case KeyMode.Simple:
+                                return string.Join(separator, simpleModifierList.ToArray());
+                            default:
+                                return string.Join(separator, modifierList.Select(m => m.ToString(format)).ToArray());
+                        }
+                    default:
+                        throw new FormatException();
                 }
-                if (match.Groups["M"].Value != "")
-                {
-                    string MFormat = match.Groups["MFormat"].Value;
-                    if (MFormat == "")
-                        MFormat = null;
-                    return _Modifiers.ToString(MFormat);
-                }
-                if (match.Groups["x"].Value != "")
-                {
-                    string xFormat = match.Groups["xFormat"].Value;
-                    if (xFormat == "")
-                        xFormat = null;
-                    return _X.ToString(xFormat);
-                }
-                if (match.Groups["y"].Value != "")
-                {
-                    string yFormat = match.Groups["yFormat"].Value;
-                    if (yFormat == "")
-                        yFormat = null;
-                    return _Y.ToString(yFormat);
-                }
-                if (match.Groups["w"].Value != "")
-                {
-                    string wFormat = match.Groups["wFormat"].Value;
-                    if (wFormat == "")
-                        wFormat = null;
-                    return _Wheel.ToString(wFormat);
-                }
-                if (match.Groups["hW"].Value != "")
-                {
-                    string hWFormat = match.Groups["hWFormat"].Value;
-                    if (hWFormat == "")
-                        hWFormat = null;
-                    return _HWheel.ToString(hWFormat);
-                }
-                if (match.Groups["t"].Value != "")
-                {
-                    string tFormat = match.Groups["tFormat"].Value;
-                    if (tFormat == "")
-                        tFormat = null;
-                    return _Time.ToString(tFormat);
-                }
-                if (match.Groups["d"].Value != "")
-                {
-                    if (_Modifiers != MouseModifiers.None)
-                        return match.Groups["dFormat"].Value;
-                    return "";
-                }
-                if (match.Groups["text"].Value != "")
-                {
-                    return match.Groups["textFormat"].Value;
-                }
-                return match.Value;
             });
         }
         public string ToString(string format)

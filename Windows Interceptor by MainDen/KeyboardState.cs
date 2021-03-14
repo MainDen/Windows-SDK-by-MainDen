@@ -161,16 +161,24 @@ namespace MainDen.Windows.Interceptor
         public string ToString(string format, IFormatProvider formatProvider)
         {
             if (string.IsNullOrEmpty(format))
-                format = "m + md: + :k [s]";
-            string keyPattern = @"(?'k'k(:(?'kFormat'[^:]*):)?)";
-            string statusPattern = @"(?'s's(:(?'sFormat'[^:]*):)?)";
-            string modifierPattern = @"(?'m'm(?'mSeparator'[^m]*)m(:(?'mFormat'[^:]*):)?)";
-            string modifiersPattern = @"(?'M'M(:(?'MFormat'[^:]*):)?)";
-            string timePattern = @"(?'t't(:(?'tFormat'[^:]*):)?)";
-            string dynamicPattern = @"(?'d'd(:(?'dFormat'[^:]*):)?)";
-            string textPattern = @"(?'text'text(:(?'textFormat'[^:]*):)?)";
+                format = "m + md: + :K [S]";
+            string propertyPatternFormat = @"(?'property'{0})";
+            string separatorPatternFormat = @"(?'separator'[^{0}]*)";
+            string formatPattern = @":(?'format'[^:]*):";
+            string propertiesPatternFormat = string.Format(@"{0}{1}{0}", propertyPatternFormat, separatorPatternFormat);
+            string anyFormatPatternFormatFormat = @"{0}({1})?";
+            string propertyFormatPatternFormat = string.Format(anyFormatPatternFormatFormat,
+                propertyPatternFormat, formatPattern);
+            string propertiesFormatPatternFormat = string.Format(anyFormatPatternFormatFormat,
+                propertiesPatternFormat, formatPattern);
+            string property = @"K|S|M|T|t|d";
+            string propertyPattern = string.Format(propertyFormatPatternFormat, property);
+            string modifier = @"m";
+            string modifierPattern = string.Format(propertiesPatternFormat, modifier);
+            string pattern = string.Format(@"{0}|{1}", propertyPattern, modifierPattern);
             List<string> simpleModifierList = new List<string>(4);
             List<KeyModifiers> modifierList = new List<KeyModifiers>(8);
+            KeyMode mode = Mode;
             switch (mode)
             {
                 case KeyMode.Simple:
@@ -202,62 +210,40 @@ namespace MainDen.Windows.Interceptor
                         modifierList.Add(KeyModifiers.RMenu);
                     break;
             }
-            string pattern = $"({textPattern}|{keyPattern}|{statusPattern}|{modifierPattern}|{modifiersPattern}|{timePattern}|{dynamicPattern})";
             return Regex.Replace(format, pattern, match =>
             {
-                if (match.Groups["k"].Value != "")
+                string property = match.Groups["property"].Value;
+                string format = match.Groups["format"].Value;
+                if (format == "")
+                    format = null;
+                switch (property)
                 {
-                    string keyFormat = match.Groups["kFormat"].Value;
-                    if (keyFormat == "")
-                        keyFormat = null;
-                    return _Key.ToString(keyFormat);
+                    case "K":
+                        return _Key.ToString(format);
+                    case "S":
+                        return _Status.ToString(format);
+                    case "M":
+                        return _Modifiers.ToString(format);
+                    case "T":
+                        return _Time.ToString(format);
+                    case "t":
+                        return format ?? "";
+                    case "d":
+                        if (_Modifiers != KeyModifiers.None)
+                            return format ?? "";
+                        return "";
+                    case "m":
+                        string separator = match.Groups["separator"].Value;
+                        switch (mode)
+                        {
+                            case KeyMode.Simple:
+                                return string.Join(separator, simpleModifierList.ToArray());
+                            default:
+                                return string.Join(separator, modifierList.Select(m => m.ToString(format)).ToArray());
+                        }
+                    default:
+                        throw new FormatException();
                 }
-                if (match.Groups["s"].Value != "")
-                {
-                    string statusFormat = match.Groups["sFormat"].Value;
-                    if (statusFormat == "")
-                        statusFormat = null;
-                    return _Status.ToString(statusFormat);
-                }
-                if (match.Groups["m"].Value != "")
-                {
-                    string modifierSeparator = match.Groups["mSeparator"].Value;
-                    string modifierFormat = match.Groups["mFormat"].Value;
-                    if (modifierFormat == "")
-                        modifierFormat = null;
-                    switch (mode)
-                    {
-                        case KeyMode.Simple:
-                            return string.Join(modifierSeparator, simpleModifierList);
-                        default:
-                            return string.Join(modifierSeparator, modifierList.Select(modifier => modifier.ToString(modifierFormat)));
-                    }
-                }
-                if (match.Groups["M"].Value != "")
-                {
-                    string MFormat = match.Groups["MFormat"].Value;
-                    if (MFormat == "")
-                        MFormat = null;
-                    return _Modifiers.ToString(MFormat);
-                }
-                if (match.Groups["t"].Value != "")
-                {
-                    string tFormat = match.Groups["tFormat"].Value;
-                    if (tFormat == "")
-                        tFormat = null;
-                    return _Time.ToString(tFormat);
-                }
-                if (match.Groups["d"].Value != "")
-                {
-                    if (_Modifiers != KeyModifiers.None)
-                        return match.Groups["dFormat"].Value;
-                    return "";
-                }
-                if (match.Groups["text"].Value != "")
-                {
-                    return match.Groups["textFormat"].Value;
-                }
-                return match.Value;
             });
         }
         public string ToString(string format)

@@ -6,51 +6,51 @@ namespace MainDen.Windows.API
     // Types | Constants
     public static partial class Keyboard
     {
-        public static class HandleKeyboardLayout
+        public static class LayoutHandle
         {
-            public static readonly IntPtr PREV = (IntPtr)0;
-            public static readonly IntPtr NEXT = (IntPtr)1;
+            public static readonly IntPtr Previous = (IntPtr)0;
+            public static readonly IntPtr Next = (IntPtr)1;
         }
         [Flags]
-        public enum KeyboardEventFlags
+        public enum EventFlags
         {
-            EXTENDEDKEY = 0x0001,
-            KEYUP = 0x0002,
+            ExtendedKey = 0x0001,
+            KeyUp = 0x0002,
         }
         [Flags]
-        public enum KeyboardLayoutFlags : uint
+        public enum LayoutFlags : uint
         {
-            ACTIVATE = 0x00000001,
-            SUBSTITUTE_OK = 0x00000002,
-            REORDER = 0x00000008,
-            REPLACELANG = 0x00000010,
-            NOTELLSHELL = 0x00000080,
-            SETFORPROCESS = 0x00000100,
-            SHIFTLOCK = 0x00010000,
-            RESET = 0x40000000
+            Activate = 0x00000001,
+            SubstitudeOk = 0x00000002,
+            Reorder = 0x00000008,
+            ReplaceLang = 0x00000010,
+            NoteLLShell = 0x00000080,
+            SetForProcess = 0x00000100,
+            ShiftLock = 0x00010000,
+            Reset = 0x40000000
         }
         [Flags]
         public enum KeyModifiers : int
         {
-            NONE = 0,
-            ALT = 1,
-            CONTROL = 2,
-            SHIFT = 4,
-            WINDOWS = 8
+            None = 0,
+            Alt = 1,
+            Control = 2,
+            Shift = 4,
+            Windows = 8
         }
         public enum LanguageIdentifier : uint
         {
-            SYSTEM_DEFAULT = 0x0800,
-            USER_DEFAULT = 0x0400,
-            BELARUSIAN = 0x0423,
-            CHINESE = 0x0C04,
-            FRANCH = 0x080C,
-            GERMAN = 0x0C07,
-            JAPANESE = 0x0411,
-            KAZAK = 0x043F,
-            RUSSIAN = 0x0419,
-            UKRAINIAN = 0x0422,
-            US_ENGLISH = 0x0409
+            SystemDefault = 0x0800,
+            UserDefault = 0x0400,
+            Belarusian = 0x0423,
+            Chinese = 0x0C04,
+            Franch = 0x080C,
+            German = 0x0C07,
+            Japanese = 0x0411,
+            Kazak = 0x043F,
+            Russian = 0x0419,
+            Ukrainian = 0x0422,
+            USEnglish = 0x0409
         }
         public enum VirtualKeyStates : int
         {
@@ -68,31 +68,48 @@ namespace MainDen.Windows.API
             Clear = 12,
             Return = 13,
             Enter = 13,
-            ShiftKey = 16,
-            ControlKey = 17,
+            Shift = 16,
+            Control = 17,
+            Ctrl = 17,
+            Alt = 18,
             Menu = 18,
             Pause = 19,
-            Capital = 20,
             CapsLock = 20,
+            Capital = 20,
+            Kana = 21,
             KanaMode = 21,
+            Hanguel = 21,
+            ImeHanguel = 21,
+            ImeKana = 21,
             HanguelMode = 21,
+            Hangul = 21,
+            ImeHangul = 21,
             HangulMode = 21,
+            ImeOn = 22,
+            Junja = 23,
+            ImeJunja = 23,
             JunjaMode = 23,
+            ImeFinal = 24,
+            Final = 24,
             FinalMode = 24,
+            Hanja = 25,
+            ImeHanja = 25,
             HanjaMode = 25,
+            Kanji = 25,
             KanjiMode = 25,
+            ImeKanji = 25,
+            ImeOff = 26,
             Escape = 27,
-            IMEConvert = 28,
-            IMENonconvert = 29,
-            IMEAccept = 30,
-            IMEAceept = 30,
-            IMEModeChange = 31,
+            ImeConvert = 28,
+            ImeNonConvert = 29,
+            ImeAceept = 30,
+            ImeModeChange = 31,
             Space = 32,
             Prior = 33,
             PageUp = 33,
-            Next = 34,
             PageDown = 34,
             End = 35,
+            Next = 34,
             Home = 36,
             Left = 37,
             Up = 38,
@@ -142,7 +159,9 @@ namespace MainDen.Windows.API
             X = 88,
             Y = 89,
             Z = 90,
+            LeftWin = 91,
             LWin = 91,
+            RightWin = 92,
             RWin = 92,
             Apps = 93,
             Sleep = 95,
@@ -187,13 +206,29 @@ namespace MainDen.Windows.API
             F23 = 134,
             F24 = 135,
             NumLock = 144,
+            ScrollLock = 145,
             Scroll = 145,
-            LShiftKey = 160,
-            RShiftKey = 161,
-            LControlKey = 162,
-            RControlKey = 163,
+            ImeProcessed = 155,
+            LShift = 160,
+            LeftShift = 160,
+            RightShift = 161,
+            RShift = 161,
+            LeftCtrl = 162,
+            LControl = 162,
+            LeftControl = 162,
+            LCtrl = 162,
+            RightCtrl = 163,
+            RControl = 163,
+            RightControl = 163,
+            RCtrl = 163,
+            LeftAlt = 164,
             LMenu = 164,
+            LeftMenu = 164,
+            LAlt = 164,
+            RightAlt = 165,
             RMenu = 165,
+            RAlt = 165,
+            RightMenu = 165,
             BrowserBack = 166,
             BrowserForward = 167,
             BrowserRefresh = 168,
@@ -209,52 +244,76 @@ namespace MainDen.Windows.API
             MediaStop = 178,
             MediaPlayPause = 179,
             LaunchMail = 180,
-            SelectMedia = 181,
+            LaunchMediaSelect = 181,
             LaunchApplication1 = 182,
             LaunchApplication2 = 183,
-            OemSemicolon = 186,
             Oem1 = 186,
-            Oemplus = 187,
-            Oemcomma = 188,
+            OemSemicolon = 186,
+            OemСolon = 186,
+            OemPlus = 187,
+            OemComma = 188,
             OemMinus = 189,
             OemPeriod = 190,
-            OemQuestion = 191,
+            OemDot = 190,
             Oem2 = 191,
-            Oemtilde = 192,
+            OemSlash = 191,
+            OemQuestion = 191,
+            OemBackquote = 192,
+            OemBacktick = 192,
             Oem3 = 192,
-            OemOpenBrackets = 219,
+            OemGrave = 192,
+            OemTilde = 192,
             Oem4 = 219,
+            OemOpenBracket = 219,
+            OemLeftBracket = 219,
+            OemOpenSquareBracket = 219,
+            OemLeftSquareBracket = 219,
+            OemOpenBrace = 219,
+            OemLeftBrace = 219,
+            OemOpenCurlyBracket = 219,
+            OemLeftCurlyBracket = 219,
+            OemBackslash = 220,
+            OemVerticalBar = 220,
+            OemPipeline = 220,
             OemPipe = 220,
             Oem5 = 220,
-            OemCloseBrackets = 221,
+            OemCloseBracket = 221,
+            OemRightBracket = 221,
+            OemCloseSquareBracket = 221,
             Oem6 = 221,
-            OemQuotes = 222,
+            OemRightSquareBracket = 221,
+            OemCloseBrace = 221,
+            OemRightBrace = 221,
+            OemCloseCurlyBracket = 221,
+            OemRightCurlyBracket = 221,
+            OemQuote = 222,
+            OemSingleQuote = 222,
             Oem7 = 222,
+            OemDoubleQuote = 222,
             Oem8 = 223,
-            OemBackslash = 226,
             Oem102 = 226,
-            ProcessKey = 229,
+            ImeProcess = 229,
             Packet = 231,
             Attn = 246,
-            Crsel = 247,
-            Exsel = 248,
+            CrSel = 247,
+            ExSel = 248,
             EraseEof = 249,
             Play = 250,
             Zoom = 251,
             NoName = 252,
-            Pa1 = 253,
+            PA1 = 253,
             OemClear = 254,
             KeyCode = 65535,
-            Shift = 65536,
-            Control = 131072,
-            Alt = 262144,
+            ShiftModifier = 65536,
+            ControlModifier = 131072,
+            AltModifier = 262144,
         }
     }
     // Methods
     public static partial class Keyboard
     {
         [DllImport("user32.dll", SetLastError = true)]
-        public static extern IntPtr ActivateKeyboardLayout(IntPtr hKL, KeyboardLayoutFlags Flags);
+        public static extern IntPtr ActivateKeyboardLayout(IntPtr hKL, LayoutFlags Flags);
         [DllImport("user32.dll", SetLastError = true)]
         public static extern short GetAsyncKeyState(VirtualKeyStates vKey);
         [DllImport("user32.dll")]
@@ -265,9 +324,9 @@ namespace MainDen.Windows.API
         [DllImport("USER32.dll")]
         public static extern short GetKeyState(VirtualKeyStates nVirtKey);
         [DllImport("user32.dll")]
-        public static extern void keybd_event(byte bVk, byte bScan, KeyboardEventFlags dwFlags, UIntPtr dwExtraInfo);
+        public static extern void keybd_event(byte bVk, byte bScan, EventFlags dwFlags, UIntPtr dwExtraInfo);
         [DllImport("user32.dll", SetLastError = true)]
-        public static extern IntPtr LoadKeyboardLayout(string pwszKLId, KeyboardLayoutFlags Flags);
+        public static extern IntPtr LoadKeyboardLayout(string pwszKLId, LayoutFlags Flags);
         [DllImport("user32.dll", SetLastError = true)]
         public static extern bool UnloadKeyboardLayout(IntPtr hKL);
     }

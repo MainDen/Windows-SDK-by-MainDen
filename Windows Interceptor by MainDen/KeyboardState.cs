@@ -26,12 +26,12 @@ namespace MainDen.Windows.Interceptor
             None = 0x0000,
             LWin = 0x0001,
             RWin = 0x0002,
-            LShiftKey = 0x0004,
-            RShiftKey = 0x0008,
-            LControlKey = 0x0010,
-            RControlKey = 0x0020,
-            LMenu = 0x0040,
-            RMenu = 0x0080,
+            LShift = 0x0004,
+            RShift = 0x0008,
+            LCtrl = 0x0010,
+            RCtrl = 0x0020,
+            LAlt = 0x0040,
+            RAlt = 0x0080,
         }
         public KeyboardState(
             Keyboard.VirtualKeyStates key = Keyboard.VirtualKeyStates.None,
@@ -75,34 +75,34 @@ namespace MainDen.Windows.Interceptor
                     _Modifiers.HasFlag(KeyModifiers.RWin) && _Key != Keyboard.VirtualKeyStates.RWin;
             }
         }
-        public bool LShiftKey { get => _Modifiers.HasFlag(KeyModifiers.LShiftKey); }
-        public bool RShiftKey { get => _Modifiers.HasFlag(KeyModifiers.RShiftKey); }
-        public bool ShiftKey
+        public bool LShift { get => _Modifiers.HasFlag(KeyModifiers.LShift); }
+        public bool RShift { get => _Modifiers.HasFlag(KeyModifiers.RShift); }
+        public bool Shift
         {
             get
             {
-                return _Modifiers.HasFlag(KeyModifiers.LShiftKey) && _Key != Keyboard.VirtualKeyStates.LShiftKey ||
-                    _Modifiers.HasFlag(KeyModifiers.RShiftKey) && _Key != Keyboard.VirtualKeyStates.RShiftKey;
+                return _Modifiers.HasFlag(KeyModifiers.LShift) && _Key != Keyboard.VirtualKeyStates.LShift ||
+                    _Modifiers.HasFlag(KeyModifiers.RShift) && _Key != Keyboard.VirtualKeyStates.RShift;
             }
         }
-        public bool LControlKey { get => _Modifiers.HasFlag(KeyModifiers.LControlKey); }
-        public bool RControlKey { get => _Modifiers.HasFlag(KeyModifiers.RControlKey); }
-        public bool ControlKey
+        public bool LCtrl { get => _Modifiers.HasFlag(KeyModifiers.LCtrl); }
+        public bool RCtrl { get => _Modifiers.HasFlag(KeyModifiers.RCtrl); }
+        public bool Ctrl
         {
             get
             {
-                return _Modifiers.HasFlag(KeyModifiers.LControlKey) && _Key != Keyboard.VirtualKeyStates.LControlKey ||
-                    _Modifiers.HasFlag(KeyModifiers.RControlKey) && _Key != Keyboard.VirtualKeyStates.RControlKey;
+                return _Modifiers.HasFlag(KeyModifiers.LCtrl) && _Key != Keyboard.VirtualKeyStates.LCtrl ||
+                    _Modifiers.HasFlag(KeyModifiers.RCtrl) && _Key != Keyboard.VirtualKeyStates.RCtrl;
             }
         }
-        public bool LMenu { get => _Modifiers.HasFlag(KeyModifiers.LMenu); }
-        public bool RMenu { get => _Modifiers.HasFlag(KeyModifiers.RMenu); }
-        public bool Menu
+        public bool LAlt { get => _Modifiers.HasFlag(KeyModifiers.LAlt); }
+        public bool RAlt { get => _Modifiers.HasFlag(KeyModifiers.RAlt); }
+        public bool Alt
         {
             get
             {
-                return _Modifiers.HasFlag(KeyModifiers.LMenu) && _Key != Keyboard.VirtualKeyStates.LMenu ||
-                    _Modifiers.HasFlag(KeyModifiers.RMenu) && _Key != Keyboard.VirtualKeyStates.RMenu;
+                return _Modifiers.HasFlag(KeyModifiers.LAlt) && _Key != Keyboard.VirtualKeyStates.LAlt ||
+                    _Modifiers.HasFlag(KeyModifiers.RAlt) && _Key != Keyboard.VirtualKeyStates.RAlt;
             }
         }
         private void UpdateStatus()
@@ -127,12 +127,12 @@ namespace MainDen.Windows.Interceptor
         {
             UpdateModifier(KeyModifiers.LWin, Keyboard.VirtualKeyStates.LWin);
             UpdateModifier(KeyModifiers.RWin, Keyboard.VirtualKeyStates.RWin);
-            UpdateModifier(KeyModifiers.LShiftKey, Keyboard.VirtualKeyStates.LShiftKey);
-            UpdateModifier(KeyModifiers.RShiftKey, Keyboard.VirtualKeyStates.RShiftKey);
-            UpdateModifier(KeyModifiers.LControlKey, Keyboard.VirtualKeyStates.LControlKey);
-            UpdateModifier(KeyModifiers.RControlKey, Keyboard.VirtualKeyStates.RControlKey);
-            UpdateModifier(KeyModifiers.LMenu, Keyboard.VirtualKeyStates.LMenu);
-            UpdateModifier(KeyModifiers.RMenu, Keyboard.VirtualKeyStates.RMenu);
+            UpdateModifier(KeyModifiers.LShift, Keyboard.VirtualKeyStates.LShift);
+            UpdateModifier(KeyModifiers.RShift, Keyboard.VirtualKeyStates.RShift);
+            UpdateModifier(KeyModifiers.LCtrl, Keyboard.VirtualKeyStates.LCtrl);
+            UpdateModifier(KeyModifiers.RCtrl, Keyboard.VirtualKeyStates.RCtrl);
+            UpdateModifier(KeyModifiers.LAlt, Keyboard.VirtualKeyStates.LAlt);
+            UpdateModifier(KeyModifiers.RAlt, Keyboard.VirtualKeyStates.RAlt);
         }
         public object Clone()
         {
@@ -147,7 +147,7 @@ namespace MainDen.Windows.Interceptor
             switch (mode)
             {
                 case KeyMode.Simple:
-                    if (Win != state.Win || ShiftKey != state.ShiftKey || ControlKey != state.ControlKey || Menu != state.Menu)
+                    if (Win != state.Win || Shift != state.Shift || Ctrl != state.Ctrl || Alt != state.Alt)
                         return false;
                     break;
                 case KeyMode.Default:
@@ -171,30 +171,30 @@ namespace MainDen.Windows.Interceptor
                 case KeyMode.Simple:
                     if (Win)
                         simpleModifierList.Add("Win");
-                    if (ShiftKey)
-                        simpleModifierList.Add("ShiftKey");
-                    if (ControlKey)
-                        simpleModifierList.Add("ControlKey");
-                    if (Menu)
-                        simpleModifierList.Add("Menu");
+                    if (Shift)
+                        simpleModifierList.Add("Shift");
+                    if (Ctrl)
+                        simpleModifierList.Add("Ctrl");
+                    if (Alt)
+                        simpleModifierList.Add("Alt");
                     break;
                 default:
                     if (LWin)
                         modifierList.Add(KeyModifiers.LWin);
                     if (RWin)
                         modifierList.Add(KeyModifiers.RWin);
-                    if (LShiftKey)
-                        modifierList.Add(KeyModifiers.LShiftKey);
-                    if (RShiftKey)
-                        modifierList.Add(KeyModifiers.RShiftKey);
-                    if (LControlKey)
-                        modifierList.Add(KeyModifiers.LControlKey);
-                    if (RControlKey)
-                        modifierList.Add(KeyModifiers.RControlKey);
-                    if (LMenu)
-                        modifierList.Add(KeyModifiers.LMenu);
-                    if (RMenu)
-                        modifierList.Add(KeyModifiers.RMenu);
+                    if (LShift)
+                        modifierList.Add(KeyModifiers.LShift);
+                    if (RShift)
+                        modifierList.Add(KeyModifiers.RShift);
+                    if (LCtrl)
+                        modifierList.Add(KeyModifiers.LCtrl);
+                    if (RCtrl)
+                        modifierList.Add(KeyModifiers.RCtrl);
+                    if (LAlt)
+                        modifierList.Add(KeyModifiers.LAlt);
+                    if (RAlt)
+                        modifierList.Add(KeyModifiers.RAlt);
                     break;
             }
             return Regex.Replace(format, pattern, match =>

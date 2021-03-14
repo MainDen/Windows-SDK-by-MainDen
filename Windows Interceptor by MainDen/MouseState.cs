@@ -27,12 +27,12 @@ namespace MainDen.Windows.Interceptor
             None = 0x0000,
             LWin = 0x0001,
             RWin = 0x0002,
-            LShiftKey = 0x0004,
-            RShiftKey = 0x0008,
-            LControlKey = 0x0010,
-            RControlKey = 0x0020,
-            LMenu = 0x0040,
-            RMenu = 0x0080,
+            LShift = 0x0004,
+            RShift = 0x0008,
+            LCtrl = 0x0010,
+            RCtrl = 0x0020,
+            LAlt = 0x0040,
+            RAlt = 0x0080,
             LButton = 0x0100,
             RButton = 0x0200,
             MButton = 0x0400,
@@ -101,34 +101,34 @@ namespace MainDen.Windows.Interceptor
                     _Modifiers.HasFlag(MouseModifiers.RWin) && _Key != Keyboard.VirtualKeyStates.RWin;
             }
         }
-        public bool LShiftKey { get => _Modifiers.HasFlag(MouseModifiers.LShiftKey); }
-        public bool RShiftKey { get => _Modifiers.HasFlag(MouseModifiers.RShiftKey); }
-        public bool ShiftKey
+        public bool LShift { get => _Modifiers.HasFlag(MouseModifiers.LShift); }
+        public bool RShift { get => _Modifiers.HasFlag(MouseModifiers.RShift); }
+        public bool Shift
         {
             get
             {
-                return _Modifiers.HasFlag(MouseModifiers.LShiftKey) && _Key != Keyboard.VirtualKeyStates.LShiftKey ||
-                    _Modifiers.HasFlag(MouseModifiers.RShiftKey) && _Key != Keyboard.VirtualKeyStates.RShiftKey;
+                return _Modifiers.HasFlag(MouseModifiers.LShift) && _Key != Keyboard.VirtualKeyStates.LShift ||
+                    _Modifiers.HasFlag(MouseModifiers.RShift) && _Key != Keyboard.VirtualKeyStates.RShift;
             }
         }
-        public bool LControlKey { get => _Modifiers.HasFlag(MouseModifiers.LControlKey); }
-        public bool RControlKey { get => _Modifiers.HasFlag(MouseModifiers.RControlKey); }
-        public bool ControlKey
+        public bool LCtrl { get => _Modifiers.HasFlag(MouseModifiers.LCtrl); }
+        public bool RCtrl { get => _Modifiers.HasFlag(MouseModifiers.RCtrl); }
+        public bool Ctrl
         {
             get
             {
-                return _Modifiers.HasFlag(MouseModifiers.LControlKey) && _Key != Keyboard.VirtualKeyStates.LControlKey ||
-                    _Modifiers.HasFlag(MouseModifiers.RControlKey) && _Key != Keyboard.VirtualKeyStates.RControlKey;
+                return _Modifiers.HasFlag(MouseModifiers.LCtrl) && _Key != Keyboard.VirtualKeyStates.LCtrl ||
+                    _Modifiers.HasFlag(MouseModifiers.RCtrl) && _Key != Keyboard.VirtualKeyStates.RCtrl;
             }
         }
-        public bool LMenu { get => _Modifiers.HasFlag(MouseModifiers.LMenu); }
-        public bool RMenu { get => _Modifiers.HasFlag(MouseModifiers.RMenu); }
-        public bool Menu
+        public bool LAlt { get => _Modifiers.HasFlag(MouseModifiers.LAlt); }
+        public bool RAlt { get => _Modifiers.HasFlag(MouseModifiers.RAlt); }
+        public bool Alt
         {
             get
             {
-                return _Modifiers.HasFlag(MouseModifiers.LMenu) && _Key != Keyboard.VirtualKeyStates.LMenu ||
-                    _Modifiers.HasFlag(MouseModifiers.RMenu) && _Key != Keyboard.VirtualKeyStates.RMenu;
+                return _Modifiers.HasFlag(MouseModifiers.LAlt) && _Key != Keyboard.VirtualKeyStates.LAlt ||
+                    _Modifiers.HasFlag(MouseModifiers.RAlt) && _Key != Keyboard.VirtualKeyStates.RAlt;
             }
         }
         public bool LButton { get => _Modifiers.HasFlag(MouseModifiers.LButton); }
@@ -153,12 +153,12 @@ namespace MainDen.Windows.Interceptor
         {
             UpdateModifier(MouseModifiers.LWin, Keyboard.VirtualKeyStates.LWin);
             UpdateModifier(MouseModifiers.RWin, Keyboard.VirtualKeyStates.RWin);
-            UpdateModifier(MouseModifiers.LShiftKey, Keyboard.VirtualKeyStates.LShiftKey);
-            UpdateModifier(MouseModifiers.RShiftKey, Keyboard.VirtualKeyStates.RShiftKey);
-            UpdateModifier(MouseModifiers.LControlKey, Keyboard.VirtualKeyStates.LControlKey);
-            UpdateModifier(MouseModifiers.RControlKey, Keyboard.VirtualKeyStates.RControlKey);
-            UpdateModifier(MouseModifiers.LMenu, Keyboard.VirtualKeyStates.LMenu);
-            UpdateModifier(MouseModifiers.RMenu, Keyboard.VirtualKeyStates.RMenu);
+            UpdateModifier(MouseModifiers.LShift, Keyboard.VirtualKeyStates.LShift);
+            UpdateModifier(MouseModifiers.RShift, Keyboard.VirtualKeyStates.RShift);
+            UpdateModifier(MouseModifiers.LCtrl, Keyboard.VirtualKeyStates.LCtrl);
+            UpdateModifier(MouseModifiers.RCtrl, Keyboard.VirtualKeyStates.RCtrl);
+            UpdateModifier(MouseModifiers.LAlt, Keyboard.VirtualKeyStates.LAlt);
+            UpdateModifier(MouseModifiers.RAlt, Keyboard.VirtualKeyStates.RAlt);
             UpdateModifier(MouseModifiers.LButton, Keyboard.VirtualKeyStates.LButton);
             UpdateModifier(MouseModifiers.RButton, Keyboard.VirtualKeyStates.RButton);
             UpdateModifier(MouseModifiers.MButton, Keyboard.VirtualKeyStates.MButton);
@@ -180,7 +180,7 @@ namespace MainDen.Windows.Interceptor
             switch (mode)
             {
                 case KeyMode.Simple:
-                    if (Win != state.Win || ShiftKey != state.ShiftKey || ControlKey != state.ControlKey || Menu != state.Menu)
+                    if (Win != state.Win || Shift != state.Shift || Ctrl != state.Ctrl || Alt != state.Alt)
                         return false;
                     break;
                 case KeyMode.Default:
@@ -206,12 +206,12 @@ namespace MainDen.Windows.Interceptor
                 case KeyMode.Simple:
                     if (Win)
                         simpleModifierList.Add("Win");
-                    if (ShiftKey)
-                        simpleModifierList.Add("ShiftKey");
-                    if (ControlKey)
-                        simpleModifierList.Add("ControlKey");
-                    if (Menu)
-                        simpleModifierList.Add("Menu");
+                    if (Shift)
+                        simpleModifierList.Add("Shift");
+                    if (Ctrl)
+                        simpleModifierList.Add("Ctrl");
+                    if (Alt)
+                        simpleModifierList.Add("Alt");
                     if (LButton)
                         simpleModifierList.Add("LButton");
                     if (RButton)
@@ -228,18 +228,18 @@ namespace MainDen.Windows.Interceptor
                         modifierList.Add(MouseModifiers.LWin);
                     if (RWin)
                         modifierList.Add(MouseModifiers.RWin);
-                    if (LShiftKey)
-                        modifierList.Add(MouseModifiers.LShiftKey);
-                    if (RShiftKey)
-                        modifierList.Add(MouseModifiers.RShiftKey);
-                    if (LControlKey)
-                        modifierList.Add(MouseModifiers.LControlKey);
-                    if (RControlKey)
-                        modifierList.Add(MouseModifiers.RControlKey);
-                    if (LMenu)
-                        modifierList.Add(MouseModifiers.LMenu);
-                    if (RMenu)
-                        modifierList.Add(MouseModifiers.RMenu);
+                    if (LShift)
+                        modifierList.Add(MouseModifiers.LShift);
+                    if (RShift)
+                        modifierList.Add(MouseModifiers.RShift);
+                    if (LCtrl)
+                        modifierList.Add(MouseModifiers.LCtrl);
+                    if (RCtrl)
+                        modifierList.Add(MouseModifiers.RCtrl);
+                    if (LAlt)
+                        modifierList.Add(MouseModifiers.LAlt);
+                    if (RAlt)
+                        modifierList.Add(MouseModifiers.RAlt);
                     if (LButton)
                         modifierList.Add(MouseModifiers.LButton);
                     if (RButton)

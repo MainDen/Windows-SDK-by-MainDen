@@ -142,7 +142,10 @@ namespace MainDen.Windows.Interceptor
         {
             if (this == state)
                 return true;
-            if (state is null || _Key != state._Key || _Status != state._Status)
+            if (state is null ||
+                (_Key != Keyboard.VirtualKeyStates.None &&
+                state._Key != Keyboard.VirtualKeyStates.None &&
+                _Key != state._Key) || _Status != state._Status)
                 return false;
             switch (mode)
             {

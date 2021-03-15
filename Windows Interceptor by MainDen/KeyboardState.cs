@@ -203,7 +203,6 @@ namespace MainDen.Windows.Interceptor
             return Regex.Replace(format, pattern, match =>
             {
                 string property = match.Groups["p"].Value;
-                string separator = match.Groups["s"].Value;
                 string format = match.Groups["f"].Value;
                 if (format == "")
                     format = null;
@@ -224,6 +223,7 @@ namespace MainDen.Windows.Interceptor
                             return format ?? "";
                         return "";
                     case "m":
+                        string separator = match.Groups["s"].Value;
                         switch (mode)
                         {
                             case KeyMode.Simple:

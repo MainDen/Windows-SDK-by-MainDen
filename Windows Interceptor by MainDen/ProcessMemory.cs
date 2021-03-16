@@ -82,6 +82,18 @@ namespace MainDen.Windows.Interceptor
             return ReadBoolean(pHandle, address);
         }
 
+        public Byte ReadByte()
+        {
+            IntPtr pHandle;
+            IntPtr address;
+            lock (lSettings)
+            {
+                pHandle = processHandle;
+                address = baseAddress;
+            }
+            return ReadByte(pHandle, address);
+        }
+
         public Char ReadChar()
         {
             IntPtr pHandle;
@@ -230,6 +242,14 @@ namespace MainDen.Windows.Interceptor
             return ReadBoolean(pHandle, address);
         }
 
+        public Byte ReadByte(IntPtr address)
+        {
+            IntPtr pHandle;
+            lock (lSettings)
+                pHandle = processHandle;
+            return ReadByte(pHandle, address);
+        }
+
         public Char ReadChar(IntPtr address)
         {
             IntPtr pHandle;
@@ -340,6 +360,18 @@ namespace MainDen.Windows.Interceptor
                 address = baseAddress + baseAddressOffset;
             }
             return ReadBoolean(pHandle, address);
+        }
+
+        public Byte ReadByte(int baseAddressOffset)
+        {
+            IntPtr pHandle;
+            IntPtr address;
+            lock (lSettings)
+            {
+                pHandle = processHandle;
+                address = baseAddress + baseAddressOffset;
+            }
+            return ReadByte(pHandle, address);
         }
 
         public Char ReadChar(int baseAddressOffset)
@@ -487,6 +519,18 @@ namespace MainDen.Windows.Interceptor
         }
         #region WriteType
         public void Write(Boolean value)
+        {
+            IntPtr pHandle;
+            IntPtr address;
+            lock (lSettings)
+            {
+                pHandle = processHandle;
+                address = baseAddress;
+            }
+            Write(pHandle, address, value);
+        }
+
+        public void Write(Byte value)
         {
             IntPtr pHandle;
             IntPtr address;
@@ -646,6 +690,14 @@ namespace MainDen.Windows.Interceptor
             Write(pHandle, address, value);
         }
 
+        public void Write(IntPtr address, Byte value)
+        {
+            IntPtr pHandle;
+            lock (lSettings)
+                pHandle = processHandle;
+            Write(pHandle, address, value);
+        }
+
         public void Write(IntPtr address, Char value)
         {
             IntPtr pHandle;
@@ -747,6 +799,18 @@ namespace MainDen.Windows.Interceptor
         }
         #region WriteType
         public void Write(int baseAddressOffset, Boolean value)
+        {
+            IntPtr pHandle;
+            IntPtr address;
+            lock (lSettings)
+            {
+                pHandle = processHandle;
+                address = baseAddress + baseAddressOffset;
+            }
+            Write(pHandle, address, value);
+        }
+
+        public void Write(int baseAddressOffset, Byte value)
         {
             IntPtr pHandle;
             IntPtr address;
@@ -911,6 +975,11 @@ namespace MainDen.Windows.Interceptor
             return BitConverter.ToBoolean(Read(pHandle, address, sizeof(Boolean)));
         }
 
+        public static Byte ReadByte(IntPtr pHandle, IntPtr address)
+        {
+            return Read(pHandle, address, sizeof(Byte))[0];
+        }
+
         public static Char ReadChar(IntPtr pHandle, IntPtr address)
         {
             return BitConverter.ToChar(Read(pHandle, address, sizeof(Char)));
@@ -998,6 +1067,12 @@ namespace MainDen.Windows.Interceptor
         {
             byte[] buffer = BitConverter.GetBytes(value);
             Write(pHandle, address, buffer, 0, sizeof(Boolean));
+        }
+
+        public static void Write(IntPtr pHandle, IntPtr address, Byte value)
+        {
+            byte[] buffer = new byte[] { value };
+            Write(pHandle, address, buffer, 0, sizeof(Byte));
         }
 
         public static void Write(IntPtr pHandle, IntPtr address, Char value)

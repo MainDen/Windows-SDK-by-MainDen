@@ -70,7 +70,7 @@ namespace MainDen.Windows.Interceptor
                 pHandle = processHandle;
                 address = baseAddress;
             }
-            return BitConverter.ToBoolean(Read(pHandle, address, sizeof(Boolean)));
+            return ReadBoolean(pHandle, address);
         }
 
         public Char ReadChar()
@@ -82,7 +82,7 @@ namespace MainDen.Windows.Interceptor
                 pHandle = processHandle;
                 address = baseAddress;
             }
-            return BitConverter.ToChar(Read(pHandle, address, sizeof(Char)));
+            return ReadChar(pHandle, address);
         }
 
         public Double ReadDouble()
@@ -94,7 +94,7 @@ namespace MainDen.Windows.Interceptor
                 pHandle = processHandle;
                 address = baseAddress;
             }
-            return BitConverter.ToDouble(Read(pHandle, address, sizeof(Double)));
+            return ReadDouble(pHandle, address);
         }
 
         public Int16 ReadInt16()
@@ -106,7 +106,7 @@ namespace MainDen.Windows.Interceptor
                 pHandle = processHandle;
                 address = baseAddress;
             }
-            return BitConverter.ToInt16(Read(pHandle, address, sizeof(Int16)));
+            return ReadInt16(pHandle, address);
         }
 
         public Int32 ReadInt32()
@@ -118,7 +118,7 @@ namespace MainDen.Windows.Interceptor
                 pHandle = processHandle;
                 address = baseAddress;
             }
-            return BitConverter.ToInt32(Read(pHandle, address, sizeof(Int32)));
+            return ReadInt32(pHandle, address);
         }
 
         public Int64 ReadInt64()
@@ -130,7 +130,7 @@ namespace MainDen.Windows.Interceptor
                 pHandle = processHandle;
                 address = baseAddress;
             }
-            return BitConverter.ToInt64(Read(pHandle, address, sizeof(Int64)));
+            return ReadInt64(pHandle, address);
         }
 
         public Single ReadSingle()
@@ -142,7 +142,7 @@ namespace MainDen.Windows.Interceptor
                 pHandle = processHandle;
                 address = baseAddress;
             }
-            return BitConverter.ToSingle(Read(pHandle, address, sizeof(Single)));
+            return ReadSingle(pHandle, address);
         }
 
         public UInt16 ReadUInt16()
@@ -154,7 +154,7 @@ namespace MainDen.Windows.Interceptor
                 pHandle = processHandle;
                 address = baseAddress;
             }
-            return BitConverter.ToUInt16(Read(pHandle, address, sizeof(UInt16)));
+            return ReadUInt16(pHandle, address);
         }
 
         public UInt32 ReadUInt32()
@@ -166,7 +166,7 @@ namespace MainDen.Windows.Interceptor
                 pHandle = processHandle;
                 address = baseAddress;
             }
-            return BitConverter.ToUInt32(Read(pHandle, address, sizeof(UInt32)));
+            return ReadUInt32(pHandle, address);
         }
 
         public UInt64 ReadUInt64()
@@ -178,7 +178,7 @@ namespace MainDen.Windows.Interceptor
                 pHandle = processHandle;
                 address = baseAddress;
             }
-            return BitConverter.ToUInt64(Read(pHandle, address, sizeof(UInt64)));
+            return ReadUInt64(pHandle, address);
         }
         #endregion
         public byte[] Read(IntPtr address, int count)
@@ -194,7 +194,7 @@ namespace MainDen.Windows.Interceptor
             IntPtr pHandle;
             lock (lSettings)
                 pHandle = processHandle;
-            return BitConverter.ToBoolean(Read(pHandle, address, sizeof(Boolean)));
+            return ReadBoolean(pHandle, address);
         }
 
         public Char ReadChar(IntPtr address)
@@ -202,7 +202,7 @@ namespace MainDen.Windows.Interceptor
             IntPtr pHandle;
             lock (lSettings)
                 pHandle = processHandle;
-            return BitConverter.ToChar(Read(pHandle, address, sizeof(Char)));
+            return ReadChar(pHandle, address);
         }
 
         public Double ReadDouble(IntPtr address)
@@ -210,7 +210,7 @@ namespace MainDen.Windows.Interceptor
             IntPtr pHandle;
             lock (lSettings)
                 pHandle = processHandle;
-            return BitConverter.ToDouble(Read(pHandle, address, sizeof(Double)));
+            return ReadDouble(pHandle, address);
         }
 
         public Int16 ReadInt16(IntPtr address)
@@ -218,7 +218,7 @@ namespace MainDen.Windows.Interceptor
             IntPtr pHandle;
             lock (lSettings)
                 pHandle = processHandle;
-            return BitConverter.ToInt16(Read(pHandle, address, sizeof(Int16)));
+            return ReadInt16(pHandle, address);
         }
 
         public Int32 ReadInt32(IntPtr address)
@@ -226,7 +226,7 @@ namespace MainDen.Windows.Interceptor
             IntPtr pHandle;
             lock (lSettings)
                 pHandle = processHandle;
-            return BitConverter.ToInt32(Read(pHandle, address, sizeof(Int32)));
+            return ReadInt32(pHandle, address);
         }
 
         public Int64 ReadInt64(IntPtr address)
@@ -234,7 +234,7 @@ namespace MainDen.Windows.Interceptor
             IntPtr pHandle;
             lock (lSettings)
                 pHandle = processHandle;
-            return BitConverter.ToInt64(Read(pHandle, address, sizeof(Int64)));
+            return ReadInt64(pHandle, address);
         }
 
         public Single ReadSingle(IntPtr address)
@@ -242,7 +242,7 @@ namespace MainDen.Windows.Interceptor
             IntPtr pHandle;
             lock (lSettings)
                 pHandle = processHandle;
-            return BitConverter.ToSingle(Read(pHandle, address, sizeof(Single)));
+            return ReadSingle(pHandle, address);
         }
 
         public UInt16 ReadUInt16(IntPtr address)
@@ -250,7 +250,7 @@ namespace MainDen.Windows.Interceptor
             IntPtr pHandle;
             lock (lSettings)
                 pHandle = processHandle;
-            return BitConverter.ToUInt16(Read(pHandle, address, sizeof(UInt16)));
+            return ReadUInt16(pHandle, address);
         }
 
         public UInt32 ReadUInt32(IntPtr address)
@@ -258,7 +258,7 @@ namespace MainDen.Windows.Interceptor
             IntPtr pHandle;
             lock (lSettings)
                 pHandle = processHandle;
-            return BitConverter.ToUInt32(Read(pHandle, address, sizeof(UInt32)));
+            return ReadUInt32(pHandle, address);
         }
 
         public UInt64 ReadUInt64(IntPtr address)
@@ -266,7 +266,7 @@ namespace MainDen.Windows.Interceptor
             IntPtr pHandle;
             lock (lSettings)
                 pHandle = processHandle;
-            return BitConverter.ToUInt64(Read(pHandle, address, sizeof(UInt64)));
+            return ReadUInt64(pHandle, address);
         }
         #endregion
         public byte[] Read(int baseAddressOffset, int count)
@@ -290,7 +290,7 @@ namespace MainDen.Windows.Interceptor
                 pHandle = processHandle;
                 address = baseAddress + baseAddressOffset;
             }
-            return BitConverter.ToBoolean(Read(pHandle, address, sizeof(Boolean)));
+            return ReadBoolean(pHandle, address);
         }
 
         public Char ReadChar(int baseAddressOffset)
@@ -302,7 +302,7 @@ namespace MainDen.Windows.Interceptor
                 pHandle = processHandle;
                 address = baseAddress + baseAddressOffset;
             }
-            return BitConverter.ToChar(Read(pHandle, address, sizeof(Char)));
+            return ReadChar(pHandle, address);
         }
 
         public Double ReadDouble(int baseAddressOffset)
@@ -314,7 +314,7 @@ namespace MainDen.Windows.Interceptor
                 pHandle = processHandle;
                 address = baseAddress + baseAddressOffset;
             }
-            return BitConverter.ToDouble(Read(pHandle, address, sizeof(Double)));
+            return ReadDouble(pHandle, address);
         }
 
         public Int16 ReadInt16(int baseAddressOffset)
@@ -326,7 +326,7 @@ namespace MainDen.Windows.Interceptor
                 pHandle = processHandle;
                 address = baseAddress + baseAddressOffset;
             }
-            return BitConverter.ToInt16(Read(pHandle, address, sizeof(Int16)));
+            return ReadInt16(pHandle, address);
         }
 
         public Int32 ReadInt32(int baseAddressOffset)
@@ -338,7 +338,7 @@ namespace MainDen.Windows.Interceptor
                 pHandle = processHandle;
                 address = baseAddress + baseAddressOffset;
             }
-            return BitConverter.ToInt32(Read(pHandle, address, sizeof(Int32)));
+            return ReadInt32(pHandle, address);
         }
 
         public Int64 ReadInt64(int baseAddressOffset)
@@ -350,7 +350,7 @@ namespace MainDen.Windows.Interceptor
                 pHandle = processHandle;
                 address = baseAddress + baseAddressOffset;
             }
-            return BitConverter.ToInt64(Read(pHandle, address, sizeof(Int64)));
+            return ReadInt64(pHandle, address);
         }
 
         public Single ReadSingle(int baseAddressOffset)
@@ -362,7 +362,7 @@ namespace MainDen.Windows.Interceptor
                 pHandle = processHandle;
                 address = baseAddress + baseAddressOffset;
             }
-            return BitConverter.ToSingle(Read(pHandle, address, sizeof(Single)));
+            return ReadSingle(pHandle, address);
         }
 
         public UInt16 ReadUInt16(int baseAddressOffset)
@@ -374,7 +374,7 @@ namespace MainDen.Windows.Interceptor
                 pHandle = processHandle;
                 address = baseAddress + baseAddressOffset;
             }
-            return BitConverter.ToUInt16(Read(pHandle, address, sizeof(UInt16)));
+            return ReadUInt16(pHandle, address);
         }
 
         public UInt32 ReadUInt32(int baseAddressOffset)
@@ -386,7 +386,7 @@ namespace MainDen.Windows.Interceptor
                 pHandle = processHandle;
                 address = baseAddress + baseAddressOffset;
             }
-            return BitConverter.ToUInt32(Read(pHandle, address, sizeof(UInt32)));
+            return ReadUInt32(pHandle, address);
         }
 
         public UInt64 ReadUInt64(int baseAddressOffset)
@@ -398,7 +398,7 @@ namespace MainDen.Windows.Interceptor
                 pHandle = processHandle;
                 address = baseAddress + baseAddressOffset;
             }
-            return BitConverter.ToUInt64(Read(pHandle, address, sizeof(UInt64)));
+            return ReadUInt64(pHandle, address);
         }
         #endregion
         public void Write(byte[] buffer, int offset = 0, int count = 0)

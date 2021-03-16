@@ -133,6 +133,18 @@ namespace MainDen.Windows.Interceptor
             return ReadInt64(pHandle, address);
         }
 
+        public IntPtr ReadIntPtr()
+        {
+            IntPtr pHandle;
+            IntPtr address;
+            lock (lSettings)
+            {
+                pHandle = processHandle;
+                address = baseAddress;
+            }
+            return ReadIntPtr(pHandle, address);
+        }
+
         public Single ReadSingle()
         {
             IntPtr pHandle;
@@ -179,6 +191,18 @@ namespace MainDen.Windows.Interceptor
                 address = baseAddress;
             }
             return ReadUInt64(pHandle, address);
+        }
+
+        public UIntPtr ReadUIntPtr()
+        {
+            IntPtr pHandle;
+            IntPtr address;
+            lock (lSettings)
+            {
+                pHandle = processHandle;
+                address = baseAddress;
+            }
+            return ReadUIntPtr(pHandle, address);
         }
         #endregion
         public byte[] Read(IntPtr address, int count)
@@ -237,6 +261,14 @@ namespace MainDen.Windows.Interceptor
             return ReadInt64(pHandle, address);
         }
 
+        public IntPtr ReadIntPtr(IntPtr address)
+        {
+            IntPtr pHandle;
+            lock (lSettings)
+                pHandle = processHandle;
+            return ReadIntPtr(pHandle, address);
+        }
+
         public Single ReadSingle(IntPtr address)
         {
             IntPtr pHandle;
@@ -267,6 +299,14 @@ namespace MainDen.Windows.Interceptor
             lock (lSettings)
                 pHandle = processHandle;
             return ReadUInt64(pHandle, address);
+        }
+
+        public UIntPtr ReadUIntPtr(IntPtr address)
+        {
+            IntPtr pHandle;
+            lock (lSettings)
+                pHandle = processHandle;
+            return ReadUIntPtr(pHandle, address);
         }
         #endregion
         public byte[] Read(int baseAddressOffset, int count)
@@ -353,6 +393,18 @@ namespace MainDen.Windows.Interceptor
             return ReadInt64(pHandle, address);
         }
 
+        public IntPtr ReadIntPtr(int baseAddressOffset)
+        {
+            IntPtr pHandle;
+            IntPtr address;
+            lock (lSettings)
+            {
+                pHandle = processHandle;
+                address = baseAddress + baseAddressOffset;
+            }
+            return ReadIntPtr(pHandle, address);
+        }
+
         public Single ReadSingle(int baseAddressOffset)
         {
             IntPtr pHandle;
@@ -400,8 +452,20 @@ namespace MainDen.Windows.Interceptor
             }
             return ReadUInt64(pHandle, address);
         }
+
+        public UIntPtr ReadUIntPtr(int baseAddressOffset)
+        {
+            IntPtr pHandle;
+            IntPtr address;
+            lock (lSettings)
+            {
+                pHandle = processHandle;
+                address = baseAddress + baseAddressOffset;
+            }
+            return ReadUIntPtr(pHandle, address);
+        }
         #endregion
-        public void Write(byte[] buffer, int offset = 0, int count = 0)
+        public void Write(byte[] buffer, int offset, int count)
         {
             IntPtr pHandle;
             IntPtr address;
@@ -422,7 +486,7 @@ namespace MainDen.Windows.Interceptor
                 pHandle = processHandle;
                 address = baseAddress;
             }
-            Write(pHandle, address, BitConverter.GetBytes(value));
+            Write(pHandle, address, value);
         }
 
         public void Write(Char value)
@@ -434,7 +498,7 @@ namespace MainDen.Windows.Interceptor
                 pHandle = processHandle;
                 address = baseAddress;
             }
-            Write(pHandle, address, BitConverter.GetBytes(value));
+            Write(pHandle, address, value);
         }
 
         public void Write(Double value)
@@ -446,7 +510,7 @@ namespace MainDen.Windows.Interceptor
                 pHandle = processHandle;
                 address = baseAddress;
             }
-            Write(pHandle, address, BitConverter.GetBytes(value));
+            Write(pHandle, address, value);
         }
 
         public void Write(Int16 value)
@@ -458,7 +522,7 @@ namespace MainDen.Windows.Interceptor
                 pHandle = processHandle;
                 address = baseAddress;
             }
-            Write(pHandle, address, BitConverter.GetBytes(value));
+            Write(pHandle, address, value);
         }
 
         public void Write(Int32 value)
@@ -470,7 +534,7 @@ namespace MainDen.Windows.Interceptor
                 pHandle = processHandle;
                 address = baseAddress;
             }
-            Write(pHandle, address, BitConverter.GetBytes(value));
+            Write(pHandle, address, value);
         }
 
         public void Write(Int64 value)
@@ -482,7 +546,19 @@ namespace MainDen.Windows.Interceptor
                 pHandle = processHandle;
                 address = baseAddress;
             }
-            Write(pHandle, address, BitConverter.GetBytes(value));
+            Write(pHandle, address, value);
+        }
+
+        public void Write(IntPtr value)
+        {
+            IntPtr pHandle;
+            IntPtr address;
+            lock (lSettings)
+            {
+                pHandle = processHandle;
+                address = baseAddress;
+            }
+            Write(pHandle, address, value);
         }
 
         public void Write(Single value)
@@ -494,7 +570,7 @@ namespace MainDen.Windows.Interceptor
                 pHandle = processHandle;
                 address = baseAddress;
             }
-            Write(pHandle, address, BitConverter.GetBytes(value));
+            Write(pHandle, address, value);
         }
 
         public void Write(UInt16 value)
@@ -506,7 +582,7 @@ namespace MainDen.Windows.Interceptor
                 pHandle = processHandle;
                 address = baseAddress;
             }
-            Write(pHandle, address, BitConverter.GetBytes(value));
+            Write(pHandle, address, value);
         }
 
         public void Write(UInt32 value)
@@ -518,7 +594,7 @@ namespace MainDen.Windows.Interceptor
                 pHandle = processHandle;
                 address = baseAddress;
             }
-            Write(pHandle, address, BitConverter.GetBytes(value));
+            Write(pHandle, address, value);
         }
 
         public void Write(UInt64 value)
@@ -530,10 +606,22 @@ namespace MainDen.Windows.Interceptor
                 pHandle = processHandle;
                 address = baseAddress;
             }
-            Write(pHandle, address, BitConverter.GetBytes(value));
+            Write(pHandle, address, value);
+        }
+
+        public void Write(UIntPtr value)
+        {
+            IntPtr pHandle;
+            IntPtr address;
+            lock (lSettings)
+            {
+                pHandle = processHandle;
+                address = baseAddress;
+            }
+            Write(pHandle, address, value);
         }
         #endregion
-        public void Write(IntPtr address, byte[] buffer, int offset = 0, int count = 0)
+        public void Write(IntPtr address, byte[] buffer, int offset, int count)
         {
             IntPtr pHandle;
             lock (lSettings)
@@ -546,7 +634,7 @@ namespace MainDen.Windows.Interceptor
             IntPtr pHandle;
             lock (lSettings)
                 pHandle = processHandle;
-            Write(pHandle, address, BitConverter.GetBytes(value));
+            Write(pHandle, address, value);
         }
 
         public void Write(IntPtr address, Char value)
@@ -554,7 +642,7 @@ namespace MainDen.Windows.Interceptor
             IntPtr pHandle;
             lock (lSettings)
                 pHandle = processHandle;
-            Write(pHandle, address, BitConverter.GetBytes(value));
+            Write(pHandle, address, value);
         }
 
         public void Write(IntPtr address, Double value)
@@ -562,7 +650,7 @@ namespace MainDen.Windows.Interceptor
             IntPtr pHandle;
             lock (lSettings)
                 pHandle = processHandle;
-            Write(pHandle, address, BitConverter.GetBytes(value));
+            Write(pHandle, address, value);
         }
 
         public void Write(IntPtr address, Int16 value)
@@ -570,7 +658,7 @@ namespace MainDen.Windows.Interceptor
             IntPtr pHandle;
             lock (lSettings)
                 pHandle = processHandle;
-            Write(pHandle, address, BitConverter.GetBytes(value));
+            Write(pHandle, address, value);
         }
 
         public void Write(IntPtr address, Int32 value)
@@ -578,7 +666,7 @@ namespace MainDen.Windows.Interceptor
             IntPtr pHandle;
             lock (lSettings)
                 pHandle = processHandle;
-            Write(pHandle, address, BitConverter.GetBytes(value));
+            Write(pHandle, address, value);
         }
 
         public void Write(IntPtr address, Int64 value)
@@ -586,7 +674,15 @@ namespace MainDen.Windows.Interceptor
             IntPtr pHandle;
             lock (lSettings)
                 pHandle = processHandle;
-            Write(pHandle, address, BitConverter.GetBytes(value));
+            Write(pHandle, address, value);
+        }
+
+        public void Write(IntPtr address, IntPtr value)
+        {
+            IntPtr pHandle;
+            lock (lSettings)
+                pHandle = processHandle;
+            Write(pHandle, address, value);
         }
 
         public void Write(IntPtr address, Single value)
@@ -594,7 +690,7 @@ namespace MainDen.Windows.Interceptor
             IntPtr pHandle;
             lock (lSettings)
                 pHandle = processHandle;
-            Write(pHandle, address, BitConverter.GetBytes(value));
+            Write(pHandle, address, value);
         }
 
         public void Write(IntPtr address, UInt16 value)
@@ -602,7 +698,7 @@ namespace MainDen.Windows.Interceptor
             IntPtr pHandle;
             lock (lSettings)
                 pHandle = processHandle;
-            Write(pHandle, address, BitConverter.GetBytes(value));
+            Write(pHandle, address, value);
         }
 
         public void Write(IntPtr address, UInt32 value)
@@ -610,7 +706,7 @@ namespace MainDen.Windows.Interceptor
             IntPtr pHandle;
             lock (lSettings)
                 pHandle = processHandle;
-            Write(pHandle, address, BitConverter.GetBytes(value));
+            Write(pHandle, address, value);
         }
 
         public void Write(IntPtr address, UInt64 value)
@@ -618,10 +714,18 @@ namespace MainDen.Windows.Interceptor
             IntPtr pHandle;
             lock (lSettings)
                 pHandle = processHandle;
-            Write(pHandle, address, BitConverter.GetBytes(value));
+            Write(pHandle, address, value);
+        }
+
+        public void Write(IntPtr address, UIntPtr value)
+        {
+            IntPtr pHandle;
+            lock (lSettings)
+                pHandle = processHandle;
+            Write(pHandle, address, value);
         }
         #endregion
-        public void Write(int baseAddressOffset, byte[] buffer, int offset = 0, int count = 0)
+        public void Write(int baseAddressOffset, byte[] buffer, int offset, int count)
         {
             IntPtr pHandle;
             IntPtr address;
@@ -642,7 +746,7 @@ namespace MainDen.Windows.Interceptor
                 pHandle = processHandle;
                 address = baseAddress + baseAddressOffset;
             }
-            Write(pHandle, address, BitConverter.GetBytes(value));
+            Write(pHandle, address, value);
         }
 
         public void Write(int baseAddressOffset, Char value)
@@ -654,7 +758,7 @@ namespace MainDen.Windows.Interceptor
                 pHandle = processHandle;
                 address = baseAddress + baseAddressOffset;
             }
-            Write(pHandle, address, BitConverter.GetBytes(value));
+            Write(pHandle, address, value);
         }
 
         public void Write(int baseAddressOffset, Double value)
@@ -666,7 +770,7 @@ namespace MainDen.Windows.Interceptor
                 pHandle = processHandle;
                 address = baseAddress + baseAddressOffset;
             }
-            Write(pHandle, address, BitConverter.GetBytes(value));
+            Write(pHandle, address, value);
         }
 
         public void Write(int baseAddressOffset, Int16 value)
@@ -678,7 +782,7 @@ namespace MainDen.Windows.Interceptor
                 pHandle = processHandle;
                 address = baseAddress + baseAddressOffset;
             }
-            Write(pHandle, address, BitConverter.GetBytes(value));
+            Write(pHandle, address, value);
         }
 
         public void Write(int baseAddressOffset, Int32 value)
@@ -690,7 +794,7 @@ namespace MainDen.Windows.Interceptor
                 pHandle = processHandle;
                 address = baseAddress + baseAddressOffset;
             }
-            Write(pHandle, address, BitConverter.GetBytes(value));
+            Write(pHandle, address, value);
         }
 
         public void Write(int baseAddressOffset, Int64 value)
@@ -702,7 +806,19 @@ namespace MainDen.Windows.Interceptor
                 pHandle = processHandle;
                 address = baseAddress + baseAddressOffset;
             }
-            Write(pHandle, address, BitConverter.GetBytes(value));
+            Write(pHandle, address, value);
+        }
+
+        public void Write(int baseAddressOffset, IntPtr value)
+        {
+            IntPtr pHandle;
+            IntPtr address;
+            lock (lSettings)
+            {
+                pHandle = processHandle;
+                address = baseAddress + baseAddressOffset;
+            }
+            Write(pHandle, address, value);
         }
 
         public void Write(int baseAddressOffset, Single value)
@@ -714,7 +830,7 @@ namespace MainDen.Windows.Interceptor
                 pHandle = processHandle;
                 address = baseAddress + baseAddressOffset;
             }
-            Write(pHandle, address, BitConverter.GetBytes(value));
+            Write(pHandle, address, value);
         }
 
         public void Write(int baseAddressOffset, UInt16 value)
@@ -726,7 +842,7 @@ namespace MainDen.Windows.Interceptor
                 pHandle = processHandle;
                 address = baseAddress + baseAddressOffset;
             }
-            Write(pHandle, address, BitConverter.GetBytes(value));
+            Write(pHandle, address, value);
         }
 
         public void Write(int baseAddressOffset, UInt32 value)
@@ -738,7 +854,7 @@ namespace MainDen.Windows.Interceptor
                 pHandle = processHandle;
                 address = baseAddress + baseAddressOffset;
             }
-            Write(pHandle, address, BitConverter.GetBytes(value));
+            Write(pHandle, address, value);
         }
 
         public void Write(int baseAddressOffset, UInt64 value)
@@ -750,7 +866,19 @@ namespace MainDen.Windows.Interceptor
                 pHandle = processHandle;
                 address = baseAddress + baseAddressOffset;
             }
-            Write(pHandle, address, BitConverter.GetBytes(value));
+            Write(pHandle, address, value);
+        }
+
+        public void Write(int baseAddressOffset, UIntPtr value)
+        {
+            IntPtr pHandle;
+            IntPtr address;
+            lock (lSettings)
+            {
+                pHandle = processHandle;
+                address = baseAddress + baseAddressOffset;
+            }
+            Write(pHandle, address, value);
         }
         #endregion
         public static byte[] Read(IntPtr pHandle, IntPtr address, int count)
@@ -799,6 +927,20 @@ namespace MainDen.Windows.Interceptor
             return BitConverter.ToInt64(Read(pHandle, address, sizeof(Int64)));
         }
 
+        public static IntPtr ReadIntPtr(IntPtr pHandle, IntPtr address)
+        {
+            int count = IntPtr.Size;
+            byte[] buffer = Read(pHandle, address, count);
+            IntPtr value = new IntPtr();
+            unsafe
+            {
+                void* v = &value;
+                fixed (byte* b = buffer)
+                    Buffer.MemoryCopy(b, v, count, count);
+            }
+            return value;
+        }
+
         public static Single ReadSingle(IntPtr pHandle, IntPtr address)
         {
             return BitConverter.ToSingle(Read(pHandle, address, sizeof(Single)));
@@ -818,8 +960,22 @@ namespace MainDen.Windows.Interceptor
         {
             return BitConverter.ToUInt64(Read(pHandle, address, sizeof(UInt64)));
         }
+
+        public static UIntPtr ReadUIntPtr(IntPtr pHandle, IntPtr address)
+        {
+            int count = UIntPtr.Size;
+            byte[] buffer = Read(pHandle, address, count);
+            UIntPtr value = new UIntPtr();
+            unsafe
+            {
+                void* v = &value;
+                fixed (byte* b = buffer)
+                    Buffer.MemoryCopy(b, v, count, count);
+            }
+            return value;
+        }
         #endregion
-        public static void Write(IntPtr pHandle, IntPtr address, byte[] buffer, int offset = 0, int count = 0)
+        public static void Write(IntPtr pHandle, IntPtr address, byte[] buffer, int offset, int count)
         {
             if (pHandle == IntPtr.Zero)
                 throw new ArgumentException("Invalid ProcessHandle.");
@@ -849,52 +1005,90 @@ namespace MainDen.Windows.Interceptor
         #region WriteType
         public static void Write(IntPtr pHandle, IntPtr address, Boolean value)
         {
-            Write(pHandle, address, BitConverter.GetBytes(value));
+            byte[] buffer = BitConverter.GetBytes(value);
+            Write(pHandle, address, buffer, 0, sizeof(Boolean));
         }
 
         public static void Write(IntPtr pHandle, IntPtr address, Char value)
         {
-            Write(pHandle, address, BitConverter.GetBytes(value));
+            byte[] buffer = BitConverter.GetBytes(value);
+            Write(pHandle, address, buffer, 0, sizeof(Char));
         }
 
         public static void Write(IntPtr pHandle, IntPtr address, Double value)
         {
-            Write(pHandle, address, BitConverter.GetBytes(value));
+            byte[] buffer = BitConverter.GetBytes(value);
+            Write(pHandle, address, buffer, 0, sizeof(Double));
         }
 
         public static void Write(IntPtr pHandle, IntPtr address, Int16 value)
         {
-            Write(pHandle, address, BitConverter.GetBytes(value));
+            byte[] buffer = BitConverter.GetBytes(value);
+            Write(pHandle, address, buffer, 0, sizeof(Int16));
         }
 
         public static void Write(IntPtr pHandle, IntPtr address, Int32 value)
         {
-            Write(pHandle, address, BitConverter.GetBytes(value));
+            byte[] buffer = BitConverter.GetBytes(value);
+            Write(pHandle, address, buffer, 0, sizeof(Int32));
         }
 
         public static void Write(IntPtr pHandle, IntPtr address, Int64 value)
         {
-            Write(pHandle, address, BitConverter.GetBytes(value));
+            byte[] buffer = BitConverter.GetBytes(value);
+            Write(pHandle, address, buffer, 0, sizeof(Int64));
+        }
+
+        public static void Write(IntPtr pHandle, IntPtr address, IntPtr value)
+        {
+            byte[] buffer;
+            int count = IntPtr.Size;
+            buffer = new byte[count];
+            unsafe
+            {
+                void* v = &value;
+                fixed (void* b = buffer)
+                    Buffer.MemoryCopy(v, b, count, count);
+            }
+            Write(pHandle, address, buffer, 0, count);
         }
 
         public static void Write(IntPtr pHandle, IntPtr address, Single value)
         {
-            Write(pHandle, address, BitConverter.GetBytes(value));
+            byte[] buffer = BitConverter.GetBytes(value);
+            Write(pHandle, address, buffer, 0, sizeof(Single));
         }
 
         public static void Write(IntPtr pHandle, IntPtr address, UInt16 value)
         {
-            Write(pHandle, address, BitConverter.GetBytes(value));
+            byte[] buffer = BitConverter.GetBytes(value);
+            Write(pHandle, address, buffer, 0, sizeof(UInt16));
         }
 
         public static void Write(IntPtr pHandle, IntPtr address, UInt32 value)
         {
-            Write(pHandle, address, BitConverter.GetBytes(value));
+            byte[] buffer = BitConverter.GetBytes(value);
+            Write(pHandle, address, buffer, 0, sizeof(UInt32));
         }
 
         public static void Write(IntPtr pHandle, IntPtr address, UInt64 value)
         {
-            Write(pHandle, address, BitConverter.GetBytes(value));
+            byte[] buffer = BitConverter.GetBytes(value);
+            Write(pHandle, address, buffer, 0, sizeof(UInt64));
+        }
+
+        public static void Write(IntPtr pHandle, IntPtr address, UIntPtr value)
+        {
+            byte[] buffer;
+            int count = UIntPtr.Size;
+            buffer = new byte[count];
+            unsafe
+            {
+                void* v = &value;
+                fixed (void* b = buffer)
+                    Buffer.MemoryCopy(v, b, count, count);
+            }
+            Write(pHandle, address, buffer, 0, count);
         }
         #endregion
     }

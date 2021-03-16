@@ -899,7 +899,7 @@ namespace MainDen.Windows.Interceptor
             if (count < 0)
                 throw new ArgumentException("Invalid count.");
             byte[] buffer = new byte[count];
-            IntPtr readCount;
+            IntPtr readCount = IntPtr.Zero;
             if (Proc.ReadProcessMemory(pHandle, address, buffer, count, out readCount))
                 if (readCount == (IntPtr)count)
                     return buffer;
@@ -1005,7 +1005,7 @@ namespace MainDen.Windows.Interceptor
                 bufferPart = new byte[count];
                 Buffer.BlockCopy(buffer, offset, bufferPart, 0, count);
             }
-            IntPtr writeCount;
+            IntPtr writeCount = IntPtr.Zero;
             if (Proc.WriteProcessMemory(pHandle, address, bufferPart, count, out writeCount))
                 if (writeCount == (IntPtr)count)
                     return;

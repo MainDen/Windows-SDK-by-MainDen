@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 
 namespace MainDen.Windows.Interceptor
 {
-    public class ProcessMemory
+    public class ProcessMemory : ICloneable
     {
         public ProcessMemory(IntPtr processHandle)
         {
@@ -17,6 +17,15 @@ namespace MainDen.Windows.Interceptor
         {
             this.processHandle = processHandle;
             this.baseAddress = baseAddress;
+        }
+
+        public ProcessMemory(ProcessMemory processMemory)
+        {
+            lock (processMemory.lSettings)
+            {
+                processHandle = processMemory.processHandle;
+                baseAddress = processMemory.baseAddress;
+            }
         }
 
         private readonly object lSettings = new object();
@@ -1091,5 +1100,9 @@ namespace MainDen.Windows.Interceptor
             Write(pHandle, address, buffer, 0, count);
         }
         #endregion
+        public object Clone()
+        {
+            return new ProcessMemory(this);
+        }
     }
 }

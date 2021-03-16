@@ -938,16 +938,7 @@ namespace MainDen.Windows.Interceptor
 
         public static IntPtr ReadIntPtr(IntPtr pHandle, IntPtr address)
         {
-            int count = IntPtr.Size;
-            byte[] buffer = Read(pHandle, address, count);
-            IntPtr value = new IntPtr();
-            unsafe
-            {
-                void* v = &value;
-                fixed (byte* b = buffer)
-                    Buffer.MemoryCopy(b, v, count, count);
-            }
-            return value;
+            return (IntPtr)ReadInt32(pHandle, address);
         }
 
         public static Single ReadSingle(IntPtr pHandle, IntPtr address)
@@ -972,16 +963,7 @@ namespace MainDen.Windows.Interceptor
 
         public static UIntPtr ReadUIntPtr(IntPtr pHandle, IntPtr address)
         {
-            int count = UIntPtr.Size;
-            byte[] buffer = Read(pHandle, address, count);
-            UIntPtr value = new UIntPtr();
-            unsafe
-            {
-                void* v = &value;
-                fixed (byte* b = buffer)
-                    Buffer.MemoryCopy(b, v, count, count);
-            }
-            return value;
+            return (UIntPtr)ReadUInt32(pHandle, address);
         }
         #endregion
         public static void Write(IntPtr pHandle, IntPtr address, byte[] buffer, int offset, int count)
@@ -1050,16 +1032,7 @@ namespace MainDen.Windows.Interceptor
 
         public static void Write(IntPtr pHandle, IntPtr address, IntPtr value)
         {
-            byte[] buffer;
-            int count = IntPtr.Size;
-            buffer = new byte[count];
-            unsafe
-            {
-                void* v = &value;
-                fixed (void* b = buffer)
-                    Buffer.MemoryCopy(v, b, count, count);
-            }
-            Write(pHandle, address, buffer, 0, count);
+            Write(pHandle, address, (Int32)value);
         }
 
         public static void Write(IntPtr pHandle, IntPtr address, Single value)
@@ -1088,16 +1061,7 @@ namespace MainDen.Windows.Interceptor
 
         public static void Write(IntPtr pHandle, IntPtr address, UIntPtr value)
         {
-            byte[] buffer;
-            int count = UIntPtr.Size;
-            buffer = new byte[count];
-            unsafe
-            {
-                void* v = &value;
-                fixed (void* b = buffer)
-                    Buffer.MemoryCopy(v, b, count, count);
-            }
-            Write(pHandle, address, buffer, 0, count);
+            Write(pHandle, address, (UInt32)value);
         }
         #endregion
         public object Clone()

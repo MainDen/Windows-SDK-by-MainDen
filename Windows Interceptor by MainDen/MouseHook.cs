@@ -7,9 +7,10 @@ namespace MainDen.Windows.Interceptor
     public class MouseHook : IDisposable
     {
         public delegate void EventHandler(object sender, MouseState state);
-        public MouseHook()
+        public MouseHook(bool callNextHook = true)
         {
             _mProc = MouseHookProc;
+            _callNextHook = callNextHook;
         }
         public event EventHandler MouseAny;
         public event EventHandler MouseDown;
@@ -19,6 +20,7 @@ namespace MainDen.Windows.Interceptor
         private readonly object lSettings = new object();
         private Hook.HookProc _mProc;
         private IntPtr _mHHook = IntPtr.Zero;
+        private bool _callNextHook;
         public bool SetHook()
         {
             lock (lSettings)
@@ -140,7 +142,10 @@ namespace MainDen.Windows.Interceptor
                         break;
                 }
             }
-            return Hook.CallNextHookEx(_mHHook, nCode, wParam, lParam);
+            if (_callNextHook)
+                return Hook.CallNextHookEx(_mHHook, nCode, wParam, lParam);
+            else
+                return Hook.CallNextHookEx(IntPtr.Zero, nCode, wParam, lParam);
         }
     }
 }

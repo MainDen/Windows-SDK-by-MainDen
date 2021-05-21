@@ -92,11 +92,12 @@ namespace MainDen.Windows.Interceptor
                         KeyAny?.Invoke(this, ks);
                         break;
                 }
+                if (_callNextHook)
+                    return Hook.CallNextHookEx(_kHHook, nCode, wParam, lParam);
+                else
+                    return _kHHook;
             }
-            if (_callNextHook)
-                return Hook.CallNextHookEx(_kHHook, nCode, wParam, lParam);
-            else
-                return Hook.CallNextHookEx(IntPtr.Zero, nCode, wParam, lParam);
+            return Hook.CallNextHookEx(_kHHook, nCode, wParam, lParam);
         }
     }
 }

@@ -141,11 +141,12 @@ namespace MainDen.Windows.Interceptor
                         MouseAny?.Invoke(this, ms);
                         break;
                 }
+                if (_callNextHook)
+                    return Hook.CallNextHookEx(_mHHook, nCode, wParam, lParam);
+                else
+                    return _mHHook;
             }
-            if (_callNextHook)
-                return Hook.CallNextHookEx(_mHHook, nCode, wParam, lParam);
-            else
-                return Hook.CallNextHookEx(IntPtr.Zero, nCode, wParam, lParam);
+            return Hook.CallNextHookEx(_mHHook, nCode, wParam, lParam);
         }
     }
 }

@@ -55,6 +55,7 @@ namespace MainDen.Windows.Interception
             if (nCode >= 0 && (_key == 0 || _key == hs.vkCode))
             {
                 Keyboard.VirtualKeyStates key = (Keyboard.VirtualKeyStates)hs.vkCode;
+                Keyboard.ScanCodes scanCode = (Keyboard.ScanCodes)hs.scanCode;
                 KeyboardState.KeyStatus status;
                 switch (wm)
                 {
@@ -71,7 +72,7 @@ namespace MainDen.Windows.Interception
                         break;
                 }
                 TimeSpan time = TimeSpan.FromMilliseconds(hs.time);
-                KeyboardState ks = KeyboardState.CreateCurrent(key, status, time);
+                KeyboardState ks = KeyboardState.CreateCurrent(key, scanCode, status, time);
                 switch (ks.Status)
                 {
                     case KeyboardState.KeyStatus.Down:

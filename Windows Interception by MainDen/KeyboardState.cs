@@ -35,11 +35,13 @@ namespace MainDen.Windows.Interception
         }
         public KeyboardState(
             Keyboard.VirtualKeyStates key = Keyboard.VirtualKeyStates.None,
+            Keyboard.ScanCodes scanCode = Keyboard.ScanCodes.None,
             KeyStatus status = KeyStatus.None,
             KeyModifiers modifiers = KeyModifiers.None,
             TimeSpan time = new TimeSpan())
         {
             _Key = key;
+            _ScanCode = scanCode;
             _Status = status;
             _Modifiers = modifiers;
             _Time = time;
@@ -49,15 +51,18 @@ namespace MainDen.Windows.Interception
             if (state is null)
                 throw new ArgumentNullException(nameof(state));
             _Key = state._Key;
+            _ScanCode = state._ScanCode;
             _Status = state._Status;
             _Modifiers = state._Modifiers;
             _Time = state._Time;
         }
         private Keyboard.VirtualKeyStates _Key;
+        private Keyboard.ScanCodes _ScanCode;
         private KeyStatus _Status;
         private KeyModifiers _Modifiers;
         private TimeSpan _Time;
         public Keyboard.VirtualKeyStates Key { get => _Key; }
+        public Keyboard.ScanCodes ScanCode { get => _ScanCode; }
         public KeyStatus Status { get => _Status; }
         public KeyModifiers Modifiers { get => _Modifiers; }
         public TimeSpan Time { get => _Time; }
@@ -165,7 +170,7 @@ namespace MainDen.Windows.Interception
         {
             if (string.IsNullOrEmpty(format))
                 format = "m + md: + :K [S]";
-            string pattern = "((?'p'K|S|M|T|t|d)|(?'p'm)(?'s'[^m]*)m)(:(?'f'[^:]*):)?";
+            string pattern = "((?'p'K|SC|S|M|T|t|d)|(?'p'm)(?'s'[^m]*)m)(:(?'f'[^:]*):)?";
             List<string> simpleModifierList = new List<string>(4);
             List<KeyModifiers> modifierList = new List<KeyModifiers>(8);
             KeyMode mode = Mode;
@@ -212,6 +217,8 @@ namespace MainDen.Windows.Interception
                         return _Key.ToString(format);
                     case "S":
                         return _Status.ToString(format);
+                    case "SC":
+                        return _ScanCode.ToString(format);
                     case "M":
                         return _Modifiers.ToString(format);
                     case "T":
@@ -280,8 +287,17 @@ namespace MainDen.Windows.Interception
             else
                 throw new FormatException();
             Keyboard.VirtualKeyStates key;
-            if (last >= 0 && Enum.TryParse(words[last], out key))
-                --last;
+            Keyboard.ScanCodes scanCode;
+            if (last >= 0)
+            {
+                var keyWord = words[last];
+                if (Enum.TryParse(keyWord, out key))
+                    --last;
+                else
+                    throw new FormatException();
+                if (!Enum.TryParse(keyWord, out scanCode))
+                    scanCode = Keyboard.ScanCodes.None;
+            }
             else
                 throw new FormatException();
             KeyModifiers modifiers = KeyModifiers.None;
@@ -291,7 +307,7 @@ namespace MainDen.Windows.Interception
                     modifiers |= modifier;
                 else
                     throw new FormatException();
-            return new KeyboardState(key, staus, modifiers);
+            return new KeyboardState(key, scanCode, staus, modifiers);
         }
         public static bool TryParse(string s, out KeyboardState result)
         {
@@ -308,10 +324,11 @@ namespace MainDen.Windows.Interception
         }
         public static KeyboardState CreateCurrent(
             Keyboard.VirtualKeyStates key = Keyboard.VirtualKeyStates.None,
+            Keyboard.ScanCodes scanCode = Keyboard.ScanCodes.None,
             KeyStatus status = KeyStatus.None,
             TimeSpan time = new TimeSpan())
         {
-            KeyboardState state = new KeyboardState(key, status, KeyModifiers.None, time);
+            KeyboardState state = new KeyboardState(key, scanCode, status, KeyModifiers.None, time);
             state.UpdateStatus();
             state.UpdateModifiers();
             return state;

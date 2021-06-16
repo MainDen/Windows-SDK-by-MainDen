@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31025.194
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Windows API by MainDen", "Windows API by MainDen\Windows API by MainDen.csproj", "{8935B226-E4FC-46FA-BD57-D411F8D8CAF0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Windows API by MainDen", "Windows API by MainDen\Windows API by MainDen.csproj", "{8935B226-E4FC-46FA-BD57-D411F8D8CAF0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Windows Interceptor by MainDen", "Windows Interceptor by MainDen\Windows Interceptor by MainDen.csproj", "{840B9EF4-C11A-4BCF-8D02-69C1618AF723}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Windows Interceptor by MainDen", "Windows Interceptor by MainDen\Windows Interceptor by MainDen.csproj", "{840B9EF4-C11A-4BCF-8D02-69C1618AF723}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testing Console", "Testing Console\Testing Console.csproj", "{1891B1AB-4370-4695-A92B-94BD1C85CD62}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Testing Console", "Testing Console\Testing Console.csproj", "{1891B1AB-4370-4695-A92B-94BD1C85CD62}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testing Form", "Testing Form\Testing Form.csproj", "{BA623F8E-D1B3-4D4E-92C5-A7DA5FA41E24}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Testing Form", "Testing Form\Testing Form.csproj", "{BA623F8E-D1B3-4D4E-92C5-A7DA5FA41E24}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testing App MC", "Testing App MC\Testing App MC.csproj", "{AFE9A00E-BE95-40DC-9554-0E68A31C87F0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{BA623F8E-D1B3-4D4E-92C5-A7DA5FA41E24}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BA623F8E-D1B3-4D4E-92C5-A7DA5FA41E24}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BA623F8E-D1B3-4D4E-92C5-A7DA5FA41E24}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AFE9A00E-BE95-40DC-9554-0E68A31C87F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFE9A00E-BE95-40DC-9554-0E68A31C87F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFE9A00E-BE95-40DC-9554-0E68A31C87F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFE9A00E-BE95-40DC-9554-0E68A31C87F0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

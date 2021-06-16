@@ -3,7 +3,7 @@ using System;
 using System.Text;
 using System.Runtime.InteropServices;
 
-namespace MainDen.Windows.Interceptor
+namespace MainDen.Windows.Interception
 {
     public class ProcessMemory : ICloneable
     {

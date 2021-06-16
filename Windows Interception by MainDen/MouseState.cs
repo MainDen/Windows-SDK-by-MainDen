@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace MainDen.Windows.Interceptor
+namespace MainDen.Windows.Interception
 {
     public class MouseState : ICloneable, IFormattable
     {

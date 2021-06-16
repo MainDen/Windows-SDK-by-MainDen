@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.31025.194
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Windows API by MainDen", "Windows API by MainDen\Windows API by MainDen.csproj", "{8935B226-E4FC-46FA-BD57-D411F8D8CAF0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Windows Interceptor by MainDen", "Windows Interceptor by MainDen\Windows Interceptor by MainDen.csproj", "{840B9EF4-C11A-4BCF-8D02-69C1618AF723}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Windows Interception by MainDen", "Windows Interception by MainDen\Windows Interception by MainDen.csproj", "{840B9EF4-C11A-4BCF-8D02-69C1618AF723}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Testing Console", "Testing Console\Testing Console.csproj", "{1891B1AB-4370-4695-A92B-94BD1C85CD62}"
 EndProject

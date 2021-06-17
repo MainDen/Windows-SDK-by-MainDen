@@ -200,7 +200,7 @@ namespace MainDen.Windows.Interception
         {
             if (string.IsNullOrEmpty(format))
                 format = "m + md: + :K [S]";
-            string pattern = "((?'p'K|S|M|T|t|d)|(?'p'm)(?'s'[^m]*)m)(:(?'f'[^:]*):)?";
+            string pattern = "((?'p'K|S|M|T|X|Y|W|HW|t|d)|(?'p'm)(?'s'[^m]*)m)(:(?'f'[^:]*):)?";
             List<string> simpleModifierList = new List<string>(9);
             List<MouseModifiers> modifierList = new List<MouseModifiers>(13);
             KeyMode mode = Mode;

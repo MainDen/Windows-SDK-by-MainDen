@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <RootNamespace>MainDen.Windows.Emulation</RootNamespace>
+    <AssemblyName>Windows.Emulation.by.MainDen</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Windows API by MainDen\Windows API by MainDen.csproj" />
+  </ItemGroup>
+
+</Project>

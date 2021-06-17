@@ -3,7 +3,7 @@ using System;
 
 namespace MainDen.Windows.Emulation
 {
-    public class EmulationContext
+    public class EmulationContext : IDisposable
     {
         private IntPtr _hWindow;
 
@@ -281,6 +281,10 @@ namespace MainDen.Windows.Emulation
         public static void MouseHWheel(IntPtr hWindow, short x, short y, short wheelDelta)
         {
             Message.PostMessage(hWindow, Message.WindowsMessage.MOUSEHWHEEL, (IntPtr)(wheelDelta << 16), (IntPtr)(y << 16 | (int)x));
+        }
+
+        public void Dispose()
+        {
         }
     }
 }

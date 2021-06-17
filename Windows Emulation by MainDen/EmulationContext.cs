@@ -12,64 +12,64 @@ namespace MainDen.Windows.Emulation
             _hWindow = hWindow;
         }
 
-        public void KeyDown(Keyboard.VirtualKeyStates virtualKey)
+        public void KeyDown(Keyboard.VirtualKeyStates virtualKey, ushort repeatCount = 1)
         {
-            KeyDown(_hWindow, virtualKey, GetScanCode(virtualKey));
+            KeyDown(virtualKey, GetScanCode(virtualKey), repeatCount);
         }
 
-        public void KeyUp(Keyboard.VirtualKeyStates virtualKey)
+        public void KeyUp(Keyboard.VirtualKeyStates virtualKey, ushort repeatCount = 1)
         {
-            KeyUp(_hWindow, virtualKey, GetScanCode(virtualKey));
+            KeyUp(virtualKey, GetScanCode(virtualKey), repeatCount);
         }
 
-        public void KeyHold(Keyboard.VirtualKeyStates virtualKey)
+        public void KeyHold(Keyboard.VirtualKeyStates virtualKey, ushort repeatCount = 1)
         {
-            KeyHold(_hWindow, virtualKey, GetScanCode(virtualKey));
+            KeyHold(virtualKey, GetScanCode(virtualKey), repeatCount);
         }
 
-        public void SysKeyDown(Keyboard.VirtualKeyStates virtualKey)
+        public void SysKeyDown(Keyboard.VirtualKeyStates virtualKey, ushort repeatCount = 1)
         {
-            SysKeyDown(_hWindow, virtualKey, GetScanCode(virtualKey));
+            SysKeyDown(virtualKey, GetScanCode(virtualKey), repeatCount);
         }
 
-        public void SysKeyUp(Keyboard.VirtualKeyStates virtualKey)
+        public void SysKeyUp(Keyboard.VirtualKeyStates virtualKey, ushort repeatCount = 1)
         {
-            SysKeyUp(_hWindow, virtualKey, GetScanCode(virtualKey));
+            SysKeyUp(virtualKey, GetScanCode(virtualKey), repeatCount);
         }
 
-        public void SysKeyHold(Keyboard.VirtualKeyStates virtualKey)
+        public void SysKeyHold(Keyboard.VirtualKeyStates virtualKey, ushort repeatCount = 1)
         {
-            SysKeyHold(_hWindow, virtualKey, GetScanCode(virtualKey));
+            SysKeyHold(virtualKey, GetScanCode(virtualKey), repeatCount);
         }
 
-        public void KeyDown(Keyboard.VirtualKeyStates virtualKey, Keyboard.ScanCodes scanCode)
+        public void KeyDown(Keyboard.VirtualKeyStates virtualKey, Keyboard.ScanCodes scanCode, ushort repeatCount = 1)
         {
-            KeyDown(_hWindow, virtualKey, scanCode);
+            KeyDown(_hWindow, virtualKey, scanCode, repeatCount);
         }
 
-        public void KeyUp(Keyboard.VirtualKeyStates virtualKey, Keyboard.ScanCodes scanCode)
+        public void KeyUp(Keyboard.VirtualKeyStates virtualKey, Keyboard.ScanCodes scanCode, ushort repeatCount = 1)
         {
-            KeyUp(_hWindow, virtualKey, scanCode);
+            KeyUp(_hWindow, virtualKey, scanCode, repeatCount);
         }
 
-        public void KeyHold(Keyboard.VirtualKeyStates virtualKey, Keyboard.ScanCodes scanCode)
+        public void KeyHold(Keyboard.VirtualKeyStates virtualKey, Keyboard.ScanCodes scanCode, ushort repeatCount = 1)
         {
-            KeyHold(_hWindow, virtualKey, scanCode);
+            KeyHold(_hWindow, virtualKey, scanCode, repeatCount);
         }
 
-        public void SysKeyDown(Keyboard.VirtualKeyStates virtualKey, Keyboard.ScanCodes scanCode)
+        public void SysKeyDown(Keyboard.VirtualKeyStates virtualKey, Keyboard.ScanCodes scanCode, ushort repeatCount = 1)
         {
-            SysKeyDown(_hWindow, virtualKey, scanCode);
+            SysKeyDown(_hWindow, virtualKey, scanCode, repeatCount);
         }
 
-        public void SysKeyUp(Keyboard.VirtualKeyStates virtualKey, Keyboard.ScanCodes scanCode)
+        public void SysKeyUp(Keyboard.VirtualKeyStates virtualKey, Keyboard.ScanCodes scanCode, ushort repeatCount = 1)
         {
-            SysKeyUp(_hWindow, virtualKey, scanCode);
+            SysKeyUp(_hWindow, virtualKey, scanCode, repeatCount);
         }
 
-        public void SysKeyHold(Keyboard.VirtualKeyStates virtualKey, Keyboard.ScanCodes scanCode)
+        public void SysKeyHold(Keyboard.VirtualKeyStates virtualKey, Keyboard.ScanCodes scanCode, ushort repeatCount = 1)
         {
-            SysKeyHold(_hWindow, virtualKey, scanCode);
+            SysKeyHold(_hWindow, virtualKey, scanCode, repeatCount);
         }
 
         public void LButtonDown(short x, short y)
@@ -127,16 +127,16 @@ namespace MainDen.Windows.Emulation
             MouseHWheel(_hWindow, x, y, wheelDelta);
         }
 
-        public static void KeyDown(IntPtr hWindow, Keyboard.VirtualKeyStates virtualKey, Keyboard.ScanCodes scanCode)
+        public static void KeyDown(IntPtr hWindow, Keyboard.VirtualKeyStates virtualKey, Keyboard.ScanCodes scanCode, ushort repeatCount = 1)
         {
             Message.PostMessage(hWindow, Message.WindowsMessage.KEYDOWN, (IntPtr)virtualKey,
                 (IntPtr)(((int)(
                 scanCode & Keyboard.ScanCodes.ScanCode |
                 scanCode & Keyboard.ScanCodes.Extended
-                ) << 16) | 1));
+                ) << 16) | repeatCount));
         }
 
-        public static void KeyUp(IntPtr hWindow, Keyboard.VirtualKeyStates virtualKey, Keyboard.ScanCodes scanCode)
+        public static void KeyUp(IntPtr hWindow, Keyboard.VirtualKeyStates virtualKey, Keyboard.ScanCodes scanCode, ushort repeatCount = 1)
         {
             Message.PostMessage(hWindow, Message.WindowsMessage.KEYUP, (IntPtr)virtualKey,
                 (IntPtr)(((int)(
@@ -144,30 +144,30 @@ namespace MainDen.Windows.Emulation
                 scanCode & Keyboard.ScanCodes.Extended |
                 Keyboard.ScanCodes.Pressed |
                 Keyboard.ScanCodes.Transition
-                ) << 16) | 1));
+                ) << 16) | repeatCount));
         }
 
-        public static void KeyHold(IntPtr hWindow, Keyboard.VirtualKeyStates virtualKey, Keyboard.ScanCodes scanCode)
+        public static void KeyHold(IntPtr hWindow, Keyboard.VirtualKeyStates virtualKey, Keyboard.ScanCodes scanCode, ushort repeatCount = 1)
         {
             Message.PostMessage(hWindow, Message.WindowsMessage.KEYDOWN, (IntPtr)virtualKey,
                 (IntPtr)(((int)(
                 scanCode & Keyboard.ScanCodes.ScanCode |
                 scanCode & Keyboard.ScanCodes.Extended |
                 Keyboard.ScanCodes.Pressed
-                ) << 16) | 1));
+                ) << 16) | repeatCount));
         }
 
-        public static void SysKeyDown(IntPtr hWindow, Keyboard.VirtualKeyStates virtualKey, Keyboard.ScanCodes scanCode)
+        public static void SysKeyDown(IntPtr hWindow, Keyboard.VirtualKeyStates virtualKey, Keyboard.ScanCodes scanCode, ushort repeatCount = 1)
         {
             Message.PostMessage(hWindow, Message.WindowsMessage.SYSKEYDOWN, (IntPtr)virtualKey,
                 (IntPtr)(((int)(
                 scanCode & Keyboard.ScanCodes.ScanCode |
                 scanCode & Keyboard.ScanCodes.Extended |
                 scanCode & Keyboard.ScanCodes.Context
-                ) << 16) | 1));
+                ) << 16) | repeatCount));
         }
 
-        public static void SysKeyUp(IntPtr hWindow, Keyboard.VirtualKeyStates virtualKey, Keyboard.ScanCodes scanCode)
+        public static void SysKeyUp(IntPtr hWindow, Keyboard.VirtualKeyStates virtualKey, Keyboard.ScanCodes scanCode, ushort repeatCount = 1)
         {
             Message.PostMessage(hWindow, Message.WindowsMessage.SYSKEYUP, (IntPtr)virtualKey,
                 (IntPtr)(((int)(
@@ -176,10 +176,10 @@ namespace MainDen.Windows.Emulation
                 scanCode & Keyboard.ScanCodes.Context |
                 Keyboard.ScanCodes.Pressed |
                 Keyboard.ScanCodes.Transition
-                ) << 16) | 1));
+                ) << 16) | repeatCount));
         }
 
-        public static void SysKeyHold(IntPtr hWindow, Keyboard.VirtualKeyStates virtualKey, Keyboard.ScanCodes scanCode)
+        public static void SysKeyHold(IntPtr hWindow, Keyboard.VirtualKeyStates virtualKey, Keyboard.ScanCodes scanCode, ushort repeatCount = 1)
         {
             Message.PostMessage(hWindow, Message.WindowsMessage.SYSKEYDOWN, (IntPtr)virtualKey,
                 (IntPtr)(((int)(
@@ -187,7 +187,7 @@ namespace MainDen.Windows.Emulation
                 scanCode & Keyboard.ScanCodes.Extended |
                 scanCode & Keyboard.ScanCodes.Context |
                 Keyboard.ScanCodes.Pressed
-                ) << 16) | 1));
+                ) << 16) | repeatCount));
         }
 
         public static Keyboard.ScanCodes GetScanCode(Keyboard.VirtualKeyStates virtualKey)
@@ -198,34 +198,34 @@ namespace MainDen.Windows.Emulation
             return scanCode;
         }
 
-        public static void KeyDown(IntPtr hWindow, Keyboard.VirtualKeyStates virtualKey)
+        public static void KeyDown(IntPtr hWindow, Keyboard.VirtualKeyStates virtualKey, ushort repeatCount = 1)
         {
-            KeyDown(hWindow, virtualKey, GetScanCode(virtualKey));
+            KeyDown(hWindow, virtualKey, GetScanCode(virtualKey), repeatCount);
         }
 
-        public static void KeyUp(IntPtr hWindow, Keyboard.VirtualKeyStates virtualKey)
+        public static void KeyUp(IntPtr hWindow, Keyboard.VirtualKeyStates virtualKey, ushort repeatCount = 1)
         {
-            KeyUp(hWindow, virtualKey, GetScanCode(virtualKey));
+            KeyUp(hWindow, virtualKey, GetScanCode(virtualKey), repeatCount);
         }
 
-        public static void KeyHold(IntPtr hWindow, Keyboard.VirtualKeyStates virtualKey)
+        public static void KeyHold(IntPtr hWindow, Keyboard.VirtualKeyStates virtualKey, ushort repeatCount = 1)
         {
-            KeyHold(hWindow, virtualKey, GetScanCode(virtualKey));
+            KeyHold(hWindow, virtualKey, GetScanCode(virtualKey), repeatCount);
         }
 
-        public static void SysKeyDown(IntPtr hWindow, Keyboard.VirtualKeyStates virtualKey)
+        public static void SysKeyDown(IntPtr hWindow, Keyboard.VirtualKeyStates virtualKey, ushort repeatCount = 1)
         {
-            SysKeyDown(hWindow, virtualKey, GetScanCode(virtualKey));
+            SysKeyDown(hWindow, virtualKey, GetScanCode(virtualKey), repeatCount);
         }
 
-        public static void SysKeyUp(IntPtr hWindow, Keyboard.VirtualKeyStates virtualKey)
+        public static void SysKeyUp(IntPtr hWindow, Keyboard.VirtualKeyStates virtualKey, ushort repeatCount = 1)
         {
-            SysKeyUp(hWindow, virtualKey, GetScanCode(virtualKey));
+            SysKeyUp(hWindow, virtualKey, GetScanCode(virtualKey), repeatCount);
         }
 
-        public static void SysKeyHold(IntPtr hWindow, Keyboard.VirtualKeyStates virtualKey)
+        public static void SysKeyHold(IntPtr hWindow, Keyboard.VirtualKeyStates virtualKey, ushort repeatCount = 1)
         {
-            SysKeyHold(hWindow, virtualKey, GetScanCode(virtualKey));
+            SysKeyHold(hWindow, virtualKey, GetScanCode(virtualKey), repeatCount);
         }
 
         public static void LButtonDown(IntPtr hWindow, short x, short y)

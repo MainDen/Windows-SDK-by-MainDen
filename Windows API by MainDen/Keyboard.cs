@@ -54,7 +54,6 @@ namespace MainDen.Windows.API
         }
         public enum ScanCodes : int
         {
-            Modifiers = -65536,
             None = 0x00,
             LButton = 0x7E,
             RButton = 0x7D,
@@ -304,10 +303,11 @@ namespace MainDen.Windows.API
             NoName = 0x00,
             PA1 = 0x00,
             OemClear = 0x00,
-            KeyCode = 65535,
-            ShiftModifier = 65536,
-            ControlModifier = 131072,
-            AltModifier = 262144,
+            ScanCode = 0x00FF,
+            Extended = 0x0100,
+            Context = 0x2000,
+            Pressed = 0x4000,
+            Transition = 0x8000,
         }
         public enum VirtualKeyStates : int
         {

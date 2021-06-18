@@ -11,6 +11,11 @@ namespace MainDen.Windows.Emulation
         {
             _hWindow = hWindow;
         }
+        
+        public IntPtr HWindow
+        {
+            get => _hWindow;
+        }
 
         public void KeyDown(Keyboard.VirtualKeyStates virtualKey, ushort repeatCount = 1)
         {
@@ -125,6 +130,26 @@ namespace MainDen.Windows.Emulation
         public void MouseHWheel(short x, short y, short wheelDelta)
         {
             MouseHWheel(_hWindow, x, y, wheelDelta);
+        }
+
+        public void SetCursor(Message.NCHITTEST.ReturnValues nCHitTestResult, Message.WindowsMessage trigger)
+        {
+            SetCursor(_hWindow, nCHitTestResult, trigger);
+        }
+
+        public Message.NCHITTEST.ReturnValues NCHitTest(short x, short y)
+        {
+            return NCHitTest(_hWindow, x, y);
+        }
+
+        public void EnableWindow()
+        {
+            EnableWindow(_hWindow);
+        }
+
+        public void DisableWindow()
+        {
+            DisableWindow(_hWindow);
         }
 
         public static void KeyDown(IntPtr hWindow, Keyboard.VirtualKeyStates virtualKey, Keyboard.ScanCodes scanCode, ushort repeatCount = 1)
@@ -281,6 +306,32 @@ namespace MainDen.Windows.Emulation
         public static void MouseHWheel(IntPtr hWindow, short x, short y, short wheelDelta)
         {
             Message.PostMessage(hWindow, Message.WindowsMessage.MOUSEHWHEEL, (IntPtr)(wheelDelta << 16), (IntPtr)(y << 16 | (int)x));
+        }
+
+        public static void SetCursor(IntPtr hWindow, Message.NCHITTEST.ReturnValues nCHitTestResult, Message.WindowsMessage trigger)
+        {
+            Message.SendMessage(hWindow, Message.WindowsMessage.SETCURSOR, hWindow, (IntPtr)(((int)trigger << 16) | (int)nCHitTestResult));
+        }
+
+        public static Message.NCHITTEST.ReturnValues NCHitTest(IntPtr hWindow, short x, short y)
+        {
+            return (Message.NCHITTEST.ReturnValues)Message.SendMessage(hWindow, Message.WindowsMessage.NCHITTEST, IntPtr.Zero, (IntPtr)((y << 16) | (int)x));
+        }
+
+        public static void EnableWindow(IntPtr hWindow)
+        {
+            Message.SendMessage(hWindow, Message.WindowsMessage.ACTIVATEAPP, (IntPtr)0x01, (IntPtr)0x00);
+            Message.SendMessage(hWindow, Message.WindowsMessage.ACTIVATE, (IntPtr)0x01, (IntPtr)0x00);
+            Message.SendMessage(hWindow, Message.WindowsMessage.IME_SETCONTEXT, (IntPtr)0x01, (IntPtr)0xC000000F);
+            Message.SendMessage(hWindow, Message.WindowsMessage.IME_NOTIFY, (IntPtr)0x02, (IntPtr)0x00);
+        }
+
+        public static void DisableWindow(IntPtr hWindow)
+        {
+            Message.SendMessage(hWindow, Message.WindowsMessage.ACTIVATE, (IntPtr)0x00, (IntPtr)0x00);
+            Message.SendMessage(hWindow, Message.WindowsMessage.ACTIVATEAPP, (IntPtr)0x00, (IntPtr)0x00);
+            Message.SendMessage(hWindow, Message.WindowsMessage.IME_SETCONTEXT, (IntPtr)0x00, (IntPtr)0xC000000F);
+            Message.SendMessage(hWindow, Message.WindowsMessage.IME_NOTIFY, (IntPtr)0x01, (IntPtr)0x00);
         }
 
         public void Dispose()

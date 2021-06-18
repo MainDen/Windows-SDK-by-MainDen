@@ -3,18 +3,34 @@ using System;
 
 namespace MainDen.Windows.Emulation
 {
-    public class EmulationContext : IDisposable
+    public class EmulationContext : ICloneable
     {
-
         public EmulationContext(IntPtr windowHandle)
         {
             this.windowHandle = windowHandle;
         }
-        
+
+        public EmulationContext(EmulationContext emulationContext)
+        {
+            lock (emulationContext.lSettings)
+                windowHandle = emulationContext.windowHandle;
+        }
+
+        private readonly object lSettings = new object();
+
         private IntPtr windowHandle;
         public IntPtr WindowHandle
         {
-            get => windowHandle;
+            get
+            {
+                lock (lSettings)
+                    return windowHandle;
+            }
+            set
+            {
+                lock (lSettings)
+                    windowHandle = value;
+            }
         }
 
         public void KeyDown(Keyboard.VirtualKeyStates virtualKey, ushort repeatCount = 1)
@@ -152,6 +168,14 @@ namespace MainDen.Windows.Emulation
             DisableWindow(windowHandle);
         }
 
+        public static Keyboard.ScanCodes GetScanCode(Keyboard.VirtualKeyStates virtualKey)
+        {
+            Keyboard.ScanCodes scanCode;
+            if (!Enum.TryParse((virtualKey & Keyboard.VirtualKeyStates.KeyCode).ToString(), out scanCode))
+                scanCode = 0;
+            return scanCode;
+        }
+
         public static void KeyDown(IntPtr windowHandle, Keyboard.VirtualKeyStates virtualKey, Keyboard.ScanCodes scanCode, ushort repeatCount = 1)
         {
             Message.PostMessage(windowHandle, Message.WindowsMessage.KEYDOWN, (IntPtr)virtualKey,
@@ -213,14 +237,6 @@ namespace MainDen.Windows.Emulation
                 scanCode & Keyboard.ScanCodes.Context |
                 Keyboard.ScanCodes.Pressed
                 ) << 16) | repeatCount));
-        }
-
-        public static Keyboard.ScanCodes GetScanCode(Keyboard.VirtualKeyStates virtualKey)
-        {
-            Keyboard.ScanCodes scanCode;
-            if (!Enum.TryParse((virtualKey & Keyboard.VirtualKeyStates.KeyCode).ToString(), out scanCode))
-                scanCode = 0;
-            return scanCode;
         }
 
         public static void KeyDown(IntPtr windowHandle, Keyboard.VirtualKeyStates virtualKey, ushort repeatCount = 1)
@@ -334,8 +350,9 @@ namespace MainDen.Windows.Emulation
             Message.SendMessage(windowHandle, Message.WindowsMessage.IME_NOTIFY, (IntPtr)0x01, (IntPtr)0x00);
         }
 
-        public void Dispose()
+        public object Clone()
         {
+            return new EmulationContext(this);
         }
     }
 }

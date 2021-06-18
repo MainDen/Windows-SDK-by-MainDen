@@ -8,7 +8,7 @@ namespace MainDen.Windows.Interception
         public ProcessMemory(IntPtr processHandle)
         {
             this.processHandle = processHandle;
-            baseAddress = IntPtr.Zero;
+            this.baseAddress = IntPtr.Zero;
         }
 
         public ProcessMemory(IntPtr processHandle, IntPtr baseAddress)
@@ -962,10 +962,10 @@ namespace MainDen.Windows.Interception
                 throw new ArgumentException("Invalid count.");
             byte[] buffer = new byte[count];
             IntPtr readCount = IntPtr.Zero;
-            if (Proc.ReadProcessMemory(pHandle, address, buffer, count, out readCount))
+            if (Process.ReadProcessMemory(pHandle, address, buffer, count, out readCount))
                 if (readCount == (IntPtr)count)
                     return buffer;
-            throw new Exception($"ReadProcessMemory error ({Proc.GetLastError()}).");
+            throw new Exception($"ReadProcessMemory error ({Process.GetLastError()}).");
         }
         #region ReadType
         public static Boolean ReadBoolean(IntPtr pHandle, IntPtr address)
@@ -1055,10 +1055,10 @@ namespace MainDen.Windows.Interception
                 Buffer.BlockCopy(buffer, offset, bufferPart, 0, count);
             }
             IntPtr writeCount = IntPtr.Zero;
-            if (Proc.WriteProcessMemory(pHandle, address, bufferPart, count, out writeCount))
+            if (Process.WriteProcessMemory(pHandle, address, bufferPart, count, out writeCount))
                 if (writeCount == (IntPtr)count)
                     return;
-            throw new Exception($"WriteProcessMemory error ({Proc.GetLastError()}).");
+            throw new Exception($"WriteProcessMemory error ({Process.GetLastError()}).");
         }
         #region WriteType
         public static void Write(IntPtr pHandle, IntPtr address, Boolean value)

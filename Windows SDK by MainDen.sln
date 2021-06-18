@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Testing Form", "Testing For
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Testing App MC", "Testing App MC\Testing App MC.csproj", "{AFE9A00E-BE95-40DC-9554-0E68A31C87F0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Windows Emulation by MainDen", "Windows Emulation by MainDen\Windows Emulation by MainDen.csproj", "{6AA8DD82-3087-40F6-949A-88A9E60E44B3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Windows Emulation by MainDen", "Windows Emulation by MainDen\Windows Emulation by MainDen.csproj", "{6AA8DD82-3087-40F6-949A-88A9E60E44B3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

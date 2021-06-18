@@ -27,6 +27,7 @@ namespace MainDen.Windows.Interception
         }
 
         private readonly object lSettings = new object();
+
         private IntPtr processHandle;
         public IntPtr ProcessHandle
         {
@@ -41,6 +42,7 @@ namespace MainDen.Windows.Interception
                     processHandle = value;
             }
         }
+
         private IntPtr baseAddress;
         public IntPtr BaseAddress
         {

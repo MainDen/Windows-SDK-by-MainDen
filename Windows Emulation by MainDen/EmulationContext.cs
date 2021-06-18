@@ -5,16 +5,16 @@ namespace MainDen.Windows.Emulation
 {
     public class EmulationContext : IDisposable
     {
-        private IntPtr _hWindow;
+        private IntPtr _windowHandle;
 
-        public EmulationContext(IntPtr hWindow)
+        public EmulationContext(IntPtr windowHandle)
         {
-            _hWindow = hWindow;
+            _windowHandle = windowHandle;
         }
         
-        public IntPtr HWindow
+        public IntPtr WindowHandle
         {
-            get => _hWindow;
+            get => _windowHandle;
         }
 
         public void KeyDown(Keyboard.VirtualKeyStates virtualKey, ushort repeatCount = 1)
@@ -49,121 +49,121 @@ namespace MainDen.Windows.Emulation
 
         public void KeyDown(Keyboard.VirtualKeyStates virtualKey, Keyboard.ScanCodes scanCode, ushort repeatCount = 1)
         {
-            KeyDown(_hWindow, virtualKey, scanCode, repeatCount);
+            KeyDown(_windowHandle, virtualKey, scanCode, repeatCount);
         }
 
         public void KeyUp(Keyboard.VirtualKeyStates virtualKey, Keyboard.ScanCodes scanCode, ushort repeatCount = 1)
         {
-            KeyUp(_hWindow, virtualKey, scanCode, repeatCount);
+            KeyUp(_windowHandle, virtualKey, scanCode, repeatCount);
         }
 
         public void KeyHold(Keyboard.VirtualKeyStates virtualKey, Keyboard.ScanCodes scanCode, ushort repeatCount = 1)
         {
-            KeyHold(_hWindow, virtualKey, scanCode, repeatCount);
+            KeyHold(_windowHandle, virtualKey, scanCode, repeatCount);
         }
 
         public void SysKeyDown(Keyboard.VirtualKeyStates virtualKey, Keyboard.ScanCodes scanCode, ushort repeatCount = 1)
         {
-            SysKeyDown(_hWindow, virtualKey, scanCode, repeatCount);
+            SysKeyDown(_windowHandle, virtualKey, scanCode, repeatCount);
         }
 
         public void SysKeyUp(Keyboard.VirtualKeyStates virtualKey, Keyboard.ScanCodes scanCode, ushort repeatCount = 1)
         {
-            SysKeyUp(_hWindow, virtualKey, scanCode, repeatCount);
+            SysKeyUp(_windowHandle, virtualKey, scanCode, repeatCount);
         }
 
         public void SysKeyHold(Keyboard.VirtualKeyStates virtualKey, Keyboard.ScanCodes scanCode, ushort repeatCount = 1)
         {
-            SysKeyHold(_hWindow, virtualKey, scanCode, repeatCount);
+            SysKeyHold(_windowHandle, virtualKey, scanCode, repeatCount);
         }
 
         public void LButtonDown(short x, short y)
         {
-            LButtonDown(_hWindow, x, y);
+            LButtonDown(_windowHandle, x, y);
         }
 
         public void LButtonUp(short x, short y)
         {
-            LButtonUp(_hWindow, x, y);
+            LButtonUp(_windowHandle, x, y);
         }
 
         public void RButtonDown(short x, short y)
         {
-            RButtonDown(_hWindow, x, y);
+            RButtonDown(_windowHandle, x, y);
         }
 
         public void RButtonUp(short x, short y)
         {
-            RButtonUp(_hWindow, x, y);
+            RButtonUp(_windowHandle, x, y);
         }
 
         public void XButton1Down(short x, short y)
         {
-            XButton1Down(_hWindow, x, y);
+            XButton1Down(_windowHandle, x, y);
         }
 
         public void XButton1Up(short x, short y)
         {
-            XButton1Up(_hWindow, x, y);
+            XButton1Up(_windowHandle, x, y);
         }
 
         public void XButton2Down(short x, short y)
         {
-            XButton2Down(_hWindow, x, y);
+            XButton2Down(_windowHandle, x, y);
         }
 
         public void XButton2Up(short x, short y)
         {
-            XButton2Up(_hWindow, x, y);
+            XButton2Up(_windowHandle, x, y);
         }
 
         public void MouseMove(short x, short y)
         {
-            MouseMove(_hWindow, x, y);
+            MouseMove(_windowHandle, x, y);
         }
 
         public void MouseWheel(short x, short y, short wheelDelta)
         {
-            MouseWheel(_hWindow, x, y, wheelDelta);
+            MouseWheel(_windowHandle, x, y, wheelDelta);
         }
 
         public void MouseHWheel(short x, short y, short wheelDelta)
         {
-            MouseHWheel(_hWindow, x, y, wheelDelta);
+            MouseHWheel(_windowHandle, x, y, wheelDelta);
         }
 
-        public void SetCursor(Message.NCHITTEST.ReturnValues nCHitTestResult, Message.WindowsMessage trigger)
+        public void SetCursor(Message.NCHITTEST.ReturnValues nonClientHitTestResult, Message.WindowsMessage trigger)
         {
-            SetCursor(_hWindow, nCHitTestResult, trigger);
+            SetCursor(_windowHandle, nonClientHitTestResult, trigger);
         }
 
-        public Message.NCHITTEST.ReturnValues NCHitTest(short x, short y)
+        public Message.NCHITTEST.ReturnValues NonClientHitTest(short x, short y)
         {
-            return NCHitTest(_hWindow, x, y);
+            return NonClientHitTest(_windowHandle, x, y);
         }
 
         public void EnableWindow()
         {
-            EnableWindow(_hWindow);
+            EnableWindow(_windowHandle);
         }
 
         public void DisableWindow()
         {
-            DisableWindow(_hWindow);
+            DisableWindow(_windowHandle);
         }
 
-        public static void KeyDown(IntPtr hWindow, Keyboard.VirtualKeyStates virtualKey, Keyboard.ScanCodes scanCode, ushort repeatCount = 1)
+        public static void KeyDown(IntPtr windowHandle, Keyboard.VirtualKeyStates virtualKey, Keyboard.ScanCodes scanCode, ushort repeatCount = 1)
         {
-            Message.PostMessage(hWindow, Message.WindowsMessage.KEYDOWN, (IntPtr)virtualKey,
+            Message.PostMessage(windowHandle, Message.WindowsMessage.KEYDOWN, (IntPtr)virtualKey,
                 (IntPtr)(((int)(
                 scanCode & Keyboard.ScanCodes.ScanCode |
                 scanCode & Keyboard.ScanCodes.Extended
                 ) << 16) | repeatCount));
         }
 
-        public static void KeyUp(IntPtr hWindow, Keyboard.VirtualKeyStates virtualKey, Keyboard.ScanCodes scanCode, ushort repeatCount = 1)
+        public static void KeyUp(IntPtr windowHandle, Keyboard.VirtualKeyStates virtualKey, Keyboard.ScanCodes scanCode, ushort repeatCount = 1)
         {
-            Message.PostMessage(hWindow, Message.WindowsMessage.KEYUP, (IntPtr)virtualKey,
+            Message.PostMessage(windowHandle, Message.WindowsMessage.KEYUP, (IntPtr)virtualKey,
                 (IntPtr)(((int)(
                 scanCode & Keyboard.ScanCodes.ScanCode |
                 scanCode & Keyboard.ScanCodes.Extended |
@@ -172,9 +172,9 @@ namespace MainDen.Windows.Emulation
                 ) << 16) | repeatCount));
         }
 
-        public static void KeyHold(IntPtr hWindow, Keyboard.VirtualKeyStates virtualKey, Keyboard.ScanCodes scanCode, ushort repeatCount = 1)
+        public static void KeyHold(IntPtr windowHandle, Keyboard.VirtualKeyStates virtualKey, Keyboard.ScanCodes scanCode, ushort repeatCount = 1)
         {
-            Message.PostMessage(hWindow, Message.WindowsMessage.KEYDOWN, (IntPtr)virtualKey,
+            Message.PostMessage(windowHandle, Message.WindowsMessage.KEYDOWN, (IntPtr)virtualKey,
                 (IntPtr)(((int)(
                 scanCode & Keyboard.ScanCodes.ScanCode |
                 scanCode & Keyboard.ScanCodes.Extended |
@@ -182,9 +182,9 @@ namespace MainDen.Windows.Emulation
                 ) << 16) | repeatCount));
         }
 
-        public static void SysKeyDown(IntPtr hWindow, Keyboard.VirtualKeyStates virtualKey, Keyboard.ScanCodes scanCode, ushort repeatCount = 1)
+        public static void SysKeyDown(IntPtr windowHandle, Keyboard.VirtualKeyStates virtualKey, Keyboard.ScanCodes scanCode, ushort repeatCount = 1)
         {
-            Message.PostMessage(hWindow, Message.WindowsMessage.SYSKEYDOWN, (IntPtr)virtualKey,
+            Message.PostMessage(windowHandle, Message.WindowsMessage.SYSKEYDOWN, (IntPtr)virtualKey,
                 (IntPtr)(((int)(
                 scanCode & Keyboard.ScanCodes.ScanCode |
                 scanCode & Keyboard.ScanCodes.Extended |
@@ -192,9 +192,9 @@ namespace MainDen.Windows.Emulation
                 ) << 16) | repeatCount));
         }
 
-        public static void SysKeyUp(IntPtr hWindow, Keyboard.VirtualKeyStates virtualKey, Keyboard.ScanCodes scanCode, ushort repeatCount = 1)
+        public static void SysKeyUp(IntPtr windowHandle, Keyboard.VirtualKeyStates virtualKey, Keyboard.ScanCodes scanCode, ushort repeatCount = 1)
         {
-            Message.PostMessage(hWindow, Message.WindowsMessage.SYSKEYUP, (IntPtr)virtualKey,
+            Message.PostMessage(windowHandle, Message.WindowsMessage.SYSKEYUP, (IntPtr)virtualKey,
                 (IntPtr)(((int)(
                 scanCode & Keyboard.ScanCodes.ScanCode |
                 scanCode & Keyboard.ScanCodes.Extended |
@@ -204,9 +204,9 @@ namespace MainDen.Windows.Emulation
                 ) << 16) | repeatCount));
         }
 
-        public static void SysKeyHold(IntPtr hWindow, Keyboard.VirtualKeyStates virtualKey, Keyboard.ScanCodes scanCode, ushort repeatCount = 1)
+        public static void SysKeyHold(IntPtr windowHandle, Keyboard.VirtualKeyStates virtualKey, Keyboard.ScanCodes scanCode, ushort repeatCount = 1)
         {
-            Message.PostMessage(hWindow, Message.WindowsMessage.SYSKEYDOWN, (IntPtr)virtualKey,
+            Message.PostMessage(windowHandle, Message.WindowsMessage.SYSKEYDOWN, (IntPtr)virtualKey,
                 (IntPtr)(((int)(
                 scanCode & Keyboard.ScanCodes.ScanCode |
                 scanCode & Keyboard.ScanCodes.Extended |
@@ -223,115 +223,115 @@ namespace MainDen.Windows.Emulation
             return scanCode;
         }
 
-        public static void KeyDown(IntPtr hWindow, Keyboard.VirtualKeyStates virtualKey, ushort repeatCount = 1)
+        public static void KeyDown(IntPtr windowHandle, Keyboard.VirtualKeyStates virtualKey, ushort repeatCount = 1)
         {
-            KeyDown(hWindow, virtualKey, GetScanCode(virtualKey), repeatCount);
+            KeyDown(windowHandle, virtualKey, GetScanCode(virtualKey), repeatCount);
         }
 
-        public static void KeyUp(IntPtr hWindow, Keyboard.VirtualKeyStates virtualKey, ushort repeatCount = 1)
+        public static void KeyUp(IntPtr windowHandle, Keyboard.VirtualKeyStates virtualKey, ushort repeatCount = 1)
         {
-            KeyUp(hWindow, virtualKey, GetScanCode(virtualKey), repeatCount);
+            KeyUp(windowHandle, virtualKey, GetScanCode(virtualKey), repeatCount);
         }
 
-        public static void KeyHold(IntPtr hWindow, Keyboard.VirtualKeyStates virtualKey, ushort repeatCount = 1)
+        public static void KeyHold(IntPtr windowHandle, Keyboard.VirtualKeyStates virtualKey, ushort repeatCount = 1)
         {
-            KeyHold(hWindow, virtualKey, GetScanCode(virtualKey), repeatCount);
+            KeyHold(windowHandle, virtualKey, GetScanCode(virtualKey), repeatCount);
         }
 
-        public static void SysKeyDown(IntPtr hWindow, Keyboard.VirtualKeyStates virtualKey, ushort repeatCount = 1)
+        public static void SysKeyDown(IntPtr windowHandle, Keyboard.VirtualKeyStates virtualKey, ushort repeatCount = 1)
         {
-            SysKeyDown(hWindow, virtualKey, GetScanCode(virtualKey), repeatCount);
+            SysKeyDown(windowHandle, virtualKey, GetScanCode(virtualKey), repeatCount);
         }
 
-        public static void SysKeyUp(IntPtr hWindow, Keyboard.VirtualKeyStates virtualKey, ushort repeatCount = 1)
+        public static void SysKeyUp(IntPtr windowHandle, Keyboard.VirtualKeyStates virtualKey, ushort repeatCount = 1)
         {
-            SysKeyUp(hWindow, virtualKey, GetScanCode(virtualKey), repeatCount);
+            SysKeyUp(windowHandle, virtualKey, GetScanCode(virtualKey), repeatCount);
         }
 
-        public static void SysKeyHold(IntPtr hWindow, Keyboard.VirtualKeyStates virtualKey, ushort repeatCount = 1)
+        public static void SysKeyHold(IntPtr windowHandle, Keyboard.VirtualKeyStates virtualKey, ushort repeatCount = 1)
         {
-            SysKeyHold(hWindow, virtualKey, GetScanCode(virtualKey), repeatCount);
+            SysKeyHold(windowHandle, virtualKey, GetScanCode(virtualKey), repeatCount);
         }
 
-        public static void LButtonDown(IntPtr hWindow, short x, short y)
+        public static void LButtonDown(IntPtr windowHandle, short x, short y)
         {
-            Message.PostMessage(hWindow, Message.WindowsMessage.LBUTTONDOWN, IntPtr.Zero, (IntPtr)(y << 16 | (int)x));
+            Message.PostMessage(windowHandle, Message.WindowsMessage.LBUTTONDOWN, IntPtr.Zero, (IntPtr)(y << 16 | (int)x));
         }
 
-        public static void LButtonUp(IntPtr hWindow, short x, short y)
+        public static void LButtonUp(IntPtr windowHandle, short x, short y)
         {
-            Message.PostMessage(hWindow, Message.WindowsMessage.LBUTTONUP, IntPtr.Zero, (IntPtr)(y << 16 | (int)x));
+            Message.PostMessage(windowHandle, Message.WindowsMessage.LBUTTONUP, IntPtr.Zero, (IntPtr)(y << 16 | (int)x));
         }
 
-        public static void RButtonDown(IntPtr hWindow, short x, short y)
+        public static void RButtonDown(IntPtr windowHandle, short x, short y)
         {
-            Message.PostMessage(hWindow, Message.WindowsMessage.RBUTTONDOWN, IntPtr.Zero, (IntPtr)(y << 16 | (int)x));
+            Message.PostMessage(windowHandle, Message.WindowsMessage.RBUTTONDOWN, IntPtr.Zero, (IntPtr)(y << 16 | (int)x));
         }
 
-        public static void RButtonUp(IntPtr hWindow, short x, short y)
+        public static void RButtonUp(IntPtr windowHandle, short x, short y)
         {
-            Message.PostMessage(hWindow, Message.WindowsMessage.RBUTTONUP, IntPtr.Zero, (IntPtr)(y << 16 | (int)x));
+            Message.PostMessage(windowHandle, Message.WindowsMessage.RBUTTONUP, IntPtr.Zero, (IntPtr)(y << 16 | (int)x));
         }
 
-        public static void XButton1Down(IntPtr hWindow, short x, short y)
+        public static void XButton1Down(IntPtr windowHandle, short x, short y)
         {
-            Message.PostMessage(hWindow, Message.WindowsMessage.XBUTTONDOWN, (IntPtr)(0x01 << 16), (IntPtr)(y << 16 | (int)x));
+            Message.PostMessage(windowHandle, Message.WindowsMessage.XBUTTONDOWN, (IntPtr)(0x01 << 16), (IntPtr)(y << 16 | (int)x));
         }
 
-        public static void XButton1Up(IntPtr hWindow, short x, short y)
+        public static void XButton1Up(IntPtr windowHandle, short x, short y)
         {
-            Message.PostMessage(hWindow, Message.WindowsMessage.XBUTTONUP, (IntPtr)(0x01 << 16), (IntPtr)(y << 16 | (int)x));
+            Message.PostMessage(windowHandle, Message.WindowsMessage.XBUTTONUP, (IntPtr)(0x01 << 16), (IntPtr)(y << 16 | (int)x));
         }
 
-        public static void XButton2Down(IntPtr hWindow, short x, short y)
+        public static void XButton2Down(IntPtr windowHandle, short x, short y)
         {
-            Message.PostMessage(hWindow, Message.WindowsMessage.XBUTTONDOWN, (IntPtr)(0x02 << 16), (IntPtr)(y << 16 | (int)x));
+            Message.PostMessage(windowHandle, Message.WindowsMessage.XBUTTONDOWN, (IntPtr)(0x02 << 16), (IntPtr)(y << 16 | (int)x));
         }
 
-        public static void XButton2Up(IntPtr hWindow, short x, short y)
+        public static void XButton2Up(IntPtr windowHandle, short x, short y)
         {
-            Message.PostMessage(hWindow, Message.WindowsMessage.XBUTTONUP, (IntPtr)(0x02 << 16), (IntPtr)(y << 16 | (int)x));
+            Message.PostMessage(windowHandle, Message.WindowsMessage.XBUTTONUP, (IntPtr)(0x02 << 16), (IntPtr)(y << 16 | (int)x));
         }
 
-        public static void MouseMove(IntPtr hWindow, short x, short y)
+        public static void MouseMove(IntPtr windowHandle, short x, short y)
         {
-            Message.PostMessage(hWindow, Message.WindowsMessage.MOUSEMOVE, IntPtr.Zero, (IntPtr)(y << 16 | (int)x));
+            Message.PostMessage(windowHandle, Message.WindowsMessage.MOUSEMOVE, IntPtr.Zero, (IntPtr)(y << 16 | (int)x));
         }
 
-        public static void MouseWheel(IntPtr hWindow, short x, short y, short wheelDelta)
+        public static void MouseWheel(IntPtr windowHandle, short x, short y, short wheelDelta)
         {
-            Message.PostMessage(hWindow, Message.WindowsMessage.MOUSEWHEEL, (IntPtr)(wheelDelta << 16), (IntPtr)(y << 16 | (int)x));
+            Message.PostMessage(windowHandle, Message.WindowsMessage.MOUSEWHEEL, (IntPtr)(wheelDelta << 16), (IntPtr)(y << 16 | (int)x));
         }
 
-        public static void MouseHWheel(IntPtr hWindow, short x, short y, short wheelDelta)
+        public static void MouseHWheel(IntPtr windowHandle, short x, short y, short wheelDelta)
         {
-            Message.PostMessage(hWindow, Message.WindowsMessage.MOUSEHWHEEL, (IntPtr)(wheelDelta << 16), (IntPtr)(y << 16 | (int)x));
+            Message.PostMessage(windowHandle, Message.WindowsMessage.MOUSEHWHEEL, (IntPtr)(wheelDelta << 16), (IntPtr)(y << 16 | (int)x));
         }
 
-        public static void SetCursor(IntPtr hWindow, Message.NCHITTEST.ReturnValues nCHitTestResult, Message.WindowsMessage trigger)
+        public static void SetCursor(IntPtr windowHandle, Message.NCHITTEST.ReturnValues nonClientHitTestResult, Message.WindowsMessage trigger)
         {
-            Message.SendMessage(hWindow, Message.WindowsMessage.SETCURSOR, hWindow, (IntPtr)(((int)trigger << 16) | (int)nCHitTestResult));
+            Message.SendMessage(windowHandle, Message.WindowsMessage.SETCURSOR, windowHandle, (IntPtr)(((int)trigger << 16) | (int)nonClientHitTestResult));
         }
 
-        public static Message.NCHITTEST.ReturnValues NCHitTest(IntPtr hWindow, short x, short y)
+        public static Message.NCHITTEST.ReturnValues NonClientHitTest(IntPtr windowHandle, short x, short y)
         {
-            return (Message.NCHITTEST.ReturnValues)Message.SendMessage(hWindow, Message.WindowsMessage.NCHITTEST, IntPtr.Zero, (IntPtr)((y << 16) | (int)x));
+            return (Message.NCHITTEST.ReturnValues)Message.SendMessage(windowHandle, Message.WindowsMessage.NCHITTEST, IntPtr.Zero, (IntPtr)((y << 16) | (int)x));
         }
 
-        public static void EnableWindow(IntPtr hWindow)
+        public static void EnableWindow(IntPtr windowHandle)
         {
-            Message.SendMessage(hWindow, Message.WindowsMessage.ACTIVATEAPP, (IntPtr)0x01, (IntPtr)0x00);
-            Message.SendMessage(hWindow, Message.WindowsMessage.ACTIVATE, (IntPtr)0x01, (IntPtr)0x00);
-            Message.SendMessage(hWindow, Message.WindowsMessage.IME_SETCONTEXT, (IntPtr)0x01, (IntPtr)0xC000000F);
-            Message.SendMessage(hWindow, Message.WindowsMessage.IME_NOTIFY, (IntPtr)0x02, (IntPtr)0x00);
+            Message.SendMessage(windowHandle, Message.WindowsMessage.ACTIVATEAPP, (IntPtr)0x01, (IntPtr)0x00);
+            Message.SendMessage(windowHandle, Message.WindowsMessage.ACTIVATE, (IntPtr)0x01, (IntPtr)0x00);
+            Message.SendMessage(windowHandle, Message.WindowsMessage.IME_SETCONTEXT, (IntPtr)0x01, (IntPtr)0xC000000F);
+            Message.SendMessage(windowHandle, Message.WindowsMessage.IME_NOTIFY, (IntPtr)0x02, (IntPtr)0x00);
         }
 
-        public static void DisableWindow(IntPtr hWindow)
+        public static void DisableWindow(IntPtr windowHandle)
         {
-            Message.SendMessage(hWindow, Message.WindowsMessage.ACTIVATE, (IntPtr)0x00, (IntPtr)0x00);
-            Message.SendMessage(hWindow, Message.WindowsMessage.ACTIVATEAPP, (IntPtr)0x00, (IntPtr)0x00);
-            Message.SendMessage(hWindow, Message.WindowsMessage.IME_SETCONTEXT, (IntPtr)0x00, (IntPtr)0xC000000F);
-            Message.SendMessage(hWindow, Message.WindowsMessage.IME_NOTIFY, (IntPtr)0x01, (IntPtr)0x00);
+            Message.SendMessage(windowHandle, Message.WindowsMessage.ACTIVATE, (IntPtr)0x00, (IntPtr)0x00);
+            Message.SendMessage(windowHandle, Message.WindowsMessage.ACTIVATEAPP, (IntPtr)0x00, (IntPtr)0x00);
+            Message.SendMessage(windowHandle, Message.WindowsMessage.IME_SETCONTEXT, (IntPtr)0x00, (IntPtr)0xC000000F);
+            Message.SendMessage(windowHandle, Message.WindowsMessage.IME_NOTIFY, (IntPtr)0x01, (IntPtr)0x00);
         }
 
         public void Dispose()

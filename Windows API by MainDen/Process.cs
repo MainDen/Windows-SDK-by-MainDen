@@ -6,7 +6,7 @@ using System.Security;
 namespace MainDen.Windows.API
 {
     // Types | Constants
-    public static partial class Proc
+    public static partial class Process
     {
         [Flags]
         public enum AllocationType
@@ -112,7 +112,7 @@ namespace MainDen.Windows.API
         }
     }
     // Methods
-    public static partial class Proc
+    public static partial class Process
     {
         [DllImport("user32.dll")]
         public static extern bool AttachThreadInput(uint idAttach, uint idAttachTo, bool fAttach);

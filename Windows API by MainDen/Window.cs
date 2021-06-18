@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 namespace MainDen.Windows.API
 {
     // Types | Constants
-    public static partial class Wind
+    public static partial class Window
     {
         [StructLayout(LayoutKind.Sequential)]
         public struct RECT
@@ -141,7 +141,7 @@ namespace MainDen.Windows.API
         }
     }
     // Methods
-    public static partial class Wind
+    public static partial class Window
     {
         [DllImport("user32.dll", SetLastError = true)]
         public static extern IntPtr CreateWindowEx(WindowStylesEx dwExStyle, [MarshalAs(UnmanagedType.LPStr)] string lpClassName, [MarshalAs(UnmanagedType.LPStr)] string lpWindowName, WindowStyles dwStyle, int x, int y, int nWidth, int nHeight, IntPtr hWndParent, IntPtr hMenu, IntPtr hInstance, IntPtr lpParam);

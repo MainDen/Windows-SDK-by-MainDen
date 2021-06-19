@@ -158,11 +158,6 @@ namespace MainDen.Windows.Emulation
             return NonClientHitTest(windowHandle, x, y);
         }
 
-        public void Timer(int timerId = 1)
-        {
-            Timer(windowHandle, timerId);
-        }
-
         public void EnableWindow()
         {
             EnableWindow(windowHandle);
@@ -337,11 +332,6 @@ namespace MainDen.Windows.Emulation
         public static Message.NCHITTEST.ReturnValues NonClientHitTest(IntPtr windowHandle, short x, short y)
         {
             return (Message.NCHITTEST.ReturnValues)Message.SendMessage(windowHandle, Message.WindowsMessage.NCHITTEST, IntPtr.Zero, (IntPtr)((y << 16) | (int)x));
-        }
-
-        public static void Timer(IntPtr windowHandle, int timerId = 1)
-        {
-            Message.PostMessage(windowHandle, Message.WindowsMessage.TIMER, (IntPtr)timerId, IntPtr.Zero);
         }
 
         public static void EnableWindow(IntPtr windowHandle)

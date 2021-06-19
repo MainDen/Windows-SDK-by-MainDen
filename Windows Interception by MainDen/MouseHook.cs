@@ -56,19 +56,27 @@ namespace MainDen.Windows.Interception
                 switch (wm)
                 {
                     case Message.WindowsMessage.LBUTTONDOWN:
+                    case Message.WindowsMessage.NCLBUTTONDOWN:
                     case Message.WindowsMessage.LBUTTONUP:
+                    case Message.WindowsMessage.NCLBUTTONUP:
                         key = Keyboard.VirtualKeyStates.LButton;
                         break;
                     case Message.WindowsMessage.RBUTTONDOWN:
+                    case Message.WindowsMessage.NCRBUTTONDOWN:
                     case Message.WindowsMessage.RBUTTONUP:
+                    case Message.WindowsMessage.NCRBUTTONUP:
                         key = Keyboard.VirtualKeyStates.RButton;
                         break;
                     case Message.WindowsMessage.MBUTTONDOWN:
+                    case Message.WindowsMessage.NCMBUTTONDOWN:
                     case Message.WindowsMessage.MBUTTONUP:
+                    case Message.WindowsMessage.NCMBUTTONUP:
                         key = Keyboard.VirtualKeyStates.MButton;
                         break;
                     case Message.WindowsMessage.XBUTTONDOWN:
+                    case Message.WindowsMessage.NCXBUTTONDOWN:
                     case Message.WindowsMessage.XBUTTONUP:
+                    case Message.WindowsMessage.NCXBUTTONUP:
                         key = (hs.mouseData & 0x10000) != 0 ? Keyboard.VirtualKeyStates.XButton1 : Keyboard.VirtualKeyStates.XButton2;
                         break;
                     default:
@@ -79,15 +87,23 @@ namespace MainDen.Windows.Interception
                 switch (wm)
                 {
                     case Message.WindowsMessage.LBUTTONDOWN:
+                    case Message.WindowsMessage.NCLBUTTONDOWN:
                     case Message.WindowsMessage.RBUTTONDOWN:
+                    case Message.WindowsMessage.NCRBUTTONDOWN:
                     case Message.WindowsMessage.MBUTTONDOWN:
+                    case Message.WindowsMessage.NCMBUTTONDOWN:
                     case Message.WindowsMessage.XBUTTONDOWN:
+                    case Message.WindowsMessage.NCXBUTTONDOWN:
                         status = MouseState.MouseStatus.Down;
                         break;
                     case Message.WindowsMessage.LBUTTONUP:
+                    case Message.WindowsMessage.NCLBUTTONUP:
                     case Message.WindowsMessage.RBUTTONUP:
+                    case Message.WindowsMessage.NCRBUTTONUP:
                     case Message.WindowsMessage.MBUTTONUP:
+                    case Message.WindowsMessage.NCMBUTTONUP:
                     case Message.WindowsMessage.XBUTTONUP:
+                    case Message.WindowsMessage.NCXBUTTONUP:
                         status = MouseState.MouseStatus.Up;
                         break;
                     case Message.WindowsMessage.MOUSEWHEEL:
@@ -95,6 +111,7 @@ namespace MainDen.Windows.Interception
                         status = MouseState.MouseStatus.Wheel;
                         break;
                     case Message.WindowsMessage.MOUSEMOVE:
+                    case Message.WindowsMessage.NCMOUSEMOVE:
                         status = MouseState.MouseStatus.Move;
                         break;
                     default:

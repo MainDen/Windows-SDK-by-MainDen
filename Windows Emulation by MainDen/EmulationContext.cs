@@ -5,6 +5,8 @@ namespace MainDen.Windows.Emulation
 {
     public class EmulationContext : ICloneable
     {
+        public delegate void CharAction(IntPtr windowHandle, char c);
+
         public EmulationContext(IntPtr windowHandle)
         {
             this.windowHandle = windowHandle;
@@ -201,6 +203,16 @@ namespace MainDen.Windows.Emulation
         public IntPtr GetKeyboardLayout()
         {
             return GetKeyboardLayout(windowHandle);
+        }
+
+        public void PostText(string text)
+        {
+            PostText(windowHandle, text);
+        }
+
+        public void PostText(string text, CharAction charAction)
+        {
+            PostText(windowHandle, text, charAction);
         }
 
         public static Keyboard.ScanCodes GetScanCode(Keyboard.VirtualKeyStates virtualKey)
@@ -444,17 +456,41 @@ namespace MainDen.Windows.Emulation
 
         public static IntPtr SetKeyboardLayout(IntPtr keyboardLayoutHandle)
         {
-            return Keyboard.ActivateKeyboardLayout(keyboardLayoutHandle, Keyboard.LayoutFlags.Activate);
+            return Keyboard.ActivateKeyboardLayout(keyboardLayoutHandle,
+                Keyboard.LayoutFlags.Activate | Keyboard.LayoutFlags.ReplaceLang | Keyboard.LayoutFlags.SetForProcess);
         }
 
         public static IntPtr SetNextKeyboardLayout()
         {
-            return Keyboard.ActivateKeyboardLayout(Keyboard.LayoutHandle.Next, Keyboard.LayoutFlags.Activate);
+            return Keyboard.ActivateKeyboardLayout(Keyboard.LayoutHandle.Next,
+                Keyboard.LayoutFlags.Activate | Keyboard.LayoutFlags.ReplaceLang | Keyboard.LayoutFlags.SetForProcess);
         }
 
         public static IntPtr SetPreviousKeyboardLayout()
         {
-            return Keyboard.ActivateKeyboardLayout(Keyboard.LayoutHandle.Previous, Keyboard.LayoutFlags.Activate);
+            return Keyboard.ActivateKeyboardLayout(Keyboard.LayoutHandle.Previous,
+                Keyboard.LayoutFlags.Activate | Keyboard.LayoutFlags.ReplaceLang | Keyboard.LayoutFlags.SetForProcess);
+        }
+
+        public static void PostText(IntPtr windowHandle, string text)
+        {
+            if (text is null)
+                throw new ArgumentNullException(nameof(text));
+
+            foreach (var c in text)
+                CharDown(windowHandle, c);
+        }
+
+        public static void PostText(IntPtr windowHandle, string text, CharAction charAction)
+        {
+            if (text is null)
+                throw new ArgumentNullException(nameof(text));
+
+            if (charAction is null)
+                throw new ArgumentNullException(nameof(charAction));
+
+            foreach (var c in text)
+                charAction?.Invoke(windowHandle, c);
         }
 
         public object Clone()

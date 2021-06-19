@@ -63,6 +63,21 @@ namespace MainDen.Windows.Emulation
             SysKeyHold(virtualKey, GetScanCode(virtualKey), repeatCount);
         }
 
+        public void CharDown(char c, ushort repeatCount = 1)
+        {
+            CharDown(c, GetScanCode(c), repeatCount);
+        }
+
+        public void CharUp(char c, ushort repeatCount = 1)
+        {
+            CharUp(c, GetScanCode(c), repeatCount);
+        }
+
+        public void CharHold(char c, ushort repeatCount = 1)
+        {
+            CharHold(c, GetScanCode(c), repeatCount);
+        }
+
         public void KeyDown(Keyboard.VirtualKeyStates virtualKey, Keyboard.ScanCodes scanCode, ushort repeatCount = 1)
         {
             KeyDown(windowHandle, virtualKey, scanCode, repeatCount);
@@ -91,6 +106,21 @@ namespace MainDen.Windows.Emulation
         public void SysKeyHold(Keyboard.VirtualKeyStates virtualKey, Keyboard.ScanCodes scanCode, ushort repeatCount = 1)
         {
             SysKeyHold(windowHandle, virtualKey, scanCode, repeatCount);
+        }
+
+        public void CharDown(char c, Keyboard.ScanCodes scanCode, ushort repeatCount = 1)
+        {
+            CharDown(windowHandle, c, scanCode, repeatCount);
+        }
+
+        public void CharUp(char c, Keyboard.ScanCodes scanCode, ushort repeatCount = 1)
+        {
+            CharUp(windowHandle, c, scanCode, repeatCount);
+        }
+
+        public void CharHold(char c, Keyboard.ScanCodes scanCode, ushort repeatCount = 1)
+        {
+            CharHold(windowHandle, c, scanCode, repeatCount);
         }
 
         public void LButtonDown(short x, short y)
@@ -167,12 +197,24 @@ namespace MainDen.Windows.Emulation
         {
             DisableWindow(windowHandle);
         }
+        
+        public IntPtr GetKeyboardLayout()
+        {
+            return GetKeyboardLayout(windowHandle);
+        }
 
         public static Keyboard.ScanCodes GetScanCode(Keyboard.VirtualKeyStates virtualKey)
         {
             Keyboard.ScanCodes scanCode;
             if (!Enum.TryParse((virtualKey & Keyboard.VirtualKeyStates.KeyCode).ToString(), out scanCode))
                 scanCode = 0;
+            return scanCode;
+        }
+
+        public static Keyboard.ScanCodes GetScanCode(char c)
+        {
+            Keyboard.ScanCodes scanCode;
+            scanCode = 0;
             return scanCode;
         }
 
@@ -239,6 +281,36 @@ namespace MainDen.Windows.Emulation
                 ) << 16) | repeatCount));
         }
 
+        public static void CharDown(IntPtr windowHandle, char c, Keyboard.ScanCodes scanCode, ushort repeatCount = 1)
+        {
+            Message.PostMessage(windowHandle, Message.WindowsMessage.CHAR, (IntPtr)c,
+                (IntPtr)(((int)(
+                scanCode & Keyboard.ScanCodes.ScanCode |
+                scanCode & Keyboard.ScanCodes.Extended
+                ) << 16) | repeatCount));
+        }
+
+        public static void CharUp(IntPtr windowHandle, char c, Keyboard.ScanCodes scanCode, ushort repeatCount = 1)
+        {
+            Message.PostMessage(windowHandle, Message.WindowsMessage.DEADCHAR, (IntPtr)c,
+                (IntPtr)(((int)(
+                scanCode & Keyboard.ScanCodes.ScanCode |
+                scanCode & Keyboard.ScanCodes.Extended |
+                Keyboard.ScanCodes.Pressed |
+                Keyboard.ScanCodes.Transition
+                ) << 16) | repeatCount));
+        }
+
+        public static void CharHold(IntPtr windowHandle, char c, Keyboard.ScanCodes scanCode, ushort repeatCount = 1)
+        {
+            Message.PostMessage(windowHandle, Message.WindowsMessage.CHAR, (IntPtr)c,
+                (IntPtr)(((int)(
+                scanCode & Keyboard.ScanCodes.ScanCode |
+                scanCode & Keyboard.ScanCodes.Extended |
+                Keyboard.ScanCodes.Pressed
+                ) << 16) | repeatCount));
+        }
+
         public static void KeyDown(IntPtr windowHandle, Keyboard.VirtualKeyStates virtualKey, ushort repeatCount = 1)
         {
             KeyDown(windowHandle, virtualKey, GetScanCode(virtualKey), repeatCount);
@@ -267,6 +339,21 @@ namespace MainDen.Windows.Emulation
         public static void SysKeyHold(IntPtr windowHandle, Keyboard.VirtualKeyStates virtualKey, ushort repeatCount = 1)
         {
             SysKeyHold(windowHandle, virtualKey, GetScanCode(virtualKey), repeatCount);
+        }
+
+        public static void CharDown(IntPtr windowHandle, char c, ushort repeatCount = 1)
+        {
+            CharDown(windowHandle, c, GetScanCode(c), repeatCount);
+        }
+
+        public static void CharUp(IntPtr windowHandle, char c, ushort repeatCount = 1)
+        {
+            CharUp(windowHandle, c, GetScanCode(c), repeatCount);
+        }
+
+        public static void CharHold(IntPtr windowHandle, char c, ushort repeatCount = 1)
+        {
+            CharHold(windowHandle, c, GetScanCode(c), repeatCount);
         }
 
         public static void LButtonDown(IntPtr windowHandle, short x, short y)
@@ -348,6 +435,26 @@ namespace MainDen.Windows.Emulation
             Message.SendMessage(windowHandle, Message.WindowsMessage.ACTIVATEAPP, (IntPtr)0x00, (IntPtr)0x00);
             Message.SendMessage(windowHandle, Message.WindowsMessage.IME_SETCONTEXT, (IntPtr)0x00, (IntPtr)0xC000000F);
             Message.SendMessage(windowHandle, Message.WindowsMessage.IME_NOTIFY, (IntPtr)0x01, (IntPtr)0x00);
+        }
+
+        public static IntPtr GetKeyboardLayout(IntPtr windowHandle)
+        {
+            return Keyboard.GetKeyboardLayout(Window.GetWindowThreadProcessId(windowHandle, out _));
+        }
+
+        public static IntPtr SetKeyboardLayout(IntPtr keyboardLayoutHandle)
+        {
+            return Keyboard.ActivateKeyboardLayout(keyboardLayoutHandle, Keyboard.LayoutFlags.Activate);
+        }
+
+        public static IntPtr SetNextKeyboardLayout()
+        {
+            return Keyboard.ActivateKeyboardLayout(Keyboard.LayoutHandle.Next, Keyboard.LayoutFlags.Activate);
+        }
+
+        public static IntPtr SetPreviousKeyboardLayout()
+        {
+            return Keyboard.ActivateKeyboardLayout(Keyboard.LayoutHandle.Previous, Keyboard.LayoutFlags.Activate);
         }
 
         public object Clone()

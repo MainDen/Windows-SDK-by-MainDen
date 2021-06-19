@@ -9,7 +9,7 @@ namespace MainDen.Windows.Emulation
         {
             this.windowHandle = windowHandle;
         }
-
+        
         public EmulationContext(EmulationContext emulationContext)
         {
             lock (emulationContext.lSettings)

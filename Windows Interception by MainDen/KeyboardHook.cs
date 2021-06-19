@@ -7,22 +7,22 @@ namespace MainDen.Windows.Interception
     public class KeyboardHook : IDisposable
     {
         public delegate void EventHandler(object sender, KeyboardState state);
-        public KeyboardHook(Keyboard.VirtualKeyStates vkCode = Keyboard.VirtualKeyStates.None, bool callNextHook = true)
+        public delegate bool CallNextHookPredicate(object sender, KeyboardState state);
+        public KeyboardHook(Keyboard.VirtualKeyStates vkCode = Keyboard.VirtualKeyStates.None)
         {
             _kProc = KeyHookProc;
             _key = (int)vkCode;
-            _callNextHook = callNextHook;
         }
         public event EventHandler KeyAny;
         public event EventHandler KeyDown;
         public event EventHandler KeyHold;
         public event EventHandler KeyPress;
         public event EventHandler KeyUp;
+        public event CallNextHookPredicate CallNextHook;
         private readonly object lSettings = new object();
         private Hook.HookProc _kProc;
         private IntPtr _kHHook = IntPtr.Zero;
         private int _key;
-        private bool _callNextHook;
         public bool SetHook()
         {
             lock (lSettings)
@@ -93,7 +93,7 @@ namespace MainDen.Windows.Interception
                         KeyAny?.Invoke(this, ks);
                         break;
                 }
-                if (_callNextHook)
+                if (CallNextHook is null || CallNextHook(this, ks))
                     return Hook.CallNextHookEx(_kHHook, nCode, wParam, lParam);
                 else
                     return _kHHook;

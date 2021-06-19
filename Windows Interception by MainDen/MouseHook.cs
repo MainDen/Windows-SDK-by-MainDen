@@ -7,20 +7,20 @@ namespace MainDen.Windows.Interception
     public class MouseHook : IDisposable
     {
         public delegate void EventHandler(object sender, MouseState state);
-        public MouseHook(bool callNextHook = true)
+        public delegate bool CallNextHookPredicate(object sender, MouseState state);
+        public MouseHook()
         {
             _mProc = MouseHookProc;
-            _callNextHook = callNextHook;
         }
         public event EventHandler MouseAny;
         public event EventHandler MouseDown;
         public event EventHandler MouseUp;
         public event EventHandler MouseWheel;
         public event EventHandler MouseMove;
+        public event CallNextHookPredicate CallNextHook;
         private readonly object lSettings = new object();
         private Hook.HookProc _mProc;
         private IntPtr _mHHook = IntPtr.Zero;
-        private bool _callNextHook;
         public bool SetHook()
         {
             lock (lSettings)
@@ -141,7 +141,7 @@ namespace MainDen.Windows.Interception
                         MouseAny?.Invoke(this, ms);
                         break;
                 }
-                if (_callNextHook)
+                if (CallNextHook is null || CallNextHook(this, ms))
                     return Hook.CallNextHookEx(_mHHook, nCode, wParam, lParam);
                 else
                     return _mHHook;

@@ -309,7 +309,7 @@ namespace MainDen.Windows.Interception
         }
         public override bool Equals(object o)
         {
-            KeyboardState state = o as KeyboardState;
+            MouseState state = o as MouseState;
             return Equals(state);
         }
         public override string ToString()

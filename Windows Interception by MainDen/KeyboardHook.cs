@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 
 namespace MainDen.Windows.Interception
 {
-    public class KeyboardHook : IDisposable
+    public class KeyboardHook
     {
         public delegate void EventHandler(object sender, KeyboardState state);
         public delegate bool CallNextHookPredicate(object sender, KeyboardState state);

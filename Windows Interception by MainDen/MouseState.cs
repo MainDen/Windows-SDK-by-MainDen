@@ -199,7 +199,7 @@ namespace MainDen.Windows.Interception
                 state._Key != Keyboard.VirtualKeyStates.None &&
                 _Key != state._Key) || _Status != state._Status)
                 return false;
-            if (_X != state._X || _Y != state._Y || _Wheel != state._Wheel || _HWheel != state._HWheel)
+            if (_Wheel != state._Wheel || _HWheel != state._HWheel)
                 return false;
             switch (mode)
             {

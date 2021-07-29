@@ -47,7 +47,7 @@ namespace MainDen.Windows.API
     {
         [DllImport("user32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
-        static extern bool GetCursorPos(out POINT lpPoint);
+        public static extern bool GetCursorPos(out POINT lpPoint);
         [DllImport("user32.dll")]
         public static extern void mouse_event(MouseEventFlags dwFlags, int dx, int dy, MouseEventData dwData, UIntPtr dwExtraInfo);
     }

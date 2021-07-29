@@ -12,6 +12,10 @@ namespace MainDen.Windows.Interception
         {
             _key = (int)vkCode;
         }
+        ~KeyboardHook()
+        {
+            Unhook();
+        }
         public event EventHandler KeyAny;
         public event EventHandler KeyDown;
         public event EventHandler KeyHold;
@@ -32,11 +36,6 @@ namespace MainDen.Windows.Interception
                 }
                 return false;
             }
-        }
-        public void Dispose()
-        {
-            Unhook();
-            GC.SuppressFinalize(this);
         }
         public bool Unhook()
         {

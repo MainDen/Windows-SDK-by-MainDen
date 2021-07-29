@@ -4,12 +4,16 @@ using System.Runtime.InteropServices;
 
 namespace MainDen.Windows.Interception
 {
-    public class MouseHook : IDisposable
+    public class MouseHook
     {
         public delegate void EventHandler(object sender, MouseState state);
         public delegate bool CallNextHookPredicate(object sender, MouseState state);
         public MouseHook()
         {
+        }
+        ~MouseHook()
+        {
+            Unhook();
         }
         public event EventHandler MouseAny;
         public event EventHandler MouseDown;
@@ -30,10 +34,6 @@ namespace MainDen.Windows.Interception
                 }
                 return false;
             }
-        }
-        public void Dispose()
-        {
-            Unhook();
         }
         public bool Unhook()
         {

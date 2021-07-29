@@ -358,20 +358,17 @@ namespace MainDen.Windows.Interception
             for (int i = 0; i < count; ++i)
                 words[i] = matches[i].Value;
             int last = count - 1;
-            MouseStatus staus;
-            if (last >= 0 && Enum.TryParse(words[last], out staus))
+            if (last >= 0 && Enum.TryParse(words[last], out MouseStatus staus))
                 --last;
             else
                 throw new FormatException();
-            Keyboard.VirtualKeyStates key;
-            if (last >= 0 && Enum.TryParse(words[last], out key))
+            if (last >= 0 && Enum.TryParse(words[last], out Keyboard.VirtualKeyStates key))
                 --last;
             else
                 throw new FormatException();
             MouseModifiers modifiers = MouseModifiers.None;
-            MouseModifiers modifier;
             for (int i = 0; i <= last; i++)
-                if (Enum.TryParse(words[i], out modifier))
+                if (Enum.TryParse(words[i], out MouseModifiers modifier))
                     modifiers |= modifier;
                 else
                     throw new FormatException();

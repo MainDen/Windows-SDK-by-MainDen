@@ -296,8 +296,7 @@ namespace MainDen.Windows.Interception
             for (int i = 0; i < count; ++i)
                 words[i] = matches[i].Value;
             int last = count - 1;
-            KeyStatus staus;
-            if (last >= 0 && Enum.TryParse(words[last], out staus))
+            if (last >= 0 && Enum.TryParse(words[last], out KeyStatus staus))
                 --last;
             else
                 throw new FormatException();
@@ -316,9 +315,8 @@ namespace MainDen.Windows.Interception
             else
                 throw new FormatException();
             KeyModifiers modifiers = KeyModifiers.None;
-            KeyModifiers modifier;
             for (int i = 0; i <= last; i++)
-                if (Enum.TryParse(words[i], out modifier))
+                if (Enum.TryParse(words[i], out KeyModifiers modifier))
                     modifiers |= modifier;
                 else
                     throw new FormatException();

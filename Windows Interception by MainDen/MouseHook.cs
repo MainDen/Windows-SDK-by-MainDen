@@ -10,7 +10,6 @@ namespace MainDen.Windows.Interception
         public delegate bool CallNextHookPredicate(object sender, MouseState state);
         public MouseHook()
         {
-            _mProc = MouseHookProc;
         }
         public event EventHandler MouseAny;
         public event EventHandler MouseDown;
@@ -19,7 +18,6 @@ namespace MainDen.Windows.Interception
         public event EventHandler MouseMove;
         public event CallNextHookPredicate CallNextHook;
         private readonly object lSettings = new object();
-        private Hook.HookProc _mProc;
         private IntPtr _mHHook = IntPtr.Zero;
         public bool SetHook()
         {
@@ -27,7 +25,7 @@ namespace MainDen.Windows.Interception
             {
                 if (Unhook())
                 {
-                    _mHHook = Hook.SetWindowsHookEx(Hook.HookType.WH_MOUSE_LL, _mProc, IntPtr.Zero, 0);
+                    _mHHook = Hook.SetWindowsHookEx(Hook.HookType.WH_MOUSE_LL, MouseHookProc, IntPtr.Zero, 0);
                     return _mHHook != IntPtr.Zero;
                 }
                 return false;

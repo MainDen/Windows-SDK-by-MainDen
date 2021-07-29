@@ -10,7 +10,6 @@ namespace MainDen.Windows.Interception
         public delegate bool CallNextHookPredicate(object sender, KeyboardState state);
         public KeyboardHook(Keyboard.VirtualKeyStates vkCode = Keyboard.VirtualKeyStates.None)
         {
-            _kProc = KeyHookProc;
             _key = (int)vkCode;
         }
         public event EventHandler KeyAny;
@@ -20,16 +19,15 @@ namespace MainDen.Windows.Interception
         public event EventHandler KeyUp;
         public event CallNextHookPredicate CallNextHook;
         private readonly object lSettings = new object();
-        private Hook.HookProc _kProc;
         private IntPtr _kHHook = IntPtr.Zero;
-        private int _key;
+        private readonly int _key;
         public bool SetHook()
         {
             lock (lSettings)
             {
                 if (Unhook())
                 {
-                    _kHHook = Hook.SetWindowsHookEx(Hook.HookType.WH_KEYBOARD_LL, _kProc, IntPtr.Zero, 0);
+                    _kHHook = Hook.SetWindowsHookEx(Hook.HookType.WH_KEYBOARD_LL, KeyHookProc, IntPtr.Zero, 0);
                     return _kHHook != IntPtr.Zero;
                 }
                 return false;
@@ -38,6 +36,7 @@ namespace MainDen.Windows.Interception
         public void Dispose()
         {
             Unhook();
+            GC.SuppressFinalize(this);
         }
         public bool Unhook()
         {

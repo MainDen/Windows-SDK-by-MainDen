@@ -10,8 +10,7 @@ namespace MainDen.Windows.Emulation
         public IntPtr CaptureWindow()
         {
             IntPtr hSource = Window.GetWindowDC(windowHandle);
-            Window.RECT windowRect;
-            Window.GetWindowRect(windowHandle, out windowRect);
+            Window.GetWindowRect(windowHandle, out Window.RECT windowRect);
             int width = windowRect.Width;
             int height = windowRect.Height;
             IntPtr hDest = GDI.CreateCompatibleDC(hSource);

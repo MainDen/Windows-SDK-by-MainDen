@@ -94,7 +94,7 @@ namespace MainDen.Windows.Interception
         }
         private readonly Keyboard.VirtualKeyStates _Key;
         private readonly MouseStatus _Status;
-        private readonly MouseModifiers _Modifiers;
+        private MouseModifiers _Modifiers;
         private readonly int _X;
         private readonly int _Y;
         private readonly int _Wheel;

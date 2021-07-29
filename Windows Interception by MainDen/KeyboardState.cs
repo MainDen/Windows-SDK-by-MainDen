@@ -73,8 +73,8 @@ namespace MainDen.Windows.Interception
         }
         private readonly Keyboard.VirtualKeyStates _Key;
         private readonly Keyboard.ScanCodes _ScanCode;
-        private readonly KeyStatus _Status;
-        private readonly KeyModifiers _Modifiers;
+        private KeyStatus _Status;
+        private KeyModifiers _Modifiers;
         private readonly TimeSpan _Time;
         public Keyboard.VirtualKeyStates Key { get => _Key; }
         public Keyboard.ScanCodes ScanCode { get => _ScanCode; }

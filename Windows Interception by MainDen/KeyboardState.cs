@@ -14,17 +14,17 @@ namespace MainDen.Windows.Interception
             Down = 1,
             Up = 2,
             Hold = 3,
-            NONE = 0,
-            DOWN = 1,
-            UP = 2,
-            HOLD = 3,
+            NONE = None,
+            DOWN = Down,
+            UP = Up,
+            HOLD = Hold,
         }
         public enum KeyMode
         {
             Default = 0,
             Simple = 1,
-            DEFAULT = 0,
-            SIMPLE = 1,
+            DEFAULT = Default,
+            SIMPLE = Simple,
         }
         [Flags]
         public enum KeyModifiers
@@ -38,15 +38,15 @@ namespace MainDen.Windows.Interception
             RCtrl = 0x0020,
             LAlt = 0x0040,
             RAlt = 0x0080,
-            NONE = 0X0000,
-            LWIN = 0X0001,
-            RWIN = 0X0002,
-            LSHIFT = 0X0004,
-            RSHIFT = 0X0008,
-            LCTRL = 0X0010,
-            RCTRL = 0X0020,
-            LALT = 0X0040,
-            RALT = 0X0080,
+            NONE = None,
+            LWIN = LWin,
+            RWIN = RWin,
+            LSHIFT = LShift,
+            RSHIFT = RShift,
+            LCTRL = LCtrl,
+            RCTRL = RCtrl,
+            LALT = LAlt,
+            RALT = RAlt,
         }
         public KeyboardState(
             Keyboard.VirtualKeyStates key = Keyboard.VirtualKeyStates.None,

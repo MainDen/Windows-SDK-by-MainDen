@@ -92,14 +92,14 @@ namespace MainDen.Windows.Interception
             _HWheel = state._HWheel;
             _Time = state._Time;
         }
-        private Keyboard.VirtualKeyStates _Key;
-        private MouseStatus _Status;
-        private MouseModifiers _Modifiers;
-        private int _X;
-        private int _Y;
-        private int _Wheel;
-        private int _HWheel;
-        private TimeSpan _Time;
+        private readonly Keyboard.VirtualKeyStates _Key;
+        private readonly MouseStatus _Status;
+        private readonly MouseModifiers _Modifiers;
+        private readonly int _X;
+        private readonly int _Y;
+        private readonly int _Wheel;
+        private readonly int _HWheel;
+        private readonly TimeSpan _Time;
         public Keyboard.VirtualKeyStates Key { get => _Key; }
         public MouseStatus Status { get => _Status; }
         public MouseModifiers Modifiers { get => _Modifiers; }

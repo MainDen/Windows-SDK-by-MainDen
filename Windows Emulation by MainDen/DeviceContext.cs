@@ -9,14 +9,19 @@ namespace MainDen.Windows.Emulation
 
         public IntPtr CaptureWindow()
         {
+            return CaptureWindow(0, 0, 0, 0);
+        }
+
+        public IntPtr CaptureWindow(int cropLeft, int cropTop, int cropRight, int cropBottom)
+        {
             IntPtr hSource = Window.GetWindowDC(windowHandle);
             Window.GetWindowRect(windowHandle, out Window.RECT windowRect);
-            int width = windowRect.Width;
-            int height = windowRect.Height;
+            int width = Math.Max(0, windowRect.Width - (cropLeft + cropRight));
+            int height = Math.Max(0, windowRect.Height - (cropTop + cropBottom));
             IntPtr hDest = GDI.CreateCompatibleDC(hSource);
             IntPtr hBitmap = GDI.CreateCompatibleBitmap(hSource, width, height);
             IntPtr hOld = GDI.SelectObject(hDest, hBitmap);
-            GDI.BitBlt(hDest, 0, 0, width, height, hSource, 0, 0, GDI.SRCCOPY);
+            GDI.BitBlt(hDest, 0, 0, width, height, hSource, cropLeft, cropTop, GDI.SRCCOPY);
             GDI.SelectObject(hDest, hOld);
             GDI.DeleteDC(hDest);
             Window.ReleaseDC(windowHandle, hSource);

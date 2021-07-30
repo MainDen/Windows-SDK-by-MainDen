@@ -15,18 +15,11 @@ namespace MainDen.Windows.Interception
             Up = 2,
             Wheel = 3,
             Move = 4,
-            NONE = None,
-            DOWN = Down,
-            UP = Up,
-            WHEEL = Wheel,
-            MOVE = Move,
         }
         public enum KeyMode
         {
             Default = 0,
             Simple = 1,
-            DEFAULT = Default,
-            SIMPLE = Simple,
         }
         [Flags]
         public enum MouseModifiers
@@ -45,20 +38,6 @@ namespace MainDen.Windows.Interception
             MButton = 0x0400,
             XButton1 = 0x0800,
             XButton2 = 0x1000,
-            NONE = None,
-            LWIN = LWin,
-            RWIN = RWin,
-            LSHIFT = LShift,
-            RSHIFT = RShift,
-            LCTRL = LCtrl,
-            RCTRL = RCtrl,
-            LALT = LAlt,
-            RALT = RAlt,
-            LBUTTON = LButton,
-            RBUTTON = RButton,
-            MBUTTON = MButton,
-            XBUTTON1 = XButton1,
-            XBUTTON2 = XButton2,
         }
         public MouseState(
             Keyboard.VirtualKeyStates key = Keyboard.VirtualKeyStates.None,

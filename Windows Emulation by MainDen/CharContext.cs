@@ -10,19 +10,19 @@ namespace MainDen.Windows.Emulation
         public void Up(char ch)
         {
             var scanCode = GetScanCode(ch) | Keyboard.ScanCodes.Pressed | Keyboard.ScanCodes.Transition;
-            Message.PostMessage(windowHandle, Message.WindowsMessage.KEYUP, (IntPtr)ch, GetLParam(scanCode));
+            Message.PostMessage(windowHandle, Message.WindowsMessage.CHAR, (IntPtr)ch, GetLParam(scanCode));
         }
 
         public void Down(char ch)
         {
             var scanCode = GetScanCode(ch);
-            Message.PostMessage(windowHandle, Message.WindowsMessage.KEYDOWN, (IntPtr)ch, GetLParam(scanCode));
+            Message.PostMessage(windowHandle, Message.WindowsMessage.CHAR, (IntPtr)ch, GetLParam(scanCode));
         }
 
         public void Hold(char ch)
         {
             var scanCode = GetScanCode(ch) | Keyboard.ScanCodes.Pressed;
-            Message.PostMessage(windowHandle, Message.WindowsMessage.KEYDOWN, (IntPtr)ch, GetLParam(scanCode));
+            Message.PostMessage(windowHandle, Message.WindowsMessage.CHAR, (IntPtr)ch, GetLParam(scanCode));
         }
 
         public static Keyboard.ScanCodes GetScanCode(char ch)

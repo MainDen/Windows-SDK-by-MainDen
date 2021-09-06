@@ -64,6 +64,25 @@ namespace MainDen.Windows.API
                 return string.Format(System.Globalization.CultureInfo.CurrentCulture, "{{Left={0},Top={1},Right={2},Bottom={3}}}", Left, Top, Right, Bottom);
             }
         }
+        [Flags]
+        public enum SetWindowPosFlags
+        {
+            NoSize = 0x0001,
+            NoMove = 0x0002,
+            NoZOrder = 0x0004,
+            NoRedraw = 0x0008,
+            NoActivatE = 0x0010,
+            DrawFrame = 0x0020,
+            FrameChanged = 0x0020,
+            ShowWindow = 0x0040,
+            HideWindow = 0x0080,
+            NoCopyBits = 0x0100,
+            NoOwnerZOrder = 0x0200,
+            NoReposition = 0x0200,
+            NoSendChanging = 0x0400,
+            DefErerase = 0x2000,
+            AsyncWindowPos = 0x4000,
+        }
         [StructLayout(LayoutKind.Sequential)]
         public struct WINDOWINFO
         {
@@ -81,6 +100,13 @@ namespace MainDen.Windows.API
             {
                 cbSize = (UInt32)(Marshal.SizeOf(typeof(WINDOWINFO)));
             }
+        }
+        public static class InsertAfter
+        {
+            public static readonly IntPtr TopMost = new IntPtr(-1);
+            public static readonly IntPtr NoTopMost = new IntPtr(-2);
+            public static readonly IntPtr Top = new IntPtr(0);
+            public static readonly IntPtr Bottom = new IntPtr(1);
         }
         [Flags()]
         public enum WindowStyles : uint
@@ -173,6 +199,8 @@ namespace MainDen.Windows.API
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool SetForegroundWindow(IntPtr hWnd);
+        [DllImport("user32.dll", SetLastError = true)]
+        public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int y, int width, int height, SetWindowPosFlags uFlags);
         [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
         public static extern bool SetWindowText(IntPtr hWnd, string lpString);
     }

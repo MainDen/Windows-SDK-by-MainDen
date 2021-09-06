@@ -7,12 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Windows API by MainDen", "W
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Windows Interception by MainDen", "Windows Interception by MainDen\Windows Interception by MainDen.csproj", "{840B9EF4-C11A-4BCF-8D02-69C1618AF723}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Testing Console", "Testing Console\Testing Console.csproj", "{1891B1AB-4370-4695-A92B-94BD1C85CD62}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Testing Form", "Testing Form\Testing Form.csproj", "{BA623F8E-D1B3-4D4E-92C5-A7DA5FA41E24}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Testing App MC", "Testing App MC\Testing App MC.csproj", "{AFE9A00E-BE95-40DC-9554-0E68A31C87F0}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Windows Emulation by MainDen", "Windows Emulation by MainDen\Windows Emulation by MainDen.csproj", "{6AA8DD82-3087-40F6-949A-88A9E60E44B3}"
 EndProject
 Global
@@ -29,18 +23,6 @@ Global
 		{840B9EF4-C11A-4BCF-8D02-69C1618AF723}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{840B9EF4-C11A-4BCF-8D02-69C1618AF723}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{840B9EF4-C11A-4BCF-8D02-69C1618AF723}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1891B1AB-4370-4695-A92B-94BD1C85CD62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1891B1AB-4370-4695-A92B-94BD1C85CD62}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1891B1AB-4370-4695-A92B-94BD1C85CD62}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1891B1AB-4370-4695-A92B-94BD1C85CD62}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BA623F8E-D1B3-4D4E-92C5-A7DA5FA41E24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BA623F8E-D1B3-4D4E-92C5-A7DA5FA41E24}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BA623F8E-D1B3-4D4E-92C5-A7DA5FA41E24}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BA623F8E-D1B3-4D4E-92C5-A7DA5FA41E24}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AFE9A00E-BE95-40DC-9554-0E68A31C87F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AFE9A00E-BE95-40DC-9554-0E68A31C87F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AFE9A00E-BE95-40DC-9554-0E68A31C87F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AFE9A00E-BE95-40DC-9554-0E68A31C87F0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6AA8DD82-3087-40F6-949A-88A9E60E44B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6AA8DD82-3087-40F6-949A-88A9E60E44B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6AA8DD82-3087-40F6-949A-88A9E60E44B3}.Release|Any CPU.ActiveCfg = Release|Any CPU

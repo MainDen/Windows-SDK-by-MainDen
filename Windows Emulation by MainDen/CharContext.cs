@@ -5,24 +5,22 @@ namespace MainDen.Windows.Emulation
 {
     public class CharContext : BaseContext
     {
-        public CharContext(BaseContext context) : base(context) { }
-
         public void Up(char ch)
         {
             var scanCode = GetScanCode(ch) | Keyboard.ScanCodes.Pressed | Keyboard.ScanCodes.Transition;
-            Message.PostMessage(windowHandle, Message.WindowsMessage.CHAR, (IntPtr)ch, GetLParam(scanCode));
+            Message.PostMessage(WindowHandle, Message.WindowsMessage.CHAR, (IntPtr)ch, GetLParam(scanCode));
         }
 
         public void Down(char ch)
         {
             var scanCode = GetScanCode(ch);
-            Message.PostMessage(windowHandle, Message.WindowsMessage.CHAR, (IntPtr)ch, GetLParam(scanCode));
+            Message.PostMessage(WindowHandle, Message.WindowsMessage.CHAR, (IntPtr)ch, GetLParam(scanCode));
         }
 
         public void Hold(char ch)
         {
             var scanCode = GetScanCode(ch) | Keyboard.ScanCodes.Pressed;
-            Message.PostMessage(windowHandle, Message.WindowsMessage.CHAR, (IntPtr)ch, GetLParam(scanCode));
+            Message.PostMessage(WindowHandle, Message.WindowsMessage.CHAR, (IntPtr)ch, GetLParam(scanCode));
         }
 
         public static Keyboard.ScanCodes GetScanCode(char ch)

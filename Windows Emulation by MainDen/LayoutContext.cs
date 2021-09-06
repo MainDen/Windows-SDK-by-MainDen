@@ -5,13 +5,11 @@ namespace MainDen.Windows.Emulation
 {
     public class LayoutContext : BaseContext
     {
-        public LayoutContext(BaseContext context) : base(context) { }
-
-        public IntPtr Handle
+        public IntPtr LocaleIdentifier
         {
             get
             {
-                return Keyboard.GetKeyboardLayout(Window.GetWindowThreadProcessId(windowHandle, out _));
+                return Keyboard.GetKeyboardLayout(Window.GetWindowThreadProcessId(WindowHandle, out _));
             }
             set
             {

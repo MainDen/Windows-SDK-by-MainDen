@@ -4,8 +4,6 @@ namespace MainDen.Windows.Emulation
 {
     public abstract class ButtonContext : BaseContext
     {
-        public ButtonContext(BaseContext context) : base(context) { }
-
         public abstract void Up(short x, short y);
 
         public abstract void Down(short x, short y);

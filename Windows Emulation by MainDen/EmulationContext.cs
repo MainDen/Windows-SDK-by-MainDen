@@ -2,16 +2,12 @@
 {
     public class EmulationContext : BaseContext
     {
-        public EmulationContext() : base() { }
+        public DeviceContext Device => new DeviceContext { WindowHandle = WindowHandle };
 
-        public EmulationContext(BaseContext context) : base(context) { }
+        public KeyboardContext Keyboard => new KeyboardContext { WindowHandle = WindowHandle };
 
-        public DeviceContext Device => new DeviceContext(this);
+        public MouseContext Mouse => new MouseContext { WindowHandle = WindowHandle };
 
-        public KeyboardContext Keyboard => new KeyboardContext(this);
-
-        public MouseContext Mouse => new MouseContext(this);
-
-        public WindowContext Window => new WindowContext(this);
+        public WindowContext Window => new WindowContext { WindowHandle = WindowHandle };
     }
 }

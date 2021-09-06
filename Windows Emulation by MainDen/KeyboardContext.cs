@@ -4,15 +4,13 @@ namespace MainDen.Windows.Emulation
 {
     public class KeyboardContext : BaseContext
     {
-        public KeyboardContext(BaseContext context) : base(context) { }
+        public KeyContext Key => new KeyContext { WindowHandle = WindowHandle };
 
-        public KeyContext Key => new KeyContext(this);
+        public KeyContext SysKey => new SysKeyContext { WindowHandle = WindowHandle };
 
-        public KeyContext SysKey => new SysKeyContext(this);
+        public CharContext Char => new CharContext { WindowHandle = WindowHandle };
 
-        public CharContext Char => new CharContext(this);
-
-        public LayoutContext Layout => new LayoutContext(this);
+        public LayoutContext Layout => new LayoutContext { WindowHandle = WindowHandle };
 
         public void TypeText(string text)
         {

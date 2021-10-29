@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <RootNamespace>MainDen.Windows.Interception</RootNamespace>
-    <AssemblyName>Windows.Interception.by.MainDen</AssemblyName>
+    <AssemblyName>MainDen.Windows.Interception</AssemblyName>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

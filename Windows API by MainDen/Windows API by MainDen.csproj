@@ -1,9 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFrameworks>net5.0</TargetFrameworks>
     <RootNamespace>MainDen.Windows.API</RootNamespace>
     <AssemblyName>MainDen.Windows.API</AssemblyName>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <RuntimeIdentifiers>win</RuntimeIdentifiers>
+  </PropertyGroup>
+  
+  <PropertyGroup>
+    <PackageId>MainDen.Windows.API</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>MainDen</Authors>
   </PropertyGroup>
 
 </Project>

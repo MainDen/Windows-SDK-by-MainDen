@@ -446,7 +446,7 @@ namespace MainDen.Windows.Interception
         #region ReadType
         public static Boolean ReadBoolean(IntPtr processHandle, IntPtr address)
         {
-            return BitConverter.ToBoolean(Read(processHandle, address, sizeof(Boolean)));
+            return BitConverter.ToBoolean(Read(processHandle, address, sizeof(Boolean)), 0);
         }
 
         public static Byte ReadByte(IntPtr processHandle, IntPtr address)
@@ -456,27 +456,27 @@ namespace MainDen.Windows.Interception
 
         public static Char ReadChar(IntPtr processHandle, IntPtr address)
         {
-            return BitConverter.ToChar(Read(processHandle, address, sizeof(Char)));
+            return BitConverter.ToChar(Read(processHandle, address, sizeof(Char)), 0);
         }
 
         public static Double ReadDouble(IntPtr processHandle, IntPtr address)
         {
-            return BitConverter.ToDouble(Read(processHandle, address, sizeof(Double)));
+            return BitConverter.ToDouble(Read(processHandle, address, sizeof(Double)), 0);
         }
 
         public static Int16 ReadInt16(IntPtr processHandle, IntPtr address)
         {
-            return BitConverter.ToInt16(Read(processHandle, address, sizeof(Int16)));
+            return BitConverter.ToInt16(Read(processHandle, address, sizeof(Int16)), 0);
         }
 
         public static Int32 ReadInt32(IntPtr processHandle, IntPtr address)
         {
-            return BitConverter.ToInt32(Read(processHandle, address, sizeof(Int32)));
+            return BitConverter.ToInt32(Read(processHandle, address, sizeof(Int32)), 0);
         }
 
         public static Int64 ReadInt64(IntPtr processHandle, IntPtr address)
         {
-            return BitConverter.ToInt64(Read(processHandle, address, sizeof(Int64)));
+            return BitConverter.ToInt64(Read(processHandle, address, sizeof(Int64)), 0);
         }
 
         public static IntPtr ReadIntPtr(IntPtr processHandle, IntPtr address)
@@ -491,22 +491,22 @@ namespace MainDen.Windows.Interception
 
         public static Single ReadSingle(IntPtr processHandle, IntPtr address)
         {
-            return BitConverter.ToSingle(Read(processHandle, address, sizeof(Single)));
+            return BitConverter.ToSingle(Read(processHandle, address, sizeof(Single)), 0);
         }
 
         public static UInt16 ReadUInt16(IntPtr processHandle, IntPtr address)
         {
-            return BitConverter.ToUInt16(Read(processHandle, address, sizeof(UInt16)));
+            return BitConverter.ToUInt16(Read(processHandle, address, sizeof(UInt16)), 0);
         }
 
         public static UInt32 ReadUInt32(IntPtr processHandle, IntPtr address)
         {
-            return BitConverter.ToUInt32(Read(processHandle, address, sizeof(UInt32)));
+            return BitConverter.ToUInt32(Read(processHandle, address, sizeof(UInt32)), 0);
         }
 
         public static UInt64 ReadUInt64(IntPtr processHandle, IntPtr address)
         {
-            return BitConverter.ToUInt64(Read(processHandle, address, sizeof(UInt64)));
+            return BitConverter.ToUInt64(Read(processHandle, address, sizeof(UInt64)), 0);
         }
 
         public static UIntPtr ReadUIntPtr(IntPtr processHandle, IntPtr address)

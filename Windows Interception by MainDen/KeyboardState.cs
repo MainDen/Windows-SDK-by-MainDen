@@ -208,26 +208,26 @@ namespace MainDen.Windows.Interception
             return Regex.Replace(format, pattern, match =>
             {
                 string property = match.Groups["p"].Value;
-                string format = match.Groups["f"].Value;
-                if (format == "")
-                    format = null;
+                string formatString = match.Groups["f"].Value;
+                if (formatString == "")
+                    formatString = null;
                 switch (property)
                 {
                     case "K":
-                        return _Key.ToString(format);
+                        return _Key.ToString(formatString);
                     case "S":
-                        return _Status.ToString(format);
+                        return _Status.ToString(formatString);
                     case "SC":
-                        return _ScanCode.ToString(format);
+                        return _ScanCode.ToString(formatString);
                     case "M":
-                        return _Modifiers.ToString(format);
+                        return _Modifiers.ToString(formatString);
                     case "T":
-                        return _Time.ToString(format);
+                        return _Time.ToString(formatString);
                     case "t":
-                        return format ?? "";
+                        return formatString ?? "";
                     case "d":
                         if (_Modifiers != KeyModifiers.None)
-                            return format ?? "";
+                            return formatString ?? "";
                         return "";
                     case "m":
                         string separator = match.Groups["s"].Value;
@@ -236,7 +236,7 @@ namespace MainDen.Windows.Interception
                             case KeyMode.Simple:
                                 return string.Join(separator, simpleModifierList.ToArray());
                             default:
-                                return string.Join(separator, modifierList.Select(m => m.ToString(format)).ToArray());
+                                return string.Join(separator, modifierList.Select(m => m.ToString(formatString)).ToArray());
                         }
                     default:
                         throw new FormatException();

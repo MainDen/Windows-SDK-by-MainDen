@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net5.0;net472</TargetFrameworks>
+    <TargetFrameworks>net6.0;net48;net472</TargetFrameworks>
     <RootNamespace>MainDen.Windows.API</RootNamespace>
     <AssemblyName>MainDen.Windows.API</AssemblyName>
   </PropertyGroup>
@@ -12,8 +12,12 @@
   
   <PropertyGroup>
     <PackageId>MainDen.Windows.API</PackageId>
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
     <Authors>MainDen</Authors>
+    <Description>
+      This client library enables working with Windows API.
+      Visit https://github.com/MainDen/Windows-SDK-by-MainDen for get support or make suggestions.
+    </Description>
   </PropertyGroup>
 
 </Project>

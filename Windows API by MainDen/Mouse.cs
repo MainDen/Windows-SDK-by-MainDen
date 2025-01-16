@@ -17,6 +17,7 @@ namespace MainDen.Windows.API
         [Flags]
         public enum MouseEventFlags : uint
         {
+            NONE = 0x0000,
             MOVE = 0x0001,
             LEFTDOWN = 0x0002,
             LEFTUP = 0x0004,

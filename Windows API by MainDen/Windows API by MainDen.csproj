@@ -1,7 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <PropertyGroup>
-    <TargetFrameworks>net6.0;net48;net472</TargetFrameworks>
+    <TargetFrameworks>net9.0</TargetFrameworks>
     <RootNamespace>MainDen.Windows.API</RootNamespace>
     <AssemblyName>MainDen.Windows.API</AssemblyName>
   </PropertyGroup>
@@ -12,7 +12,7 @@
   
   <PropertyGroup>
     <PackageId>MainDen.Windows.API</PackageId>
-    <Version>1.0.2</Version>
+    <Version>1.0.3</Version>
     <Authors>MainDen</Authors>
     <Description>
       This client library enables working with Windows API.

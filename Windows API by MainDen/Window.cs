@@ -200,6 +200,8 @@ namespace MainDen.Windows.API
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool SetForegroundWindow(IntPtr hWnd);
         [DllImport("user32.dll", SetLastError = true)]
+        public static extern bool SetParent(IntPtr hWndChild, IntPtr hWndNewParent);
+        [DllImport("user32.dll", SetLastError = true)]
         public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int y, int width, int height, SetWindowPosFlags uFlags);
         [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
         public static extern bool SetWindowText(IntPtr hWnd, string lpString);

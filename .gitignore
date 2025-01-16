@@ -4,9 +4,7 @@
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
 # Testing
-[Tt]esting [Cc]onsole/
-[Tt]esting [Ff]orm/
-[Tt]esting*/
+[Tt]est*/
 
 # User-specific files
 *.rsuser
